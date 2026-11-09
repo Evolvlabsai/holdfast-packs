@@ -3,15 +3,14 @@
     "id": "water-food",
     "name": "Water & Food",
     "license": "Public domain (US Government works)",
-    "attribution": "CDC Make Water Safe During an Emergency; EPA Emergency Disinfection of Drinking Water (EPA 816-F-15-003); USDA FSIS A Consumer's Guide to Food Safety: Severe Storms, Hurricanes, Power Outages"
+    "attribution": "CDC; EPA; USDA FSIS; USDA Complete Guide to Home Canning (via the National Center for Home Food Preservation)"
   },
   "_notes": [
     "Every url below was fetched on 2026-11-09 with plain Python urllib and the builder's own User-Agent (no browser, no extra headers) and returned 200 with Content-Type application/pdf and a %PDF- magic header. Every page of every file yields text through pypdf, so nothing here needs OCR.",
     "www.cdc.gov sits behind Akamai, which has refused non-browser clients by TLS fingerprint from some networks. On 2026-11-09 it answered plain urllib with 200 and the PDF, but if the CDC entry starts failing with 403 from CI, the options are dropping it or vendoring the PDF into this repo with its sha256 recorded. Do not switch to a browser-driven fetch.",
     "Do NOT use https://www.cdc.gov/healthywater/emergency/pdf/make-water-safe-during-emergency-p.pdf : it answers 200 with text/html (it redirects into a web page despite the .pdf extension) and would put an HTML error page into the pack.",
     "The FSIS brochure is fetched from GovInfo (GPO, the official federal publishing repository) because the FSIS original, https://www.fsis.usda.gov/sites/default/files/media_file/2021-04/Severe-Storms-5-Panel-Brochure-ENGLISH.pdf, answered 403 to plain urllib on 2026-11-09. The GovInfo file is GPO's capture of the same April 2020 FSIS edition and its text layer comes from OCR (Acrobat Paper Capture): it extracts, but the brochure's panel layout and tables come out jumbled in places.",
-    "USDA's Complete Guide to Home Canning (Agriculture Information Bulletin 539, rev. 2015) was removed. Its eight chapter PDFs (INTRO_HomeCanrev0715.pdf and GUIDE01..07_HomeCan_rev0715.pdf under https://nchfp.uga.edu/papers/guide/) all download and extract cleanly, but nchfp.uga.edu is the University of Georgia's NIFA-funded National Center for Home Food Preservation, not a federal host. No usda.gov, nifa.usda.gov or nal.usda.gov copy exists: NIFA's own press release sends readers to nchfp.uga.edu for the download. The 2015 text also credits its primary development to Penn State and University of Georgia researchers under a NIFA grant, so 'US Government work' is not clear-cut for every page. OPEN QUESTION: accept nchfp.uga.edu as the publisher of record, or hand-transcribe the process tables into quick cards from the federal bulletin.",
-    "NIFA-hosted canning PDFs (Canning Meat, Poultry and Game PNW361; Canning Fish in Quart Jars; Safely Fermenting Food at Home) were considered as replacements and not added: www.nifa.usda.gov timed out (no response within 90 s) on plain urllib downloads on 2026-11-09, and the first two are university extension publications rather than federal works."
+    "The USDA Complete Guide to Home Canning (AIB 539, rev. 2015) is taken from nchfp.uga.edu. It is not a .gov host, but USDA NIFA directs readers there to download the guide, so it is accepted as the official source (owner decision, 2026-11-09). The guide also credits university researchers working under a NIFA grant; its public-domain status is assumed, not confirmed in writing."
   ],
   "documents": [
     {
@@ -48,6 +47,102 @@
       "bytesWhenVerified": 727269,
       "fetchNote": "GovInfo copy used because fsis.usda.gov answers 403 to plain urllib; its text layer is OCR. See _notes.",
       "pages": "all"
+    },
+    {
+      "id": "usda-canning-intro",
+      "title": "Complete Guide to Home Canning: Introduction",
+      "url": "https://nchfp.uga.edu/papers/guide/INTRO_HomeCanrev0715.pdf",
+      "source": "USDA Agriculture Information Bulletin 539 (rev. 2015), National Center for Home Food Preservation",
+      "license": "Public domain (US Government work)",
+      "verified": true,
+      "verifiedOn": "2026-11-09",
+      "bytesWhenVerified": 467339,
+      "pages": "all",
+      "hostNote": "Hosted by the National Center for Home Food Preservation (University of Georgia), which USDA NIFA names as the official download location for its Complete Guide to Home Canning."
+    },
+    {
+      "id": "usda-canning-1-principles",
+      "title": "Complete Guide to Home Canning, Part 1: Principles of Home Canning",
+      "url": "https://nchfp.uga.edu/papers/guide/GUIDE01_HomeCan_rev0715.pdf",
+      "source": "USDA Agriculture Information Bulletin 539 (rev. 2015), National Center for Home Food Preservation",
+      "license": "Public domain (US Government work)",
+      "verified": true,
+      "verifiedOn": "2026-11-09",
+      "bytesWhenVerified": 3794234,
+      "pages": "all",
+      "hostNote": "Hosted by the National Center for Home Food Preservation (University of Georgia), which USDA NIFA names as the official download location for its Complete Guide to Home Canning."
+    },
+    {
+      "id": "usda-canning-2-fruit",
+      "title": "Complete Guide to Home Canning, Part 2: Fruit and Fruit Products",
+      "url": "https://nchfp.uga.edu/papers/guide/GUIDE02_HomeCan_rev0715.pdf",
+      "source": "USDA Agriculture Information Bulletin 539 (rev. 2015), National Center for Home Food Preservation",
+      "license": "Public domain (US Government work)",
+      "verified": true,
+      "verifiedOn": "2026-11-09",
+      "bytesWhenVerified": 1098841,
+      "pages": "all",
+      "hostNote": "Hosted by the National Center for Home Food Preservation (University of Georgia), which USDA NIFA names as the official download location for its Complete Guide to Home Canning."
+    },
+    {
+      "id": "usda-canning-3-tomatoes",
+      "title": "Complete Guide to Home Canning, Part 3: Tomatoes and Tomato Products",
+      "url": "https://nchfp.uga.edu/papers/guide/GUIDE03_HomeCan_rev0715.pdf",
+      "source": "USDA Agriculture Information Bulletin 539 (rev. 2015), National Center for Home Food Preservation",
+      "license": "Public domain (US Government work)",
+      "verified": true,
+      "verifiedOn": "2026-11-09",
+      "bytesWhenVerified": 976490,
+      "pages": "all",
+      "hostNote": "Hosted by the National Center for Home Food Preservation (University of Georgia), which USDA NIFA names as the official download location for its Complete Guide to Home Canning."
+    },
+    {
+      "id": "usda-canning-4-vegetables",
+      "title": "Complete Guide to Home Canning, Part 4: Vegetables and Vegetable Products",
+      "url": "https://nchfp.uga.edu/papers/guide/GUIDE04_HomeCan_rev0715.pdf",
+      "source": "USDA Agriculture Information Bulletin 539 (rev. 2015), National Center for Home Food Preservation",
+      "license": "Public domain (US Government work)",
+      "verified": true,
+      "verifiedOn": "2026-11-09",
+      "bytesWhenVerified": 2013613,
+      "pages": "all",
+      "hostNote": "Hosted by the National Center for Home Food Preservation (University of Georgia), which USDA NIFA names as the official download location for its Complete Guide to Home Canning."
+    },
+    {
+      "id": "usda-canning-5-meat",
+      "title": "Complete Guide to Home Canning, Part 5: Poultry, Red Meats and Seafoods",
+      "url": "https://nchfp.uga.edu/papers/guide/GUIDE05_HomeCan_rev0715.pdf",
+      "source": "USDA Agriculture Information Bulletin 539 (rev. 2015), National Center for Home Food Preservation",
+      "license": "Public domain (US Government work)",
+      "verified": true,
+      "verifiedOn": "2026-11-09",
+      "bytesWhenVerified": 1356485,
+      "pages": "all",
+      "hostNote": "Hosted by the National Center for Home Food Preservation (University of Georgia), which USDA NIFA names as the official download location for its Complete Guide to Home Canning."
+    },
+    {
+      "id": "usda-canning-6-fermented",
+      "title": "Complete Guide to Home Canning, Part 6: Fermented Foods and Pickled Vegetables",
+      "url": "https://nchfp.uga.edu/papers/guide/GUIDE06_HomeCan_rev0715.pdf",
+      "source": "USDA Agriculture Information Bulletin 539 (rev. 2015), National Center for Home Food Preservation",
+      "license": "Public domain (US Government work)",
+      "verified": true,
+      "verifiedOn": "2026-11-09",
+      "bytesWhenVerified": 3173534,
+      "pages": "all",
+      "hostNote": "Hosted by the National Center for Home Food Preservation (University of Georgia), which USDA NIFA names as the official download location for its Complete Guide to Home Canning."
+    },
+    {
+      "id": "usda-canning-7-jams",
+      "title": "Complete Guide to Home Canning, Part 7: Preparing and Canning Jams and Jellies",
+      "url": "https://nchfp.uga.edu/papers/guide/GUIDE07_HomeCan_rev0715.pdf",
+      "source": "USDA Agriculture Information Bulletin 539 (rev. 2015), National Center for Home Food Preservation",
+      "license": "Public domain (US Government work)",
+      "verified": true,
+      "verifiedOn": "2026-11-09",
+      "bytesWhenVerified": 1300368,
+      "pages": "all",
+      "hostNote": "Hosted by the National Center for Home Food Preservation (University of Georgia), which USDA NIFA names as the official download location for its Complete Guide to Home Canning."
     }
   ]
 }

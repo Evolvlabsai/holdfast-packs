@@ -1,7 +1,7 @@
 {
   "_comment": "The signed pack catalog. The app installs nothing that is not listed here. Packs whose url contains 'PLACEHOLDER' and whose sha256 is 64 zeros have not been built or hosted yet: they are listed so the Packs screen can show them, and the app's checksum check makes every download from them fail, which is the intended safe behaviour. scripts/validate_manifest.py names every one of them. Do not hand-edit size or sha256; use scripts/update_manifest.py.",
   "schema": 1,
-  "published": "2026-11-09T20:00:36Z",
+  "published": "2026-11-09T20:59:31Z",
   "minAppVersion": "0.1.0",
   "packs": [
     {
@@ -47,18 +47,18 @@
       "id": "water-food",
       "name": "Water & Food",
       "group": "essentials",
-      "version": "2026.11.09",
+      "version": "2026.11.10",
       "published": "2026-11-09",
       "format": "hfdb",
-      "size": 184320,
-      "sha256": "81002c86aef1205fa5be9d23c121c3a32cef3fa4518fe2695fb8e38b5632e51d",
+      "size": 2846720,
+      "sha256": "a7681ea45cc29b95e25f66be39e46bc310f4726cc0621b6344c63a27d4b7f74d",
       "url": "https://github.com/Evolvlabsai/holdfast-packs/releases/download/packs-2026.11.09/water-food.hfdb",
       "mirrors": [],
       "required": false,
       "staleAfterDays": 30,
       "license": "Public domain (US Government works)",
-      "attribution": "CDC, EPA and USDA water, canning and food-storage guidance",
-      "changes": "First build: CDC, EPA and USDA FSIS guidance on safe water and food after a disaster.",
+      "attribution": "CDC; EPA; USDA FSIS; USDA Complete Guide to Home Canning (via the National Center for Home Food Preservation)",
+      "changes": "Adds the USDA Complete Guide to Home Canning: 185 pages in all.",
       "minAppVersion": "0.1.0",
       "description": "Purification, canning, food storage, foraging basics"
     },
