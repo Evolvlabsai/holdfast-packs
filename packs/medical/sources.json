@@ -1,0 +1,98 @@
+{
+  "pack": {
+    "id": "medical",
+    "name": "Medical and first aid",
+    "license": "Public domain (US Government works)",
+    "attribution": "US Public Health Service (The Ship's Medicine Chest and Medical Aid at Sea); Centers for Disease Control and Prevention, including NIOSH (heat, cold stress, wound care, carbon monoxide and coping-with-stress guides)"
+  },
+  "_notes": [
+    "Every url below was fetched on 2026-11-09 with plain urllib (no User-Agent) and returned 200 with Content-Type application/pdf and a %PDF- magic header. Each file was opened with pypdf, its pages counted and its text extracted, and the federal publisher was read off the document itself.",
+    "Medical content. Every entry carries a reviewNote: nothing from this pack may reach a quick card, and the pack should not be released, until a clinician has reviewed it (spec: Content safety). These are reference texts, several of them dated; age is called out per entry.",
+    "Hesperian's 'Where There Is No Doctor' is excluded. It is free to read but copyrighted, and Hesperian has not given written permission to redistribute it. It stays out until that permission exists in writing; until then the Packs screen links to https://hesperian.org/books-and-resources/ instead.",
+    "WikiMed (Kiwix ZIM of Wikipedia's medical articles, CC BY-SA 4.0) is not part of this hfdb. It is planned as a separate linked pack (working id medical-wikimed) once the app can read ZIM files. The verified file facts sit in pack.meta.json under companions.",
+    "American Red Cross, American Heart Association and Hesperian material is excluded on purpose: it carries third-party copyright. None of the documents below has a copyright or reprinted-with-permission notice (checked by text search of every page).",
+    "CDC Stacks record 5689 is titled 'Extreme Cold: A Prevention Guide', but the PDF it serves (3,616,573 bytes, 15 pages) is the Extreme Heat guide plus one frostbite page printed twice; the cold guide itself is missing. It is skipped. Its old cdc.gov home (www.cdc.gov/disasters/winter/guide.html and the pdf beside it) now 404s. The NIOSH cold stress sheet below covers hypothermia, frostbite, trench foot and chilblains instead.",
+    "SAMHSA tip sheets (e.g. SMA13-4776 'Tips for Survivors of a Disaster or Other Traumatic Event: Managing Stress') are skipped: store.samhsa.gov and library.samhsa.gov return 403 to scripted downloads. The CDC coping-with-stress tip sheet below covers the same ground. Revisit if SAMHSA allows plain HTTP clients.",
+    "OSHA heat and cold quick cards were not used: www.osha.gov returns 403 to scripted downloads.",
+    "TC 4-02.3 Field Hygiene and Sanitation (6 May 2015, active) is skipped: its armypubs record page offers no public PDF link (the footnote points to the CAC-gated Central Army Registry), so it cannot be fetched publicly. ATP 4-02.11 (first aid) and ATP 3-50.21 (survival) are already in the manuals pack and are not duplicated here.",
+    "'Climate Change and Extreme Heat: What You Can Do to Prepare' (EPA 430-R-16-061 / CDC, Oct 2016; stacks.cdc.gov/view/cdc/59784, 9,068,161 bytes, 20 pages) fetched cleanly but was left out: most of it is climate-trend charts, and its health advice duplicates the CDC Extreme Heat guide below.",
+    "The Emergency Wound Care factsheet is served byte-identically (352,891 bytes) from stacks.cdc.gov/view/cdc/49402; the cdc.gov URL is used because it is the one CDC's current factsheet page links to."
+  ],
+  "documents": [
+    {
+      "id": "usphs-ships-medicine-chest",
+      "title": "The Ship's Medicine Chest and Medical Aid at Sea",
+      "url": "https://www.govinfo.gov/content/pkg/GOVPUB-HE20-PURL-gpo20582/pdf/GOVPUB-HE20-PURL-gpo20582.pdf",
+      "source": "US Department of Health and Human Services, Public Health Service, Office of the Surgeon General (DHHS Publication No. (PHS) 03-2024, 2003 Edition). Supersedes PHS Miscellaneous Publication No. 9. Served by GPO govinfo (FDLP PURL gpo20582).",
+      "license": "Public domain (US Government work)",
+      "verified": true,
+      "verifiedOn": "2026-11-09",
+      "bytesWhenVerified": 2999399,
+      "reviewNote": "Medical content. Clinician review required before release. 2003 edition: drug doses, antibiotic choices and the radio-medical contact details predate current practice and must be checked.",
+      "fetchNote": "410 pages, 380 with extractable text. Written for a ship's officer with no doctor aboard, which is close to the situation this pack serves.",
+      "pages": "all"
+    },
+    {
+      "id": "cdc-extreme-heat-guide",
+      "title": "Extreme Heat: A Prevention Guide to Promote Your Personal Health and Safety",
+      "url": "https://stacks.cdc.gov/view/cdc/7023/cdc_7023_DS1.pdf",
+      "source": "Centers for Disease Control and Prevention, National Center for Environmental Health (2004 guide; PDF dated March 2005). Served by CDC Stacks, record 7023.",
+      "license": "Public domain (US Government work)",
+      "verified": true,
+      "verifiedOn": "2026-11-09",
+      "bytesWhenVerified": 3291848,
+      "reviewNote": "Medical content. Clinician review required before release.",
+      "pages": "all"
+    },
+    {
+      "id": "niosh-cold-stress",
+      "title": "Fast Facts: Protecting Yourself from Cold Stress",
+      "url": "https://www.cdc.gov/niosh/docs/2010-115/pdfs/2010-115.pdf",
+      "source": "Centers for Disease Control and Prevention, National Institute for Occupational Safety and Health (DHHS (NIOSH) Publication No. 2010-115).",
+      "license": "Public domain (US Government work)",
+      "verified": true,
+      "verifiedOn": "2026-11-09",
+      "bytesWhenVerified": 581387,
+      "reviewNote": "Medical content. Clinician review required before release.",
+      "fetchNote": "Two pages: hypothermia, frostbite, trench foot and chilblains with first aid for each. Written for workers but applies to anyone out in the cold.",
+      "pages": "all"
+    },
+    {
+      "id": "cdc-emergency-wound-care",
+      "title": "Emergency Wound Care After a Natural Disaster",
+      "url": "https://www.cdc.gov/disasters/hurricanes/pdf/woundcare.pdf",
+      "source": "Centers for Disease Control and Prevention (CS285676-A, 26 October 2017).",
+      "license": "Public domain (US Government work)",
+      "verified": true,
+      "verifiedOn": "2026-11-09",
+      "bytesWhenVerified": 352891,
+      "reviewNote": "Medical content. Clinician review required before release.",
+      "pages": "all"
+    },
+    {
+      "id": "cdc-carbon-monoxide-prevention",
+      "title": "Prevention Guidelines: You Can Prevent Carbon Monoxide Exposure",
+      "url": "https://stacks.cdc.gov/view/cdc/47927/cdc_47927_DS1.pdf",
+      "source": "Centers for Disease Control and Prevention, National Center for Environmental Health (CS283134-D, 29 August 2017). Served by CDC Stacks, record 47927.",
+      "license": "Public domain (US Government work)",
+      "verified": true,
+      "verifiedOn": "2026-11-09",
+      "bytesWhenVerified": 52969,
+      "reviewNote": "Medical content. Clinician review required before release.",
+      "fetchNote": "One page, but generator and grill carbon monoxide deaths are among the commonest after a power outage.",
+      "pages": "all"
+    },
+    {
+      "id": "cdc-coping-with-stress",
+      "title": "Coping with Stress After a Traumatic Event: Tip Sheet",
+      "url": "https://stacks.cdc.gov/view/cdc/11936/cdc_11936_DS1.pdf",
+      "source": "Centers for Disease Control and Prevention, National Center for Injury Prevention and Control, Division of Violence Prevention (2008). Served by CDC Stacks, record 11936.",
+      "license": "Public domain (US Government work)",
+      "verified": true,
+      "verifiedOn": "2026-11-09",
+      "bytesWhenVerified": 258625,
+      "reviewNote": "Medical content. Clinician review required before release. The sheet gives the old National Suicide Prevention Lifeline number 1-800-273-TALK; the current US crisis line is 988, and any card drawn from this must say so.",
+      "pages": "all"
+    }
+  ]
+}

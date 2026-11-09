@@ -1,13 +1,10 @@
 {
   "id": "medical",
   "hosting": "hosted",
-  "builder": "scripts/build_core.py",
+  "builder": "scripts/build_pdf_pack.py",
   "upstream": {
-    "kind": "kiwix",
-    "book": "wikipedia_en_medicine",
-    "flavour": "mini",
-    "currentFile": "wikipedia_en_medicine_mini_2026-10.zim",
-    "notes": "Watched for the WikiMed companion file, not for the hosted hfdb half of this pack."
+    "kind": "pdfs",
+    "notes": "CDC, NIOSH and US Public Health Service PDFs listed in sources.json. CDC moves files between cdc.gov and CDC Stacks fairly often, so an unreachable URL here is a normal finding, not a crisis: validate_manifest.py --network catches it and the pack keeps serving its last good build. The WikiMed companion below is tracked separately and is not part of this hfdb."
   },
   "companions": [
     {
@@ -18,7 +15,7 @@
       "format": "zim",
       "license": "CC-BY-SA-4.0",
       "verifiedOn": "2026-11-09",
-      "problem": "The spec calls this pack 'Hosted + Linked', but a manifest entry has exactly one url and one format. This ZIM therefore cannot live inside the 'medical' entry. It needs its own pack id (medical-wikimed) or the pack has to drop to hosted-only. OPEN QUESTION -- see README.md."
+      "problem": "Not part of the medical hfdb. Planned as its own linked pack (working id medical-wikimed) once the app can read ZIM files; a manifest entry has exactly one url and one format, so it cannot ride inside this entry. See README.md."
     },
     {
       "what": "Larger WikiMed editions, if 166 MB of intro extracts proves too thin",
@@ -31,5 +28,5 @@
   ],
   "sizeChangeThresholdPercent": 25,
   "allowSizeChange": false,
-  "notes": "Hesperian's 'Where There Is No Doctor' is NOT hosted: redistribution terms are unconfirmed (spec: Licensing). Until someone confirms them, the pack links to Hesperian's own download page instead of carrying the text. Nothing medical ships without clinician review."
+  "notes": "Hosted hfdb built by scripts/build_pdf_pack.py from public-domain US Government PDFs (packs/medical/sources.json), one search document per page. Hesperian's 'Where There Is No Doctor' is NOT hosted: it is copyrighted and there is no written redistribution permission (spec: Licensing); the Packs screen links to Hesperian's own download page instead. WikiMed is a planned separate linked pack. Nothing medical ships without clinician review: every source carries a reviewNote saying so."
 }

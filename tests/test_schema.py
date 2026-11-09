@@ -282,22 +282,35 @@ def test_validator_accepts_the_repo_manifest_with_placeholders_allowed(capsys):
     assert "manifest OK" in out
 
 
-def test_validator_fails_on_placeholders_by_default(capsys):
-    code = validate_manifest.main(["--no-drift"])
+PLACEHOLDER_PACK = dict(
+    id="medical",
+    size=0,
+    sha256="0" * 64,
+    url="https://example.invalid/PLACEHOLDER/medical.hfdb",
+)
+
+
+def test_validator_fails_on_placeholders_by_default(tmp_path, capsys):
+    path = write(tmp_path, with_pack(**PLACEHOLDER_PACK))
+    code = validate_manifest.main(["--manifest", str(path), "--no-drift"])
     out = capsys.readouterr().out
     assert code == 1
     assert "not publishable yet" in out
     # Every placeholder pack must be named, not just counted.
-    for pack_id in ("medical", "water-food", "maps-topo-us-md"):
-        assert pack_id in out
+    assert "medical" in out
 
 
-def test_validator_names_the_placeholder_sha256_and_size(capsys):
-    validate_manifest.main(["--no-drift"])
+def test_validator_names_the_placeholder_sha256_and_size(tmp_path, capsys):
+    path = write(tmp_path, with_pack(**PLACEHOLDER_PACK))
+    validate_manifest.main(["--manifest", str(path), "--no-drift"])
     out = capsys.readouterr().out
     assert "sha256 is a placeholder" in out
     assert "size is a placeholder" in out
     assert "url is a placeholder" in out
+
+
+def test_the_repos_manifest_has_no_placeholders_left(capsys):
+    assert validate_manifest.main(["--no-drift"]) == 0
 
 
 def test_validator_rejects_a_schema_violation(tmp_path, capsys):

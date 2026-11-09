@@ -77,6 +77,12 @@ def test_every_sources_json_parses_and_lists_documents():
             assert "verified" in doc, f"{path}: {doc.get('id')} must say whether its URL was verified"
 
 
+def test_every_medical_source_demands_clinician_review():
+    data = json.loads((ROOT / "packs" / "medical" / "sources.json").read_text(encoding="utf-8"))
+    for doc in data["documents"]:
+        assert "Clinician review required" in doc.get("reviewNote", ""), doc.get("id")
+
+
 def test_no_private_key_is_committed():
     offenders = [
         p

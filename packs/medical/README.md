@@ -1,28 +1,65 @@
 # medical — Medical
 
-First-aid cards, *Where There Is No Doctor*, and WikiMed.
+Public-domain US Government first-aid and emergency-health texts, searchable
+offline, one search document per PDF page so every hit cites a page.
 
-- **Hosting:** mixed, which is the problem below. ~420 MB budgeted.
+- **Hosting:** hosted (GitHub Releases hfdb).
+- **Builder:** `scripts/build_pdf_pack.py --pack medical`, reading
+  [`sources.json`](sources.json).
 - **Cadence:** monthly.
 - **`staleAfterDays`:** 30.
 
-## Not built
+## Clinician review comes first
 
-The hosted half (first-aid cards and public-domain first-aid text) builds with
-`scripts/build_core.py` once a `sources/` directory exists here. The manifest
-entry is a placeholder until it does.
+Every document in `sources.json` carries a `reviewNote`: *Medical content.
+Clinician review required before release.* Several sources are old (the
+largest is the 2003 edition of a USPHS manual), so doses, drug choices and
+phone numbers in them may be out of date. The pack builds; it is **not
+releasable** until a clinician has been through it, and nothing from it may
+become a quick card without that review.
 
-## Hesperian: linked, never hosted
+## What is in it
 
-*Where There Is No Doctor* is free to read but copyrighted. The spec is explicit:
-confirm redistribution terms before hosting, and until then link to Hesperian's
-own download instead. **Nobody has confirmed anything.** So this pack must not
-carry the text, and the Packs screen should send the user to
+All verified on 2026-11-09 with a plain `urllib` download.
+
+| Document | Publisher | Pages |
+| --- | --- | --- |
+| *The Ship's Medicine Chest and Medical Aid at Sea* (2003) | US Public Health Service, Office of the Surgeon General | 410 (380 with text) |
+| *Extreme Heat: A Prevention Guide* | CDC, National Center for Environmental Health | 13 |
+| *Fast Facts: Protecting Yourself from Cold Stress* | CDC / NIOSH | 2 |
+| *Emergency Wound Care After a Natural Disaster* (2017) | CDC | 1 |
+| *You Can Prevent Carbon Monoxide Exposure* (2017) | CDC, National Center for Environmental Health | 1 |
+| *Coping with Stress After a Traumatic Event* (2008) | CDC, National Center for Injury Prevention and Control | 2 |
+
+The Ship's Medicine Chest carries the weight: it is written for someone with
+no doctor available, which is the situation this pack is for. The CDC sheets
+are short but cover the things that kill or hurt people after a disaster:
+heat, cold, dirty wounds, generator carbon monoxide, and stress.
+
+Army first aid (ATP 4-02.11) and survival (ATP 3-50.21) live in the `manuals`
+pack and are not duplicated here. What was tried and left out, and why, is in
+the `_notes` of `sources.json` (a mislabelled CDC cold guide, SAMHSA and OSHA
+hosts that 403 scripted downloads, a CAC-gated Army hygiene manual).
+
+## Not in it
+
+### Hesperian: linked, never hosted
+
+*Where There Is No Doctor* is free to read but copyrighted. It stays out of
+this pack until Hesperian gives written permission to redistribute it.
+**Nobody has asked yet.** Until then the Packs screen should send the user to
 <https://hesperian.org/books-and-resources/>.
 
-## WikiMed — chosen file
+American Red Cross and American Heart Association material is excluded for
+the same reason.
 
-Verified live on 2026-11-09 against `download.kiwix.org`:
+### WikiMed: a separate linked pack, later
+
+WikiMed (Kiwix ZIM of Wikipedia's medical articles, CC BY-SA 4.0) is planned as
+its own linked pack (working id `medical-wikimed`) once the app can read ZIM
+files. A manifest entry has exactly one `url` and one `format`, so it cannot
+ride inside this hfdb entry. Verified live on 2026-11-09 against
+`download.kiwix.org`:
 
 | Edition | File | Bytes |
 | --- | --- | --- |
@@ -30,29 +67,12 @@ Verified live on 2026-11-09 against `download.kiwix.org`:
 | nopic | `wikipedia_en_medicine_nopic_2026-10.zim` | 1,047,708,415 |
 | maxi | `wikipedia_en_medicine_maxi_2026-10.zim` | 1,864,210,320 |
 
-`mini` is lead sections only, about 166 MiB, which fits the spec's 420 MB budget
-alongside the hosted half. `nopic` is where to go if lead sections prove too thin
-in use; it alone blows the budget.
-
 sha256 of the mini file, read from the publisher's own `.zim.sha256` sidecar:
 `c66f27274775870cec7e0c230c7e7626d367633b1f26c4a74499c249ddac0822`
 
-## OPEN QUESTION — "Hosted + Linked" does not fit one manifest entry
+These facts sit in `pack.meta.json` under `companions` until that pack exists.
 
-The spec's pack table calls this pack *Hosted + Linked*. A manifest entry has
-exactly one `url` and one `format`, so one entry cannot be both an `hfdb` we
-host and a `zim` from Kiwix. Three ways out:
+## Manifest
 
-1. **Two pack ids** — `medical` (hosted hfdb) and `medical-wikimed` (linked
-   zim), shown together on the Packs screen. Honest, cheap, costs one more row
-   and a hint that they belong together.
-2. **Hosted only** — extract what we need from WikiMed into our own hfdb.
-   Re-hosting CC BY-SA content is allowed with attribution, but it is ~1 GB of
-   our release storage and a monthly rebuild.
-3. **A `components` array on a pack entry** — several files per pack. The
-   cleanest model and the largest app change: it touches the downloader, the
-   checksum check, the atomic swap and the storage accounting.
-
-Option 1 is the cheapest thing that is true. **Not decided.** Until it is, the
-WikiMed facts sit in `pack.meta.json` under `companions` and nothing links to
-them.
+`manifest.json` still carries a placeholder entry for `medical`. It gets a real
+url, size and sha256 when a reviewed build is released, not before.

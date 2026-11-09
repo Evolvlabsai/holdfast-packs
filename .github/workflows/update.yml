@@ -197,14 +197,14 @@ jobs:
 
             # Hosted: build it with whatever builder the pack declares.
             case "$id" in
-              core|medical)
+              core)
                 # --allow-draft is NOT passed: unreviewed quick cards must not
                 # reach a release. The build fails loudly instead.
                 python scripts/build_core.py --sources "packs/$id/sources" \
                   --id "$id" --out "dist/$id.hfdb" --query "water"
                 FILE="dist/$id.hfdb"
                 ;;
-              water-food|manuals)
+              water-food|manuals|medical)
                 python scripts/build_pdf_pack.py --pack "$id" --out "dist/$id.hfdb" --query "water"
                 FILE="dist/$id.hfdb"
                 ;;
@@ -213,9 +213,16 @@ jobs:
                 python scripts/extract_maps.py --region "$REGION" --out "dist/$REGION-roads.pmtiles"
                 FILE="dist/$REGION-roads.pmtiles"
                 ;;
-              maps-topo-*|maps-routing-*)
-                # Both builders are TODO stubs that exit 2 with their plan.
-                echo "::warning::$id has no builder yet; see scripts/build_topo.py / build_routing.py"
+              maps-topo-*)
+                # Downloads ~6 GB of USGS 3DEP GeoTIFFs per state; manual cadence.
+                REGION="${id#maps-topo-}"
+                python scripts/build_topo.py --region "$REGION" --out "dist/$REGION-topo.pmtiles" \
+                  --cache-dir .cache/topo
+                FILE="dist/$REGION-topo.pmtiles"
+                ;;
+              maps-routing-*)
+                # The routing builder is still a TODO stub that exits 2 with its plan.
+                echo "::warning::$id has no builder yet; see scripts/build_routing.py"
                 echo "::endgroup::"
                 continue
                 ;;

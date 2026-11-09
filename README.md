@@ -80,7 +80,7 @@ which the app shows as one row. Core is required; everything else is opt-in.
 | `water-food` | Purification, canning, food storage, foraging | CDC, EPA, USDA | Releases | ~160 MB |
 | `manuals` | ATP 3-50.21, ATP 4-02.11, FEMA guides | US Army, FEMA | Releases | ~95 MB |
 | `maps-roads-us-md` | Streets, trails, points of interest | OpenStreetMap via Protomaps | **Releases** | 214 MB (measured) |
-| `maps-topo-us-md` | Contours, hillshade | USGS 3DEP | Releases | ~900 MB |
+| `maps-topo-us-md` | Terrain (Terrarium raster-dem; hillshade + contours drawn on device) | USGS 3DEP | Releases | ~200 MB |
 | `maps-routing-us-md` | Offline directions | OpenStreetMap via Geofabrik | Releases | ~450 MB |
 | `shelter-repair` | Repair guides, DIY, knots | iFixit via Kiwix | Linked | 3.3 GiB (measured) |
 | `wikipedia-top50k` | Most-read articles | Kiwix | Linked | 6.5 GiB (measured) |

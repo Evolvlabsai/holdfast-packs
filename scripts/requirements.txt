@@ -20,3 +20,13 @@ jsonschema==4.26.0
 # Safe XML for the Kiwix OPDS catalog, which is third-party data
 # (check_upstream.py). Stops entity expansion and external entity fetches.
 defusedxml==0.7.1
+
+# --- Build-only: the terrain pack (build_topo.py). Nothing here touches the
+# manifest or signing. No GDAL: tifffile reads the 3DEP GeoTIFFs as plain data
+# (imagecodecs decodes their LZW/deflate), numpy samples, Pillow writes PNG,
+# pmtiles writes the archive.
+numpy==2.5.3
+tifffile==2026.11.8
+imagecodecs==2026.10.10
+pillow==12.3.0
+pmtiles==3.8.1
