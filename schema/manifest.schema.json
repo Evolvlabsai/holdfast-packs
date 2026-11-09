@@ -87,7 +87,7 @@
         "format": {
           "description": "Optional. File format, which decides how the app opens the pack. Default when absent: hfdb.",
           "type": "string",
-          "enum": ["hfdb", "pmtiles", "zim", "gguf"]
+          "enum": ["hfdb", "pmtiles", "zim", "hfroute", "gguf", "onnx", "zip"]
         },
         "size": {
           "description": "Size of the whole file in bytes. The app discards a download whose size differs. 0 is the repo's placeholder for 'not built yet'.",

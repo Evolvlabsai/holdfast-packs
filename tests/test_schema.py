@@ -74,7 +74,7 @@ def test_the_repos_own_manifest_validates(validator):
     assert errors(validator, mf.load()) == []
 
 
-def test_the_repos_manifest_lists_the_ten_launch_packs():
+def test_the_repos_manifest_lists_the_launch_packs():
     ids = [p["id"] for p in mf.packs(mf.load())]
     assert ids == [
         "core",
@@ -86,7 +86,8 @@ def test_the_repos_manifest_lists_the_ten_launch_packs():
         "maps-routing-us-md",
         "shelter-repair",
         "wikipedia-top50k",
-        "offline-ai",
+        "offline-ai-model",
+        "offline-ai-embedder",
     ]
 
 
@@ -287,7 +288,7 @@ def test_validator_fails_on_placeholders_by_default(capsys):
     assert code == 1
     assert "not publishable yet" in out
     # Every placeholder pack must be named, not just counted.
-    for pack_id in ("core", "medical", "water-food", "manuals", "offline-ai"):
+    for pack_id in ("medical", "water-food", "manuals", "maps-topo-us-md"):
         assert pack_id in out
 
 

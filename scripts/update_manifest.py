@@ -118,7 +118,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--published", default=None, help="pack published date yyyy-MM-dd (default: today, UTC)")
     parser.add_argument("--changes", default=None, help="the one-line 'what is new' the update list shows")
     parser.add_argument("--mirror", action="append", default=None, help="replace the mirror list (repeatable)")
-    parser.add_argument("--format", default=None, help="pack format: hfdb, pmtiles, zim or gguf")
+    parser.add_argument("--format", default=None, help="pack format: hfdb, pmtiles, zim, hfroute, gguf, onnx or zip")
     parser.add_argument("--min-app-version", default=None, help="raise minAppVersion (do this on any format change)")
     parser.add_argument("--stale-after-days", type=int, default=None)
     parser.add_argument("--license", default=None)

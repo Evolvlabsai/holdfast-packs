@@ -54,7 +54,8 @@ and `attribution`:
 | `maps-routing-*` | ODbL 1.0 — derived from the same OSM extract |
 | `shelter-repair` | CC BY-NC-SA 3.0 (iFixit) — **non-commercial**; recheck if anything is ever sold |
 | `wikipedia-top50k` | CC BY-SA 4.0 — Wikipedia contributors |
-| `offline-ai` | the chosen model's licence — **no model chosen yet** |
+| `offline-ai-model` | Apache-2.0 — Qwen3-1.7B (Alibaba Cloud) |
+| `offline-ai-embedder` | Apache-2.0 — sentence-transformers/all-MiniLM-L6-v2 |
 
 Rules the spec sets, which no licence choice here changes:
 

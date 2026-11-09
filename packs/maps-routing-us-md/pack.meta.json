@@ -1,7 +1,7 @@
 {
   "id": "maps-routing-us-md",
   "hosting": "hosted",
-  "builder": "scripts/build_routing.py (TODO stub: builds nothing)",
+  "builder": "scripts/build_routing.py (stub: the graph is built by hand with Holdfast.RouteBuild)",
   "region": "US-MD",
   "upstream": {
     "kind": "geofabrik",
@@ -11,5 +11,5 @@
   },
   "sizeChangeThresholdPercent": 20,
   "allowSizeChange": false,
-  "notes": "Not built, and blocked on two things outside this repo: (1) the graph builder tools/Holdfast.RouteBuild lives in the private app repo, so public CI cannot run it; (2) the manifest's format enum has no value for a routing graph, and the entry currently says 'pmtiles', which is wrong. See packs/maps-routing-us-md/README.md and scripts/build_routing.py."
+  "notes": "Not built yet. The format problem is solved: the entry uses 'hfroute'. The graph is built locally with tools/Holdfast.RouteBuild from the holdfast-app repo (dotnet run --project tools/Holdfast.RouteBuild -c Release -- --pbf maryland-latest.osm.pbf --out us-md-routing.hfroute --bbox=-79.49,37.88,-75.05,39.73) and uploaded by hand. Public CI still cannot run it, because holdfast-app is a private repo. See packs/maps-routing-us-md/README.md."
 }

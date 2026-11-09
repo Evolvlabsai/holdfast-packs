@@ -6,52 +6,44 @@ Walking and driving directions with no signal.
 - **Cadence:** monthly, following the OSM extract.
 - **`staleAfterDays`:** 90.
 - **Licence:** ODbL 1.0, derived from the same OpenStreetMap extract.
+- **Format:** `hfroute`, a single-file routing graph the app opens with
+  `Holdfast.Routing`.
 
-## NOT BUILT, and blocked on three things
+## How it is built: by hand, outside public CI
 
-`scripts/build_routing.py` is a TODO stub that prints its plan and exits 2.
+The graph is built locally with `tools/Holdfast.RouteBuild` from the
+`holdfast-app` repo, from the Geofabrik extract below:
 
-### 1. The builder lives in the private repo
+```
+dotnet run --project tools/Holdfast.RouteBuild -c Release -- --pbf maryland-latest.osm.pbf --out us-md-routing.hfroute --bbox=-79.49,37.88,-75.05,39.73
+```
 
-The routing graph builder is `tools/Holdfast.RouteBuild` in the private
-`holdfast-app` repo. This repo is public; its Actions cannot read a private
-sibling without a cross-repo token, and even with one, building a graph here
-means running private code in public CI. Three ways out, set out in the stub:
+The result is one `.hfroute` file, uploaded by hand to a release here and
+recorded with `update_manifest.py --id maps-routing-us-md`.
+
+`scripts/build_routing.py` is a stub that prints this and exits 2.
+
+### Public CI still cannot run it
+
+`holdfast-app` is a private repo. This repo is public; its Actions cannot read a
+private sibling without a cross-repo token, and even with one, building a graph
+here means running private code in public CI. So the weekly workflow never
+rebuilds this pack, and the monthly refresh is a manual step. Ways to automate
+it later, none chosen:
 
 1. publish RouteBuild as a release binary (simplest to run; ships a binary whose
    source the public repo cannot show, which sits badly with a repo whose point
    is auditable content);
 2. build the graph in the private repo's CI and have it upload here (keeps the
    tool private; moves the trust boundary, since the private repo then needs
-   write access to this one);
-3. use GraphHopper's or Valhalla's own stock builder in a container (most
-   reproducible for outsiders; forces the engine choice the spec left open).
+   write access to this one).
 
-**None chosen.** This is the one pack whose pipeline cannot be finished inside
-this repo as things stand.
+### Format: solved
 
-### 2. There is no `format` value for a routing graph
-
-The manifest's `format` enum is `hfdb | pmtiles | zim | gguf`. A routing graph
-is none of them. **This entry currently says `"format": "pmtiles"`, which is
-wrong.** It matches the placeholder in the app's own built-in seed catalog, and
-if it ever carried a real checksum the app would hand a graph archive to
-MapLibre. Before this pack can ship:
-
-- add a value (`graph`, or `ghgraph` / `valhalla` if the engine should be
-  explicit) to the app's `format` handling and to `schema/manifest.schema.json`;
-- raise this pack's `minAppVersion` in the same change, so an older app hides it
-  instead of downloading something it cannot open.
-
-The entry is inert meanwhile: its sha256 is 64 zeros, so any download fails its
-checksum.
-
-### 3. A graph is a directory and the app installs one file
-
-Both engines produce a tree (`graph-cache/`, or a Valhalla tile tree). Packed as
-a tar or zip it is one file, but then the app has to unpack it during install —
-and the app's install path writes one data file and renames it into place. That
-is a new step on the app side, not a pipeline detail.
+The manifest's `format` enum now has `hfroute`, matching the app's
+`PackFormats.HfRoute`, and this entry uses it. RouteBuild writes one file, so
+the app installs it as-is with no unpack step. The entry is still a placeholder
+(size 0, sha256 of 64 zeros) until a built graph is uploaded.
 
 ## Upstream
 

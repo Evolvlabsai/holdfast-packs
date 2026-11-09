@@ -37,7 +37,7 @@ PLACEHOLDER_SHA256 = "0" * 64
 PLACEHOLDER_HOSTS = ("example.invalid", "todo.invalid")
 
 GROUPS = ("essentials", "maps", "reference", "optional")
-FORMATS = ("hfdb", "pmtiles", "zim", "gguf")
+FORMATS = ("hfdb", "pmtiles", "zim", "hfroute", "gguf", "onnx", "zip")
 
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 VERSION_RE = re.compile(r"^\d{4}\.\d{2}\.\d{2}$")

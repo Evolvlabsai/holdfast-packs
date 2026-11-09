@@ -54,7 +54,7 @@ def test_linked_packs_point_at_a_real_upstream_host():
         meta = mf.load_pack_meta(pack_id)
         entry = mf.require(mf.load(), pack_id)
         if meta and meta.linked and not mf.is_placeholder_url(entry["url"]):
-            assert entry["url"].startswith("https://download.kiwix.org/"), pack_id
+            assert entry["url"].startswith(("https://download.kiwix.org/", "https://huggingface.co/")), pack_id
 
 
 def test_hosted_packs_either_have_a_builder_or_say_they_are_a_stub():

@@ -1,0 +1,12 @@
+{
+  "id": "offline-ai-model",
+  "hosting": "linked",
+  "builder": null,
+  "upstream": {
+    "kind": "manual",
+    "notes": "Qwen3-1.7B, Q4_K_M GGUF, linked from Hugging Face at a pinned revision. Deliberate releases only: a model swap changes answer quality for every user, so it is never automatic."
+  },
+  "sizeChangeThresholdPercent": 50,
+  "allowSizeChange": false,
+  "notes": "Model chosen: Qwen3-1.7B (Apache-2.0, which allows redistribution and app use), quantised to Q4_K_M (~1.1 GB). The app runs it with /no_think so it answers directly instead of emitting a reasoning trace. Still a placeholder entry: the Hugging Face revision has not been pinned and size/sha256 are not filled in. Hugging Face resolve URLs are stable per revision; pin the revision sha in the url, never 'main'. The embeddings are not in this pack: they are precomputed per hfdb pack, and the query-side embedder is the separate offline-ai-embedder pack."
+}

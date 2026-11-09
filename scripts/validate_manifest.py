@@ -358,7 +358,10 @@ def check_drift(data: dict, baseline: dict, metas: dict[str, mf.PackMeta], repor
 
         old_format = old.get("format", "hfdb")
         new_format = entry.get("format", "hfdb")
-        if old_format != new_format:
+        if old_format != new_format and mf.is_placeholder(old):
+            # The old entry was never built, so no app can have downloaded it in the old format.
+            report.ok(f"{pack_id}: format set {old_format} -> {new_format} on first real build")
+        elif old_format != new_format:
             old_min = old.get("minAppVersion", "0.0.0")
             new_min = entry.get("minAppVersion", "0.0.0")
             if version_tuple(new_min) <= version_tuple(old_min):

@@ -55,8 +55,8 @@ This is the part worth reading twice.
    this repository. It is read by exactly one workflow, `publish.yml`, which
    runs only on `main`. The weekly update job never signs: it opens a pull
    request, and a human merging it is what causes a signature to exist.
-5. **Placeholders are safe to publish.** Eight of the ten launch packs are not
-   built yet. Their entries carry `https://example.invalid/PLACEHOLDER/…` and a
+5. **Placeholders are safe to publish.** Nine of the eleven launch entries are
+   not built yet. Their entries carry `https://example.invalid/PLACEHOLDER/…` and a
    `sha256` of 64 zeros, so the Packs screen can list them while every download
    from them fails verification. `validate_manifest.py` names each one on every
    run, so they can never go quiet.
@@ -69,7 +69,9 @@ newline.
 
 ## Packs
 
-Ten packs cover launch. Core is required; everything else is opt-in.
+Eleven catalog entries cover launch: the ten packs of the spec, with the
+offline AI split into two packs (the answer model and the source matcher),
+which the app shows as one row. Core is required; everything else is opt-in.
 
 | Pack | Contents | Source | Hosting | Size |
 | --- | --- | --- | --- | --- |
@@ -82,9 +84,10 @@ Ten packs cover launch. Core is required; everything else is opt-in.
 | `maps-routing-us-md` | Offline directions | OpenStreetMap via Geofabrik | Releases | ~450 MB |
 | `shelter-repair` | Repair guides, DIY, knots | iFixit via Kiwix | Linked | 3.3 GiB (measured) |
 | `wikipedia-top50k` | Most-read articles | Kiwix | Linked | 6.5 GiB (measured) |
-| `offline-ai` | Local model + embeddings | Hugging Face | Linked | ~2.4 GB |
+| `offline-ai-model` | Offline AI: answer model (Qwen3-1.7B Q4_K_M) | Hugging Face | Linked | ~1.1 GB |
+| `offline-ai-embedder` | Offline AI: source matching (all-MiniLM-L6-v2, ONNX + vocab in a ZIP) | Hugging Face | Releases | ~90 MB |
 
-Eight of the ten are placeholders: only the two linked Kiwix packs carry real
+Nine of the eleven are placeholders: only the two linked Kiwix packs carry real
 URLs, sizes and checksums today. Each pack's `README.md` says what is settled
 and what is not.
 
@@ -258,16 +261,14 @@ Found while building this. The first five are the ones that block packs.
    array to a pack entry — which is the clean model and the biggest app change
    (downloader, checksum check, atomic swap, storage accounting). **Decide the
    model once**, not three times.
-2. **There is no `format` value for a routing graph.** The enum is
-   `hfdb | pmtiles | zim | gguf`. `maps-routing-us-md` currently says
-   `"pmtiles"`, which is wrong and matches the app's own placeholder seed
-   catalog; with a real checksum the app would hand a graph to MapLibre. Needs a
-   `graph` value in the app and in the schema, plus a `minAppVersion` bump.
-3. **Where does the routing graph get built?** `tools/Holdfast.RouteBuild` is in
-   the private app repo and public CI cannot run it. Publish it as a binary,
-   build in the private repo and push here, or use GraphHopper's or Valhalla's
-   own builder — which also forces the engine choice the spec left open. See
-   `packs/maps-routing-us-md/README.md`.
+2. **Resolved: the routing graph has a `format` value.** The enum is now
+   `hfdb | pmtiles | zim | hfroute | gguf | onnx | zip`, matching the app's
+   `PackFormats`, and `maps-routing-us-md` says `"hfroute"`.
+3. **The routing graph is built by hand.** `tools/Holdfast.RouteBuild` is run
+   locally and the `.hfroute` file uploaded by hand. It lives in the private
+   app repo, so public CI still cannot run it: automating the monthly rebuild
+   means publishing it as a binary or building in the private repo and pushing
+   here. See `packs/maps-routing-us-md/README.md`.
 4. **Roads is Hosted, not Linked.** Neither Protomaps (one ~130 GB planet
    archive) nor Geofabrik (`.osm.pbf` data, not tiles) publishes a per-state
    PMTiles file, so we build and host the extract. Measured: Maryland at
@@ -288,10 +289,11 @@ Found while building this. The first five are the ones that block packs.
 8. **Hesperian redistribution is unconfirmed**, so `medical` links to their
    download instead of carrying *Where There Is No Doctor*. Someone has to ask
    them.
-9. **No AI model chosen**, so `offline-ai` has a TODO url. The licence should
-   pick the model, not the benchmarks. And embeddings are per pack, so they
-   probably belong in each `hfdb` rather than in this pack — an `hfdb` schema
-   change.
+9. **Resolved: the AI model is chosen.** Qwen3-1.7B (Apache-2.0) at Q4_K_M,
+   run with `/no_think`, linked from Hugging Face as `offline-ai-model`; the
+   all-MiniLM-L6-v2 embedder ships as our own ZIP, `offline-ai-embedder`.
+   Embeddings are precomputed per `hfdb` pack. Both entries are still
+   placeholders until the files are pinned or uploaded.
 10. **Two size estimates in the spec are wrong.** `wikipedia-top50k` is 6.5 GiB,
     not 5.2 GB (and the previous edition was 7.8 GiB); `shelter-repair` is
     3.3 GiB for iFixit alone, not 1.2 GB. The Packs screen and storage budget

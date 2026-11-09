@@ -1,0 +1,12 @@
+{
+  "id": "offline-ai-embedder",
+  "hosting": "hosted",
+  "builder": "scripts/update_manifest.py (no build script: the ZIP is assembled by hand, see README.md)",
+  "upstream": {
+    "kind": "manual",
+    "notes": "sentence-transformers/all-MiniLM-L6-v2 (Apache-2.0) from Hugging Face: its ONNX export as model.onnx plus its WordPiece vocab.txt, zipped and uploaded to this repo's GitHub Releases. Deliberate releases only: every hfdb pack's stored vectors are keyed to this model (meta.embed_model), so changing it means rebuilding every pack."
+  },
+  "sizeChangeThresholdPercent": 50,
+  "allowSizeChange": false,
+  "notes": "Hosted by us on GitHub Releases as a ZIP holding model.onnx and vocab.txt at the archive root; the app unpacks it into the pack folder on install. Placeholder entry until the ZIP is built and uploaded and update_manifest.py fills in url, size and sha256."
+}

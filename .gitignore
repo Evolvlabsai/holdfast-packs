@@ -5,6 +5,8 @@
 *.pmtiles
 *.zim
 *.gguf
+*.hfroute
+*.onnx
 
 # Downloaded upstream material and HTTP validator cache.
 /.cache/
