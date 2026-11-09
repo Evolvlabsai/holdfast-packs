@@ -288,7 +288,7 @@ def test_validator_fails_on_placeholders_by_default(capsys):
     assert code == 1
     assert "not publishable yet" in out
     # Every placeholder pack must be named, not just counted.
-    for pack_id in ("medical", "water-food", "manuals", "maps-topo-us-md"):
+    for pack_id in ("medical", "water-food", "maps-topo-us-md"):
         assert pack_id in out
 
 

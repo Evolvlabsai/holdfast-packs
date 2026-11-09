@@ -3,13 +3,16 @@
     "id": "manuals",
     "name": "Survival manuals",
     "license": "Public domain (US Government works)",
-    "attribution": "US Army ATP 3-50.21 and ATP 4-02.11; FEMA Are You Ready?"
+    "attribution": "US Army ATP 3-50.21, ATP 4-02.11, TC 21-3, TC 3-97.61 and TC 3-21.60; FEMA Are You Ready?"
   },
   "_notes": [
     "Every url below was fetched on 2026-11-09 and returned 2xx with Content-Type application/pdf and a %PDF- magic header. armypubs.army.mil answered plain urllib with and without a User-Agent and honours HEAD, so no special client handling is needed.",
     "The ATP 3-50.21 path contains literal spaces and they must stay percent-encoded as %20.",
     "FEMA no longer hosts the 2004 ~204-page 'Are You Ready? IS-22' full PDF. Every fema.gov path for it 404s and IS-22 itself is retired (it redirects to IS-909). What is published is the current 36-page Ready.gov edition, listed below. The long 2004 edition survives only on non-federal mirrors, which are not used here: a survival manual served from an unverifiable mirror is exactly the thing this pipeline exists to avoid. OPEN QUESTION in the repo README.",
-    "ATP 4-25.13 is no longer in the active ATP index; ATP 4-02.11 (23 Mar 2026) supersedes TC 4-02.1 and is the current Army first-aid publication."
+    "ATP 4-25.13 is no longer in the active ATP index; ATP 4-02.11 (23 Mar 2026) supersedes TC 4-02.1 and is the current Army first-aid publication.",
+    "TC 3-25.26 Map Reading and Land Navigation (15 Nov 2013, ARN43276, supersedes FM 3-25.26) is skipped. It is still the active edition, but armypubs serves it from DR_c, which 302-redirects to the CAC login at federation.eams.army.mil, so the PDF cannot be fetched publicly and its distribution statement could not be read. (Copies on university ROTC sites are not used.)",
+    "MCRP 3-40.3B Radio Operator's Handbook (2 Jun 1999, formerly MCRP 6-22C) is skipped. It is no longer listed in the marines.mil MCPEL, and no renumbered successor was found there. The only official-host copy, www.trngcmd.marines.mil/Portals/207/Docs/TBS/MCRP%203-40.3B%20Radio%20Operators%20Handbook.pdf (2,154,049 bytes, 145 pages), has no distribution statement at all: its front matter is cut down to a cover and table of contents. With no public-release statement in the PDF, it does not qualify.",
+    "AFH 10-644 (SERE) was left out on purpose: static.e-publishing.af.mil returns 403 to scripted downloads, so the pipeline could not fetch or re-check it. Revisit if the Air Force host allows plain HTTP clients."
   ],
   "documents": [
     {
@@ -45,6 +48,39 @@
       "verifiedOn": "2026-11-09",
       "bytesWhenVerified": 4233522,
       "fetchNote": "This is the current 36-page Ready.gov edition, not the 2004 IS-22 full guide the spec's pack table has in mind. See _notes.",
+      "pages": "all"
+    },
+    {
+      "id": "army-tc-21-3-cold-weather",
+      "title": "TC 21-3 Soldier's Handbook for Individual Operations and Survival in Cold-Weather Areas",
+      "url": "https://armypubs.army.mil/epubs/DR_pubs/DR_a/ARN45217-TC_21-3-000-WEB-1.pdf",
+      "source": "Headquarters, Department of the Army (ARN45217, 30 September 2025). Supersedes TC 21-3, 17 March 1986. \"DISTRIBUTION RESTRICTION: Approved for public release; distribution is unlimited.\"",
+      "license": "Public domain (US Government work)",
+      "verified": true,
+      "verifiedOn": "2026-11-09",
+      "bytesWhenVerified": 8355749,
+      "pages": "all"
+    },
+    {
+      "id": "army-tc-3-97-61-mountaineering",
+      "title": "TC 3-97.61 Military Mountaineering",
+      "url": "https://armypubs.army.mil/epubs/DR_pubs/DR_a/ARN45366-TC_3-97.61-000-WEB-1.pdf",
+      "source": "Headquarters, Department of the Army (ARN45366, 26 November 2025). Supersedes TC 3-97.61, 26 July 2012. \"DISTRIBUTION RESTRICTION: Approved for public release; distribution is unlimited.\"",
+      "license": "Public domain (US Government work)",
+      "verified": true,
+      "verifiedOn": "2026-11-09",
+      "bytesWhenVerified": 33555259,
+      "pages": "all"
+    },
+    {
+      "id": "army-tc-3-21-60-visual-signals",
+      "title": "TC 3-21.60 Visual Signals",
+      "url": "https://armypubs.army.mil/epubs/DR_pubs/DR_a/pdf/web/ARN2747_TC%203-21x60%20FINAL%20WEB.pdf",
+      "source": "Headquarters, Department of the Army (ARN2747, 17 March 2017). Supersedes FM 21-60, 30 September 1987. \"DISTRIBUTION RESTRICTION: Approved for public release; distribution is unlimited.\"",
+      "license": "Public domain (US Government work)",
+      "verified": true,
+      "verifiedOn": "2026-11-09",
+      "bytesWhenVerified": 1798422,
       "pages": "all"
     }
   ]

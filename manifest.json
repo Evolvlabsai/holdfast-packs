@@ -1,7 +1,7 @@
 {
   "_comment": "The signed pack catalog. The app installs nothing that is not listed here. Packs whose url contains 'PLACEHOLDER' and whose sha256 is 64 zeros have not been built or hosted yet: they are listed so the Packs screen can show them, and the app's checksum check makes every download from them fail, which is the intended safe behaviour. scripts/validate_manifest.py names every one of them. Do not hand-edit size or sha256; use scripts/update_manifest.py.",
   "schema": 1,
-  "published": "2026-11-09T14:51:49Z",
+  "published": "2026-11-09T18:21:38Z",
   "minAppVersion": "0.1.0",
   "packs": [
     {
@@ -69,15 +69,15 @@
       "version": "2026.11.09",
       "published": "2026-11-09",
       "format": "hfdb",
-      "size": 0,
-      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
-      "url": "https://example.invalid/PLACEHOLDER/manuals.hfdb",
+      "size": 15773696,
+      "sha256": "40ffc5c923ccaa0c597902e56b6c0c4d48fbd4baec2c04b9834187e1987c2712",
+      "url": "https://github.com/Evolvlabsai/holdfast-packs/releases/download/packs-2026.11.09/manuals.hfdb",
       "mirrors": [],
       "required": false,
       "staleAfterDays": 30,
       "license": "Public domain (US Government works)",
-      "attribution": "US Army ATP 3-50.21 and field manuals; FEMA Are You Ready?",
-      "changes": "Not built yet.",
+      "attribution": "US Army ATP 3-50.21, ATP 4-02.11, TC 21-3, TC 3-97.61 and TC 3-21.60; FEMA Are You Ready?",
+      "changes": "First build: six public-domain manuals, 1,172 searchable pages with page citations.",
       "minAppVersion": "0.1.0",
       "description": "US Army survival and field manuals, FEMA guides"
     },
