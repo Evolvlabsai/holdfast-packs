@@ -1,7 +1,7 @@
 {
   "_comment": "The signed pack catalog. The app installs nothing that is not listed here. Packs whose url contains 'PLACEHOLDER' and whose sha256 is 64 zeros have not been built or hosted yet: they are listed so the Packs screen can show them, and the app's checksum check makes every download from them fail, which is the intended safe behaviour. scripts/validate_manifest.py names every one of them. Do not hand-edit size or sha256; use scripts/update_manifest.py.",
   "schema": 1,
-  "published": "2026-11-09T18:21:38Z",
+  "published": "2026-11-09T18:49:19Z",
   "minAppVersion": "0.1.0",
   "packs": [
     {
@@ -18,7 +18,7 @@
       "mirrors": [],
       "required": true,
       "staleAfterDays": 7,
-      "license": "TODO-CONTENT-LICENSE (CC-BY-SA-4.0 or CC0-1.0, undecided); underlying sources public domain",
+      "license": "CC BY-NC 4.0 (Holdfast's own writing); underlying sources public domain",
       "attribution": "Written in-house from FEMA, CDC, NOAA and American Red Cross guidance",
       "changes": "Test build: draft cards and documents, not yet medically reviewed.",
       "minAppVersion": "0.1.0",

@@ -9,8 +9,8 @@ two things about content: the catalog URL and one Ed25519 public key. Everything
 else — what packs exist, where they are hosted, how big they are — is decided
 here, so moving a pack never needs an app release.
 
-> Status: design phase. Holdfast is a working name. The content licence is
-> **not yet chosen**: see [`LICENSE`](LICENSE).
+> Licensing: code is MIT; our own writing (quick cards, documents, overlays) is
+> CC BY-NC 4.0. Third-party packs keep their own licences. See [`LICENSE`](LICENSE).
 
 Large third-party content (Wikipedia, OpenStreetMap, AI models) is not stored
 here. The manifest points the app straight at its upstream host.
@@ -312,9 +312,8 @@ Found while building this. The first five are the ones that block packs.
     ~204-page IS-22 edition 404s and IS-22 is retired. `sources.json` uses the
     current 36-page Ready.gov guide. The long edition survives only on
     non-federal mirrors, which this pipeline will not use.
-14. **The content licence is not chosen** (CC BY-SA 4.0 or CC0), and neither is
-    a software licence for `scripts/`. See [`LICENSE`](LICENSE). Until then
-    contributions cannot be accepted.
+14. **Licensing is settled:** code MIT, our writing CC BY-NC 4.0, with a
+    contributor grant so contributions can ship in the app. See [`LICENSE`](LICENSE).
 15. **`manifest.json.sig` is not in the repository.** It is produced by
     `publish.yml` and published to Pages. A committed signature goes stale the
     moment anyone edits the manifest, and a stale signature is
@@ -355,9 +354,8 @@ Rules:
 - All changes go through pull-request review. Medical content is reviewed by a
   qualified reviewer before release; every quick card cites its source; no card
   gives a medicine dose.
-- Contributions are accepted under the content licence — **which has not been
-  chosen yet**, so until [`LICENSE`](LICENSE) is replaced, they cannot be
-  accepted at all.
+- Contributions are accepted under the terms in [`LICENSE`](LICENSE): code MIT,
+  writing CC BY-NC 4.0, plus a licence to EvolvLabs, LLC to ship them in the app.
 
 See [`.github/pull_request_template.md`](.github/pull_request_template.md) for
 the checklist.

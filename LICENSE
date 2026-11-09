@@ -1,51 +1,67 @@
-# Licensing — PLACEHOLDER, NOT YET DECIDED
+# Licensing
 
-**This file is a placeholder. Until the owner picks a licence, nothing in this
-repository has been licensed for reuse, and contributions cannot be accepted.**
+Copyright © 2026 EvolvLabs, LLC.
 
-The spec leaves it open (Open questions): *"License for content contributed to
-the packs repo: CC BY-SA 4.0 or CC0?"* Pick one, replace this file with the
-licence text, and say so in `README.md`.
+This repository uses **two licences**: one for code, one for the writing.
 
----
+## Code — MIT
 
-## The choice, and what it costs either way
+The MIT License ([`LICENSES/MIT.txt`](LICENSES/MIT.txt)) covers:
 
-**CC BY-SA 4.0** (attribution, share-alike)
+- `scripts/`, `tests/`, `.github/`, `schema/`, `site/`
+- `pyproject.toml`, `manifest.json` and every `pack.meta.json`, `sources.json`
+  and `regions/*.json` file (configuration and metadata, not prose)
 
-- Anyone reusing Holdfast's own writing has to credit it and keep their version
-  under the same licence.
-- It sits naturally beside the share-alike material the packs already carry
-  (Wikipedia, Stack Exchange, OpenStreetMap under ODbL), so a pack that mixes
-  our text with theirs has one consistent story.
-- It is a restriction: a government agency or another prep app cannot quietly
-  fold a Holdfast checklist into something with a different licence.
+## Writing — CC BY-NC 4.0
 
-**CC0 1.0** (public domain dedication)
+Creative Commons Attribution-NonCommercial 4.0 International
+([`LICENSES/CC-BY-NC-4.0.txt`](LICENSES/CC-BY-NC-4.0.txt),
+<https://creativecommons.org/licenses/by-nc/4.0/>) covers:
 
-- Anyone can take any of it, for anything, with no credit and no conditions.
-- It matches where most of the source material comes from: US federal guidance
-  is already public domain, so CC0 passes it on unchanged.
-- It means a commercial prep app could ship Holdfast's quick cards with no
-  acknowledgement. For *survival information*, whose point is to reach people,
-  that may be the feature rather than the problem.
+- everything under `packs/*/sources/` — quick cards (`cards.json`), library
+  documents (`docs/*.md`) and map overlays
+- `README.md` files
 
-The spec's own principle — "trustworthy content from named public sources" —
-points slightly at CC0 for prose written from public-domain federal guidance,
-with CC BY-SA kept for anything genuinely original. A split licence is allowed
-but needs stating per directory, which is more to get wrong.
+In plain words (the licence text is what counts):
 
-## What this file does NOT cover
+- You may copy, share and adapt this writing **for non-commercial use**.
+- You must credit **Holdfast / EvolvLabs, LLC**, link this licence, and **say
+  what you changed**. For survival and first-aid text this matters: a changed
+  card must never look like ours.
+- You may not use it primarily for commercial advantage or money — for
+  example in a paid app, an app with in-app purchases or ads, or a product for
+  sale. Ask us if you want to.
 
-The licence chosen here applies **only to material written in this repository**:
-the quick-card text, the markdown documents under `packs/*/sources/`, the
-overlay files, the build scripts and the manifest. Everything downloaded or
-linked keeps its own licence, which the manifest records per pack in `license`
-and `attribution`:
+EvolvLabs, LLC, as the owner, is not bound by these terms and uses this writing
+in the Holdfast app, which is free and takes optional tips.
+
+**Public-domain sources stay public domain.** Our cards and documents are
+written from US government guidance (FEMA, CDC, USDA, NOAA, US Army). Those
+sources remain free for anyone to use for any purpose; this licence covers only
+our own wording, selection and arrangement.
+
+## Contributions
+
+By opening a pull request or otherwise submitting material to this repository,
+you agree that:
+
+1. it is your own work, or you have the right to submit it under these terms;
+2. code you submit is licensed under MIT, and writing under CC BY-NC 4.0, like
+   the rest of this repository; and
+3. you also grant EvolvLabs, LLC a perpetual, worldwide, non-exclusive,
+   royalty-free, irrevocable licence to use, copy, modify, distribute and
+   sublicense your contribution for any purpose, including commercially, so it
+   can ship in the Holdfast app.
+
+## Third-party content (not covered by either licence)
+
+The two licences above apply **only to material written in this repository**.
+Everything downloaded or linked keeps its own licence, which the manifest
+records per pack in `license` and `attribution`:
 
 | Pack | Licence of the content itself |
 | --- | --- |
-| `core` | this repo's licence; underlying guidance public domain (FEMA, CDC, NOAA, Red Cross) |
+| `core` | CC BY-NC 4.0 (our writing); underlying guidance public domain (FEMA, CDC, NOAA, Red Cross) |
 | `medical` | Hesperian terms **unconfirmed — linked, not hosted**; WikiMed CC BY-SA 4.0 |
 | `water-food` | public domain (CDC, EPA, USDA) |
 | `manuals` | public domain (US Army, FEMA) |
@@ -70,11 +86,3 @@ Rules the spec sets, which no licence choice here changes:
   redistribution terms are confirmed in writing.
 - Content changes go through the same pull-request review as code, and medical
   content is reviewed before release.
-
-## Software in this repository
-
-The pipeline under `scripts/` and `.github/` is a separate question from the
-content licence. If the content goes CC0, the scripts still want a software
-licence (MIT or Apache-2.0 are the usual answers). **Also undecided.**
-
-© EvolvLabs, LLC. All rights reserved until this file is replaced.

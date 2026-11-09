@@ -150,11 +150,13 @@ def test_every_workflow_declares_least_privilege_permissions():
         assert "permissions:" in head, f"{path.name}: no top-level permissions block"
 
 
-def test_the_content_licence_question_is_recorded_not_guessed():
+def test_the_licences_are_stated_and_their_texts_are_present():
     text = (ROOT / "LICENSE").read_text(encoding="utf-8")
-    assert "CC BY-SA 4.0" in text
-    assert "CC0" in text
-    assert "placeholder" in text.lower()
+    assert "MIT" in text
+    assert "CC BY-NC 4.0" in text
+    assert "placeholder" not in text.lower()
+    assert (ROOT / "LICENSES" / "MIT.txt").is_file()
+    assert "NonCommercial" in (ROOT / "LICENSES" / "CC-BY-NC-4.0.txt").read_text(encoding="utf-8")
 
 
 def test_region_files_have_a_sane_bbox():
