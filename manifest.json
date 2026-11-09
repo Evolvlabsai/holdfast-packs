@@ -41,7 +41,7 @@
       "attribution": "US Public Health Service, The Ship's Medicine Chest and Medical Aid at Sea; CDC and NIOSH guides",
       "changes": "First build: six public-domain US Government medical guides, 399 pages. Not yet clinician reviewed.",
       "minAppVersion": "0.1.0",
-      "description": "First aid, Where There Is No Doctor, WikiMed (mini)"
+      "description": "First aid and medical care guides from the US Public Health Service and CDC"
     },
     {
       "id": "medical-wikimed",
