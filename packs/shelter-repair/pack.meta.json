@@ -1,0 +1,46 @@
+{
+  "id": "shelter-repair",
+  "hosting": "linked",
+  "builder": null,
+  "upstream": {
+    "kind": "kiwix",
+    "book": "ifixit_en_all",
+    "flavour": "",
+    "currentFile": "ifixit_en_all_2025-12.zim",
+    "notes": "English iFixit has not been rebuilt since 2025-12; other languages have 2026-03 builds. Verified 2026-11-09."
+  },
+  "candidates": [
+    {
+      "what": "DIY Stack Exchange, the other half of what the spec calls this pack",
+      "url": "https://download.kiwix.org/zim/stack_exchange/diy.stackexchange.com_en_all_2026-10.zim",
+      "size": 2086024326,
+      "license": "CC-BY-SA-4.0",
+      "verifiedOn": "2026-11-09",
+      "problem": "One url per pack, so this needs its own pack id (shelter-repair-diy) or it cannot ship. OPEN QUESTION."
+    },
+    {
+      "what": "Outdoors Stack Exchange -- small and closest to the survival use case",
+      "url": "https://download.kiwix.org/zim/stack_exchange/outdoors.stackexchange.com_en_all_2026-10.zim",
+      "size": 141820374,
+      "license": "CC-BY-SA-4.0",
+      "verifiedOn": "2026-11-09"
+    },
+    {
+      "what": "Woodworking Stack Exchange",
+      "url": "https://download.kiwix.org/zim/stack_exchange/woodworking.stackexchange.com_en_all_2026-10.zim",
+      "size": 106657287,
+      "license": "CC-BY-SA-4.0",
+      "verifiedOn": "2026-11-09"
+    },
+    {
+      "what": "Electronics Stack Exchange -- 4.0 GB, too big to be worth it next to the rest",
+      "url": "https://download.kiwix.org/zim/stack_exchange/electronics.stackexchange.com_en_all_2026-10.zim",
+      "size": 4261397539,
+      "license": "CC-BY-SA-4.0",
+      "verifiedOn": "2026-11-09"
+    }
+  ],
+  "sizeChangeThresholdPercent": 40,
+  "allowSizeChange": false,
+  "notes": "Linked straight from Kiwix: we host nothing and pay nothing. iFixit is CC BY-NC-SA, which is fine for a free app and must be rechecked if anything is ever sold (spec: Licensing). There is no survival or bushcraft Stack Exchange ZIM; outdoors, diy and woodworking are the closest."
+}

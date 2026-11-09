@@ -1,0 +1,79 @@
+# Licensing — PLACEHOLDER, NOT YET DECIDED
+
+**This file is a placeholder. Until the owner picks a licence, nothing in this
+repository has been licensed for reuse, and contributions cannot be accepted.**
+
+The spec leaves it open (Open questions): *"License for content contributed to
+the packs repo: CC BY-SA 4.0 or CC0?"* Pick one, replace this file with the
+licence text, and say so in `README.md`.
+
+---
+
+## The choice, and what it costs either way
+
+**CC BY-SA 4.0** (attribution, share-alike)
+
+- Anyone reusing Holdfast's own writing has to credit it and keep their version
+  under the same licence.
+- It sits naturally beside the share-alike material the packs already carry
+  (Wikipedia, Stack Exchange, OpenStreetMap under ODbL), so a pack that mixes
+  our text with theirs has one consistent story.
+- It is a restriction: a government agency or another prep app cannot quietly
+  fold a Holdfast checklist into something with a different licence.
+
+**CC0 1.0** (public domain dedication)
+
+- Anyone can take any of it, for anything, with no credit and no conditions.
+- It matches where most of the source material comes from: US federal guidance
+  is already public domain, so CC0 passes it on unchanged.
+- It means a commercial prep app could ship Holdfast's quick cards with no
+  acknowledgement. For *survival information*, whose point is to reach people,
+  that may be the feature rather than the problem.
+
+The spec's own principle — "trustworthy content from named public sources" —
+points slightly at CC0 for prose written from public-domain federal guidance,
+with CC BY-SA kept for anything genuinely original. A split licence is allowed
+but needs stating per directory, which is more to get wrong.
+
+## What this file does NOT cover
+
+The licence chosen here applies **only to material written in this repository**:
+the quick-card text, the markdown documents under `packs/*/sources/`, the
+overlay files, the build scripts and the manifest. Everything downloaded or
+linked keeps its own licence, which the manifest records per pack in `license`
+and `attribution`:
+
+| Pack | Licence of the content itself |
+| --- | --- |
+| `core` | this repo's licence; underlying guidance public domain (FEMA, CDC, NOAA, Red Cross) |
+| `medical` | Hesperian terms **unconfirmed — linked, not hosted**; WikiMed CC BY-SA 4.0 |
+| `water-food` | public domain (CDC, EPA, USDA) |
+| `manuals` | public domain (US Army, FEMA) |
+| `maps-roads-*` | ODbL 1.0 — © OpenStreetMap contributors, credit must appear on the map |
+| `maps-topo-*` | public domain (USGS 3DEP) |
+| `maps-routing-*` | ODbL 1.0 — derived from the same OSM extract |
+| `shelter-repair` | CC BY-NC-SA 3.0 (iFixit) — **non-commercial**; recheck if anything is ever sold |
+| `wikipedia-top50k` | CC BY-SA 4.0 — Wikipedia contributors |
+| `offline-ai` | the chosen model's licence — **no model chosen yet** |
+
+Rules the spec sets, which no licence choice here changes:
+
+- **Public-domain US government material** (Army, FEMA, CDC, EPA, USDA, NOAA,
+  USGS) may be hosted and modified freely. Credit the source anyway.
+- **Share-alike material** (Wikipedia, Stack Exchange, OpenStreetMap) may be
+  redistributed with attribution; the credit shows on each pack's About screen
+  and, for maps, on the map itself.
+- **Non-commercial material** (iFixit) is fine for a free app and must be
+  rechecked if anything is ever sold or bundled into a paid product.
+- **Free but copyrighted material** (Hesperian) is linked, never hosted, until
+  redistribution terms are confirmed in writing.
+- Content changes go through the same pull-request review as code, and medical
+  content is reviewed before release.
+
+## Software in this repository
+
+The pipeline under `scripts/` and `.github/` is a separate question from the
+content licence. If the content goes CC0, the scripts still want a software
+licence (MIT or Apache-2.0 are the usual answers). **Also undecided.**
+
+© EvolvLabs, LLC. All rights reserved until this file is replaced.

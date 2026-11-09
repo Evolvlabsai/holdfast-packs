@@ -1,0 +1,51 @@
+{
+  "pack": {
+    "id": "manuals",
+    "name": "Survival manuals",
+    "license": "Public domain (US Government works)",
+    "attribution": "US Army ATP 3-50.21 and ATP 4-02.11; FEMA Are You Ready?"
+  },
+  "_notes": [
+    "Every url below was fetched on 2026-11-09 and returned 2xx with Content-Type application/pdf and a %PDF- magic header. armypubs.army.mil answered plain urllib with and without a User-Agent and honours HEAD, so no special client handling is needed.",
+    "The ATP 3-50.21 path contains literal spaces and they must stay percent-encoded as %20.",
+    "FEMA no longer hosts the 2004 ~204-page 'Are You Ready? IS-22' full PDF. Every fema.gov path for it 404s and IS-22 itself is retired (it redirects to IS-909). What is published is the current 36-page Ready.gov edition, listed below. The long 2004 edition survives only on non-federal mirrors, which are not used here: a survival manual served from an unverifiable mirror is exactly the thing this pipeline exists to avoid. OPEN QUESTION in the repo README.",
+    "ATP 4-25.13 is no longer in the active ATP index; ATP 4-02.11 (23 Mar 2026) supersedes TC 4-02.1 and is the current Army first-aid publication."
+  ],
+  "documents": [
+    {
+      "id": "army-atp-3-50-21-survival",
+      "title": "ATP 3-50.21 Survival",
+      "url": "https://armypubs.army.mil/epubs/DR_pubs/DR_a/pdf/web/ARN12086_ATP%203-50x21%20FINAL%20WEB%202.pdf",
+      "source": "Headquarters, Department of the Army (ARN12086, 18 September 2018). Approved for public release; distribution unlimited.",
+      "license": "Public domain (US Government work)",
+      "verified": true,
+      "verifiedOn": "2026-11-09",
+      "bytesWhenVerified": 23772309,
+      "pages": "all"
+    },
+    {
+      "id": "army-atp-4-02-11-first-aid",
+      "title": "ATP 4-02.11 Casualty Response, Tactical Combat Casualty Care, and First Aid",
+      "url": "https://armypubs.army.mil/epubs/DR_pubs/DR_a/ARN46159-ATP_4-02.11-000-WEB-1.pdf",
+      "source": "Headquarters, Department of the Army (ARN46159, 23 March 2026). Supersedes TC 4-02.1.",
+      "license": "Public domain (US Government work)",
+      "verified": true,
+      "verifiedOn": "2026-11-09",
+      "bytesWhenVerified": 12665561,
+      "reviewNote": "Medical content. Nothing from this document may reach a quick card without clinician review (spec: Content safety).",
+      "pages": "all"
+    },
+    {
+      "id": "fema-are-you-ready-guide",
+      "title": "Are You Ready? An In-Depth Guide to Citizen Preparedness",
+      "url": "https://www.ready.gov/sites/default/files/2021-11/are-you-ready-guide.pdf",
+      "source": "FEMA / Ready.gov (public domain)",
+      "license": "Public domain (US Government work)",
+      "verified": true,
+      "verifiedOn": "2026-11-09",
+      "bytesWhenVerified": 4233522,
+      "fetchNote": "This is the current 36-page Ready.gov edition, not the 2004 IS-22 full guide the spec's pack table has in mind. See _notes.",
+      "pages": "all"
+    }
+  ]
+}

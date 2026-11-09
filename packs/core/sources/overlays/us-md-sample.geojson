@@ -1,0 +1,103 @@
+{
+  "type": "FeatureCollection",
+  "name": "us-md-sample",
+  "properties": {
+    "region": "US-MD",
+    "draft": true,
+    "note": "Draft sample overlay for development only. Locations are invented and must not be used to plan anything."
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-76.4922, 38.9784] },
+      "properties": {
+        "kind": "rally",
+        "name": "SAMPLE — Annapolis City Dock rally point",
+        "label": "A",
+        "note": "Sample data, not a real rally point."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-76.4874, 38.9846] },
+      "properties": {
+        "kind": "medical",
+        "name": "SAMPLE — Annapolis hospital",
+        "note": "Sample data, not a real facility listing."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-76.5017, 38.9719] },
+      "properties": {
+        "kind": "shelter",
+        "name": "SAMPLE — Annapolis high school shelter",
+        "note": "Sample data, not a real shelter."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-76.4805, 38.9661] },
+      "properties": {
+        "kind": "water",
+        "name": "SAMPLE — Annapolis park water point",
+        "note": "Sample data, not a real water source."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-76.5101, 38.9925] },
+      "properties": {
+        "kind": "fuel",
+        "name": "SAMPLE — West Street fuel station",
+        "note": "Sample data, not a real fuel station."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-76.6122, 39.2904] },
+      "properties": {
+        "kind": "rally",
+        "name": "SAMPLE — Baltimore Inner Harbor rally point",
+        "label": "B",
+        "note": "Sample data, not a real rally point."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-76.5932, 39.2970] },
+      "properties": {
+        "kind": "medical",
+        "name": "SAMPLE — Baltimore east side hospital",
+        "note": "Sample data, not a real facility listing."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-76.6390, 39.3080] },
+      "properties": {
+        "kind": "shelter",
+        "name": "SAMPLE — Baltimore community centre shelter",
+        "note": "Sample data, not a real shelter."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-76.6208, 39.2735] },
+      "properties": {
+        "kind": "water",
+        "name": "SAMPLE — Federal Hill water point",
+        "note": "Sample data, not a real water source."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-76.5853, 39.3252] },
+      "properties": {
+        "kind": "fuel",
+        "name": "SAMPLE — Harford Road fuel station",
+        "note": "Sample data, not a real fuel station."
+      }
+    }
+  ]
+}

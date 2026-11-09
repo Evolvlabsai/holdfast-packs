@@ -1,0 +1,12 @@
+{
+  "id": "manuals",
+  "hosting": "hosted",
+  "builder": "scripts/build_pdf_pack.py",
+  "upstream": {
+    "kind": "pdfs",
+    "notes": "Army and FEMA PDFs. These publishers move files between portals fairly often, so an unreachable URL here is a normal finding, not a crisis: validate_manifest.py --network catches it and the pack keeps serving its last good build."
+  },
+  "sizeChangeThresholdPercent": 25,
+  "allowSizeChange": false,
+  "notes": "Public domain (US Government works): hostable and modifiable, credited anyway. Some Army PDFs are scanned rather than text; build_pdf_pack.py counts pages with no extractable text and fails the build if nothing extracted at all. It does no OCR."
+}

@@ -1,0 +1,13 @@
+{
+  "id": "maps-topo-us-md",
+  "hosting": "hosted",
+  "builder": "scripts/build_topo.py (TODO stub: builds nothing)",
+  "region": "US-MD",
+  "upstream": {
+    "kind": "manual",
+    "notes": "USGS 3DEP. Quarterly at most, and 3DEP has no feed worth polling weekly; a rebuild is a deliberate workflow_dispatch. TNM Access API: https://tnmaccess.nationalmap.gov/api/v1/products"
+  },
+  "sizeChangeThresholdPercent": 15,
+  "allowSizeChange": false,
+  "notes": "Not built. scripts/build_topo.py documents the inputs and steps and exits 2. Blocked on one decision: PMTiles holds one tile type per archive, so contours (vector) and hillshade (raster) cannot share a file, and a pack has one url -- so this is either two packs or contours only. See the script."
+}

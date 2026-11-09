@@ -1,0 +1,22 @@
+# Runtime dependencies of the pack pipeline. Python 3.12.
+#
+# Everything else in scripts/ is standard library on purpose: sqlite3 (FTS5),
+# urllib, hashlib, json, argparse. Fewer dependencies means fewer ways for a
+# supply-chain problem to reach a file we sign.
+#
+# Pinned exactly, and only bumped in a pull request that says why.
+# Checked against PyPI on 2026-11-09.
+
+# Ed25519 signing and verification of manifest.json.
+cryptography==50.0.2
+
+# Per-page text extraction from public-domain PDFs (build_pdf_pack.py).
+# BSD-3-Clause, pure Python, no native build on the runner.
+pypdf==7.0.0
+
+# manifest.json against schema/manifest.schema.json (validate_manifest.py).
+jsonschema==4.26.0
+
+# Safe XML for the Kiwix OPDS catalog, which is third-party data
+# (check_upstream.py). Stops entity expansion and external entity fetches.
+defusedxml==0.7.1

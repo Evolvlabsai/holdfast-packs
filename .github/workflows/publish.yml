@@ -1,0 +1,118 @@
+name: publish
+
+# Signs manifest.json with the Ed25519 private key and publishes the manifest
+# and its detached signature to GitHub Pages. This is the ONLY workflow that
+# touches HOLDFAST_SIGNING_KEY, and it runs only on main -- that is the whole
+# trust model: a manifest is signed because a human merged it.
+#
+# The app reads
+#   https://<owner>.github.io/holdfast-packs/manifest.json
+#   https://<owner>.github.io/holdfast-packs/manifest.json.sig
+# and ignores any catalog whose signature does not verify against the public key
+# compiled into the app.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - manifest.json
+      - schema/**
+      - .github/workflows/publish.yml
+      - site/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  # One publish at a time; a queued run would overwrite a newer manifest.
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  sign:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    outputs:
+      bytes: ${{ steps.sign.outputs.bytes }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: scripts/requirements*.txt
+
+      - name: Install pinned dependencies
+        run: python -m pip install -r scripts/requirements.txt
+
+      - name: Validate before signing
+        # A signature over a broken manifest is worse than no signature: the app
+        # would trust it. Placeholders are allowed here because most packs are
+        # not built yet; they cannot install anyway (their checksums never match).
+        run: python scripts/validate_manifest.py --allow-placeholders --no-drift
+
+      - name: Sign manifest.json
+        id: sign
+        env:
+          HOLDFAST_SIGNING_KEY: ${{ secrets.HOLDFAST_SIGNING_KEY }}
+        run: |
+          set -euo pipefail
+          if [ -z "${HOLDFAST_SIGNING_KEY:-}" ]; then
+            echo "error: the HOLDFAST_SIGNING_KEY secret is not set." >&2
+            echo "Run scripts/keygen.py once, store the private key as that secret," >&2
+            echo "and put the public key into HoldfastConfig in the app repo (see README.md)." >&2
+            exit 1
+          fi
+          python scripts/sign_manifest.py
+          echo "bytes=$(wc -c < manifest.json)" >> "$GITHUB_OUTPUT"
+
+      - name: Verify the signature we just made
+        # Derive the public key from the secret and check the signature the way
+        # the app will. If this fails, nothing is published.
+        env:
+          HOLDFAST_SIGNING_KEY: ${{ secrets.HOLDFAST_SIGNING_KEY }}
+        run: |
+          set -euo pipefail
+          PUB="$(python scripts/pipeline_query.py public-key --env HOLDFAST_SIGNING_KEY)"
+          echo "public key in use: $PUB"
+          echo "it must match HoldfastConfig.PublicKeyBase64 in the app, or every app ignores this catalog"
+          python scripts/verify_manifest.py --pub "$PUB"
+
+      - name: Assemble the Pages site
+        run: |
+          set -euo pipefail
+          mkdir -p _site/schema
+          cp manifest.json manifest.json.sig _site/
+          cp schema/manifest.schema.json _site/schema/
+          if [ -f site/index.html ]; then cp site/index.html _site/index.html; fi
+          ls -l _site _site/schema
+
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5
+        with:
+          path: _site
+
+  deploy:
+    needs: sign
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6
+
+      - id: deploy
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5
+
+      - name: Say where the app should look
+        run: |
+          echo "manifest:  ${{ steps.deploy.outputs.page_url }}manifest.json"
+          echo "signature: ${{ steps.deploy.outputs.page_url }}manifest.json.sig"
+          echo "signed over ${{ needs.sign.outputs.bytes }} bytes"

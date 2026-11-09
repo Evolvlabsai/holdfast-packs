@@ -1,0 +1,37 @@
+# Built packs. Nothing built is ever committed; release assets live on GitHub
+# Releases and the manifest points at them.
+/dist/
+*.hfdb
+*.pmtiles
+*.zim
+*.gguf
+
+# Downloaded upstream material and HTTP validator cache.
+/.cache/
+
+# The detached signature is produced by .github/workflows/publish.yml from the
+# HOLDFAST_SIGNING_KEY secret and published to GitHub Pages. It is deliberately
+# NOT in the repo: a committed .sig is stale the moment anyone edits the
+# manifest, and a stale signature looks like a tampered manifest to the app.
+/manifest.json.sig
+
+# Keys. The private signing key must never be here; this is belt and braces.
+*.key
+*.pem
+private.key
+public.key
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+
+# Editors and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

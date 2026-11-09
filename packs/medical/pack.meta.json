@@ -1,0 +1,35 @@
+{
+  "id": "medical",
+  "hosting": "hosted",
+  "builder": "scripts/build_core.py",
+  "upstream": {
+    "kind": "kiwix",
+    "book": "wikipedia_en_medicine",
+    "flavour": "mini",
+    "currentFile": "wikipedia_en_medicine_mini_2026-10.zim",
+    "notes": "Watched for the WikiMed companion file, not for the hosted hfdb half of this pack."
+  },
+  "companions": [
+    {
+      "what": "WikiMed mini (Kiwix)",
+      "url": "https://download.kiwix.org/zim/wikipedia/wikipedia_en_medicine_mini_2026-10.zim",
+      "size": 174350854,
+      "sha256": "c66f27274775870cec7e0c230c7e7626d367633b1f26c4a74499c249ddac0822",
+      "format": "zim",
+      "license": "CC-BY-SA-4.0",
+      "verifiedOn": "2026-11-09",
+      "problem": "The spec calls this pack 'Hosted + Linked', but a manifest entry has exactly one url and one format. This ZIM therefore cannot live inside the 'medical' entry. It needs its own pack id (medical-wikimed) or the pack has to drop to hosted-only. OPEN QUESTION -- see README.md."
+    },
+    {
+      "what": "Larger WikiMed editions, if 166 MB of intro extracts proves too thin",
+      "nopic": "https://download.kiwix.org/zim/wikipedia/wikipedia_en_medicine_nopic_2026-10.zim",
+      "nopicSize": 1047708415,
+      "maxi": "https://download.kiwix.org/zim/wikipedia/wikipedia_en_medicine_maxi_2026-10.zim",
+      "maxiSize": 1864210320,
+      "verifiedOn": "2026-11-09"
+    }
+  ],
+  "sizeChangeThresholdPercent": 25,
+  "allowSizeChange": false,
+  "notes": "Hesperian's 'Where There Is No Doctor' is NOT hosted: redistribution terms are unconfirmed (spec: Licensing). Until someone confirms them, the pack links to Hesperian's own download page instead of carrying the text. Nothing medical ships without clinician review."
+}

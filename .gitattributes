@@ -1,2 +1,15 @@
-# Auto detect text files and perform LF normalization
+# Later rules win in .gitattributes, so the generic ones come first.
 * text=auto
+
+*.json    text eol=lf
+*.py      text eol=lf
+*.yml     text eol=lf
+*.md      text eol=lf
+*.geojson text eol=lf
+*.txt     text eol=lf
+
+# The manifest and its signature are stored byte for byte, with no line-ending
+# conversion at all. The signature covers the manifest's exact bytes, so a
+# checkout that rewrote one CRLF would make a valid signature look forged.
+manifest.json     -text
+manifest.json.sig -text

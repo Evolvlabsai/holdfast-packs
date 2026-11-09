@@ -1,0 +1,291 @@
+name: update
+
+# The weekly content run. It finds what moved upstream, rebuilds only the packs
+# we host that actually changed, uploads the files to a GitHub Release, edits
+# the manifest, and opens a pull request.
+#
+# It never signs anything. Signing happens in publish.yml, after a human merges
+# the pull request this job opens. That is deliberate: the signature is the only
+# thing the app trusts, so it must never be produced by an unattended job.
+
+on:
+  schedule:
+    # Mondays at 07:00 UTC. Kiwix publishes monthly, Geofabrik daily; weekly is
+    # often enough to catch both without burning Actions minutes on no-ops.
+    - cron: '0 7 * * 1'
+  workflow_dispatch:
+    inputs:
+      packs:
+        description: 'Comma-separated pack ids to rebuild, or empty for "whatever changed"'
+        required: false
+        default: ''
+      force:
+        description: 'Rebuild even when the upstream check says nothing changed'
+        type: boolean
+        required: false
+        default: false
+      dry_run:
+        description: 'Check and build, but upload nothing and open no pull request'
+        type: boolean
+        required: false
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: update
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    outputs:
+      changed: ${{ steps.check.outputs.changed }}
+      changed_packs: ${{ steps.check.outputs.changed_packs }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: scripts/requirements*.txt
+
+      - name: Install pinned dependencies
+        run: python -m pip install -r scripts/requirements.txt
+
+      - name: Restore the upstream validator cache
+        # The ETag / Last-Modified values from last week. Without it every run
+        # reports "unknown" and would rebuild everything.
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+        with:
+          path: .cache/http.json
+          key: upstream-validators-${{ github.run_id }}
+          restore-keys: |
+            upstream-validators-
+
+      - name: Ask every upstream what changed
+        id: check
+        run: |
+          set -euo pipefail
+          python scripts/check_upstream.py --verbose --json-out upstream.json --github-output
+        continue-on-error: true
+
+      - name: Upstream report
+        run: |
+          echo '### Upstream check' >> "$GITHUB_STEP_SUMMARY"
+          echo '```json' >> "$GITHUB_STEP_SUMMARY"
+          cat upstream.json >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: upstream-report
+          path: upstream.json
+          retention-days: 30
+
+  build:
+    needs: check
+    # On a schedule run `inputs` is null, and `null != ''` is true in GitHub
+    # expressions, so the manual inputs are only consulted on workflow_dispatch.
+    if: >-
+      needs.check.outputs.changed == 'true' ||
+      (github.event_name == 'workflow_dispatch' && (inputs.force || inputs.packs != ''))
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    permissions:
+      # Needed to create the release and upload assets, and to push the branch
+      # the pull request is opened from.
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: scripts/requirements*.txt
+
+      - name: Install pinned dependencies
+        run: python -m pip install -r scripts/requirements-dev.txt
+
+      - name: Fetch the upstream report from the check job
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
+        with:
+          name: upstream-report
+
+      - name: Install the pmtiles CLI
+        # Only the map packs need it, but it is 10 MB and installing it
+        # unconditionally keeps the job simple.
+        env:
+          PMTILES_VERSION: 1.31.2
+        run: |
+          set -euo pipefail
+          curl -fsSL -o /tmp/pmtiles.tar.gz \
+            "https://github.com/protomaps/go-pmtiles/releases/download/v${PMTILES_VERSION}/go-pmtiles_${PMTILES_VERSION}_Linux_x86_64.tar.gz"
+          mkdir -p /tmp/pmtiles && tar -xzf /tmp/pmtiles.tar.gz -C /tmp/pmtiles
+          sudo install -m 0755 /tmp/pmtiles/pmtiles /usr/local/bin/pmtiles
+          pmtiles --version || true
+
+      - name: Decide which packs to work on
+        id: plan
+        env:
+          REQUESTED: ${{ inputs.packs }}
+          CHANGED: ${{ needs.check.outputs.changed_packs }}
+          FORCE: ${{ inputs.force }}
+        run: |
+          set -euo pipefail
+          if [ -n "${REQUESTED:-}" ]; then
+            PLAN="$REQUESTED"
+          elif [ "${FORCE}" = "true" ]; then
+            PLAN="$(python scripts/pipeline_query.py pack-ids)"
+          else
+            PLAN="$CHANGED"
+          fi
+          echo "packs=$PLAN" >> "$GITHUB_OUTPUT"
+          echo "Working on: ${PLAN:-nothing}"
+
+      - name: Rebuild or re-point each pack
+        id: work
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PACKS: ${{ steps.plan.outputs.packs }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          TAG="content-$(date -u +%Y.%m.%d)"
+          TOUCHED=""
+
+          for id in $(echo "$PACKS" | tr ',' ' '); do
+            [ -n "$id" ] || continue
+            META="packs/$id/pack.meta.json"
+            if [ ! -f "$META" ]; then
+              echo "::warning::no $META; skipping $id"
+              continue
+            fi
+
+            HOSTING="$(python scripts/pipeline_query.py meta --id "$id" --field hosting --default hosted)"
+            KIND="$(python scripts/pipeline_query.py meta --id "$id" --field upstream.kind)"
+            echo "::group::$id ($HOSTING, upstream $KIND)"
+
+            if [ "$HOSTING" = "linked" ]; then
+              # Nothing to build: point the manifest at the new upstream file and
+              # take its size from a HEAD and its sha256 from the publisher's
+              # own .sha256 sidecar. No large download, no invented checksum.
+              NEW_URL="$(python scripts/pipeline_query.py upstream-url --id "$id" --report upstream.json)"
+              if [ -z "$NEW_URL" ]; then
+                echo "no new upstream url for $id; leaving the manifest alone"
+                echo "::endgroup::"
+                continue
+              fi
+              python scripts/update_manifest.py --id "$id" \
+                --url "$NEW_URL" --from-url \
+                --record-upstream "$(basename "$NEW_URL")" \
+                --changes "Current upstream edition: $(basename "$NEW_URL")."
+              TOUCHED="$TOUCHED $id"
+              echo "::endgroup::"
+              continue
+            fi
+
+            # Hosted: build it with whatever builder the pack declares.
+            case "$id" in
+              core|medical)
+                # --allow-draft is NOT passed: unreviewed quick cards must not
+                # reach a release. The build fails loudly instead.
+                python scripts/build_core.py --sources "packs/$id/sources" \
+                  --id "$id" --out "dist/$id.hfdb" --query "water"
+                FILE="dist/$id.hfdb"
+                ;;
+              water-food|manuals)
+                python scripts/build_pdf_pack.py --pack "$id" --out "dist/$id.hfdb" --query "water"
+                FILE="dist/$id.hfdb"
+                ;;
+              maps-roads-*)
+                REGION="${id#maps-roads-}"
+                python scripts/extract_maps.py --region "$REGION" --out "dist/$REGION-roads.pmtiles"
+                FILE="dist/$REGION-roads.pmtiles"
+                ;;
+              maps-topo-*|maps-routing-*)
+                # Both builders are TODO stubs that exit 2 with their plan.
+                echo "::warning::$id has no builder yet; see scripts/build_topo.py / build_routing.py"
+                echo "::endgroup::"
+                continue
+                ;;
+              *)
+                echo "::warning::no build recipe for $id"
+                echo "::endgroup::"
+                continue
+                ;;
+            esac
+
+            if [ "${DRY_RUN}" = "true" ]; then
+              echo "dry run: built $FILE, not uploading"
+              echo "::endgroup::"
+              continue
+            fi
+
+            gh release view "$TAG" >/dev/null 2>&1 || \
+              gh release create "$TAG" \
+                --title "Content $TAG" \
+                --notes "Pack files built by .github/workflows/update.yml. The manifest that points at them is signed only after the accompanying pull request is merged." \
+                --latest=false
+            gh release upload "$TAG" "$FILE" --clobber
+
+            ASSET_URL="https://github.com/${GITHUB_REPOSITORY}/releases/download/${TAG}/$(basename "$FILE")"
+            python scripts/update_manifest.py --id "$id" --file "$FILE" --url "$ASSET_URL" \
+              --changes "Rebuilt $(date -u +%Y-%m-%d) from the current upstream."
+            TOUCHED="$TOUCHED $id"
+            echo "::endgroup::"
+          done
+
+          echo "touched=$(echo $TOUCHED | xargs)" >> "$GITHUB_OUTPUT"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Validate the edited manifest
+        if: steps.work.outputs.touched != ''
+        run: |
+          set -euo pipefail
+          git show HEAD:manifest.json > /tmp/baseline.json
+          python scripts/validate_manifest.py --allow-placeholders --network --dist dist --baseline /tmp/baseline.json
+
+      - name: Tests
+        if: steps.work.outputs.touched != ''
+        run: python -m pytest -q
+
+      - name: Open a pull request
+        if: steps.work.outputs.touched != '' && inputs.dry_run != true
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8
+        with:
+          branch: content/update-${{ github.run_id }}
+          delete-branch: true
+          commit-message: 'content: update ${{ steps.work.outputs.touched }}'
+          title: 'Content update: ${{ steps.work.outputs.touched }}'
+          add-paths: |
+            manifest.json
+            packs/**/pack.meta.json
+          body: |
+            Automated content update from `.github/workflows/update.yml`
+            (run [${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})).
+
+            **Packs touched:** ${{ steps.work.outputs.touched }}
+            **Release holding the new files:** `${{ steps.work.outputs.tag }}`
+
+            Before merging, check that:
+
+            - [ ] the `validate` checks passed, including every url and mirror;
+            - [ ] each `size` and `sha256` matches the file on the release;
+            - [ ] the `changes` line reads like something a user would want to see;
+            - [ ] no size moved more than you expected;
+            - [ ] nothing medical changed without review.
+
+            Merging this triggers `publish.yml`, which signs the manifest with the
+            repository signing key and publishes it to GitHub Pages. **Nothing in this
+            pull request is signed.**

@@ -1,0 +1,12 @@
+{
+  "id": "water-food",
+  "hosting": "hosted",
+  "builder": "scripts/build_pdf_pack.py",
+  "upstream": {
+    "kind": "pdfs",
+    "notes": "sources.json lists the PDFs; check_upstream.py HEADs each one and compares the ETag / Last-Modified it saw last time. No PDF is downloaded unless a validator moved."
+  },
+  "sizeChangeThresholdPercent": 25,
+  "allowSizeChange": false,
+  "notes": "All US Government work, so hosting it is free of licence trouble. Every source URL in sources.json is marked \"verified\": false until a human has opened it and confirmed it is the right document from the right publisher; build_pdf_pack.py refuses to build until then."
+}

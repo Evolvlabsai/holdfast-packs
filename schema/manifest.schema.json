@@ -1,0 +1,174 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://evolvlabsai.github.io/holdfast-packs/schema/manifest.schema.json",
+  "title": "Holdfast pack catalog (manifest.json)",
+  "description": "The signed pack catalog the Holdfast app reads. Field names are camelCase. Required and optional fields match CatalogParser in the app (src/Holdfast.Core/Content/Catalog.cs): the parser requires schema and published at the root and id, version, url, sha256 and size on every pack, and gives every other field a documented default. This schema is deliberately STRICTER than the parser in one way: additionalProperties is false, so a misspelled field fails CI instead of silently taking its default on the phone.",
+  "type": "object",
+  "required": ["schema", "published", "packs"],
+  "additionalProperties": false,
+  "properties": {
+    "_comment": {
+      "type": "string",
+      "description": "Free-text note. Ignored by the app (unknown fields are skipped)."
+    },
+    "schema": {
+      "description": "Catalog schema number. 1 is the only version the app understands.",
+      "type": "integer",
+      "const": 1
+    },
+    "published": {
+      "description": "When this catalog was published, UTC: yyyy-MM-ddTHH:mm:ssZ. The app falls back to this date for any pack without its own published date.",
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+    },
+    "minAppVersion": {
+      "description": "Optional. Apps older than this ignore the whole catalog. Default when absent: 0.0.0.",
+      "$ref": "#/$defs/semver"
+    },
+    "packs": {
+      "description": "Every pack the app may install. The app installs nothing that is not listed here.",
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/pack" }
+    }
+  },
+  "$defs": {
+    "semver": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "sha256": {
+      "description": "Lower-case hex SHA-256 of the whole file. 64 zeros is the repo's placeholder for 'not built yet'; validate_manifest.py reports it and the app's checksum check rejects every file against it.",
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "url": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://"
+    },
+    "pack": {
+      "type": "object",
+      "required": ["id", "version", "url", "sha256", "size"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "description": "Stable pack id. Also the folder name under packs/ and the on-device folder name.",
+          "type": "string",
+          "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+          "minLength": 2,
+          "maxLength": 64
+        },
+        "name": {
+          "description": "Optional. Display name on the Packs screen. Default when absent: the id.",
+          "type": "string",
+          "minLength": 1
+        },
+        "group": {
+          "description": "Optional. Grouping on the Packs screen. Default when absent: optional.",
+          "type": "string",
+          "enum": ["essentials", "maps", "reference", "optional"]
+        },
+        "region": {
+          "description": "Optional. ISO 3166-2 region the pack covers, e.g. US-MD. null or absent means the pack is not region-specific.",
+          "type": ["string", "null"],
+          "pattern": "^[A-Z]{2}-[A-Z0-9]{1,3}$"
+        },
+        "version": {
+          "description": "Date-based pack version, yyyy.MM.dd. Newer versions must sort higher as ordinal strings.",
+          "type": "string",
+          "pattern": "^\\d{4}\\.\\d{2}\\.\\d{2}$"
+        },
+        "published": {
+          "description": "Optional. yyyy-MM-dd. Default when absent: the catalog's published date. Drives the freshness label with staleAfterDays.",
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "format": {
+          "description": "Optional. File format, which decides how the app opens the pack. Default when absent: hfdb.",
+          "type": "string",
+          "enum": ["hfdb", "pmtiles", "zim", "gguf"]
+        },
+        "size": {
+          "description": "Size of the whole file in bytes. The app discards a download whose size differs. 0 is the repo's placeholder for 'not built yet'.",
+          "type": "integer",
+          "minimum": 0
+        },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "url": {
+          "description": "Primary download URL. Tried first; then each mirror in order.",
+          "$ref": "#/$defs/url"
+        },
+        "mirrors": {
+          "description": "Optional. Fallback URLs, tried in order after url. Moving a pack to new hosting is a one-line change here, with no app release.",
+          "type": "array",
+          "items": { "$ref": "#/$defs/url" },
+          "uniqueItems": true
+        },
+        "delta": {
+          "description": "Optional. Patch from one older version. The MVP app downloads the full file and ignores this.",
+          "type": "object",
+          "required": ["from", "url", "sha256", "size"],
+          "additionalProperties": false,
+          "properties": {
+            "from": {
+              "description": "The installed version this delta applies to.",
+              "type": "string",
+              "pattern": "^\\d{4}\\.\\d{2}\\.\\d{2}$"
+            },
+            "url": { "$ref": "#/$defs/url" },
+            "sha256": { "$ref": "#/$defs/sha256" },
+            "size": { "type": "integer", "minimum": 1 }
+          }
+        },
+        "parts": {
+          "description": "Optional. For files over 2 GB: numbered parts, each with its own checksum, reassembled on the phone. Omit or leave empty when the file is whole.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["index", "url", "size", "sha256"],
+            "additionalProperties": false,
+            "properties": {
+              "index": { "type": "integer", "minimum": 0 },
+              "url": { "$ref": "#/$defs/url" },
+              "size": { "type": "integer", "minimum": 1 },
+              "sha256": { "$ref": "#/$defs/sha256" }
+            }
+          }
+        },
+        "required": {
+          "description": "Optional. True for a pack the app installs on first run and will not let the user remove. Default when absent: false.",
+          "type": "boolean"
+        },
+        "staleAfterDays": {
+          "description": "Optional. Days after published before the pack gets an amber 'stale' badge. 0 means never stale. Default when absent: 0.",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3650
+        },
+        "license": {
+          "description": "Optional. Licence of the pack contents, SPDX id where one fits. Shown on the pack's About screen. Default when absent: empty.",
+          "type": "string"
+        },
+        "attribution": {
+          "description": "Optional. Credit line shown on the pack's About screen and, for maps, on the map. Required in practice for CC BY-SA and ODbL content.",
+          "type": "string"
+        },
+        "changes": {
+          "description": "Optional. One line shown in the update list: what is new in this version.",
+          "type": "string",
+          "maxLength": 300
+        },
+        "minAppVersion": {
+          "description": "Optional. Apps older than this hide this pack. Raise it whenever the pack's file format changes. Default when absent: 0.0.0.",
+          "$ref": "#/$defs/semver"
+        },
+        "description": {
+          "description": "Optional extension. Short human description for the Packs screen.",
+          "type": "string",
+          "maxLength": 200
+        }
+      }
+    }
+  }
+}

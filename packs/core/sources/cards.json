@@ -1,0 +1,198 @@
+[
+  {
+    "id": "bleeding",
+    "title": "Stop bleeding",
+    "lead": "Call 911 first if you have any signal.",
+    "tone": "danger",
+    "icon": "drop",
+    "source": "Stop the Bleed guidance and ATP 3-50.21",
+    "timer": "tourniquet",
+    "draft": true,
+    "steps": [
+      {
+        "title": "Press hard",
+        "body": "Put cloth or gauze on the wound and push down firmly with both hands. Do not lift to check."
+      },
+      {
+        "title": "Arm or leg still bleeding?",
+        "body": "Apply a tourniquet 2–3 inches above the wound, not on a joint. Tighten until bleeding stops."
+      },
+      {
+        "title": "Note the time",
+        "body": "Write the time the tourniquet went on. Do not loosen it."
+      },
+      {
+        "title": "Wound on body or neck?",
+        "body": "Pack it tightly with gauze or clean cloth, then keep pressing until help arrives."
+      }
+    ]
+  },
+  {
+    "id": "cpr",
+    "title": "CPR for an adult",
+    "lead": "Hands-only CPR, for a teen or adult who suddenly collapses. Call 911 on speaker.",
+    "tone": "normal",
+    "icon": "heart",
+    "source": "American Heart Association hands-only CPR and American Red Cross first aid guidance",
+    "timer": null,
+    "draft": true,
+    "steps": [
+      {
+        "title": "Check and call",
+        "body": "Tap the shoulder and shout. If there is no response and no normal breathing, call 911 and put the phone on speaker."
+      },
+      {
+        "title": "Hands on the chest",
+        "body": "Place the heel of one hand in the centre of the chest, your other hand on top, fingers laced. Keep your arms straight."
+      },
+      {
+        "title": "Push hard and fast",
+        "body": "Push straight down at least 2 inches, 100 to 120 times a minute. Let the chest come all the way back up between pushes."
+      },
+      {
+        "title": "Do not stop",
+        "body": "Keep going until the person moves and breathes, or until someone takes over. Swap with another person every two minutes if you can."
+      },
+      {
+        "title": "Use an AED when it arrives",
+        "body": "Turn it on and follow the spoken instructions. Restart compressions as soon as it tells you to."
+      }
+    ]
+  },
+  {
+    "id": "purify-water",
+    "title": "Make water safe",
+    "lead": "Boiling is the surest way. Use bleach only when you cannot boil.",
+    "tone": "normal",
+    "icon": "water",
+    "source": "CDC: Making Water Safe in an Emergency; EPA emergency disinfection of drinking water",
+    "timer": null,
+    "draft": true,
+    "steps": [
+      {
+        "title": "Clear it first",
+        "body": "Let cloudy water settle, then pour it through a clean cloth, paper towel or coffee filter."
+      },
+      {
+        "title": "Boil if you can",
+        "body": "Bring it to a rolling boil for 1 minute. Above 6,500 feet, boil for 3 minutes. Let it cool on its own."
+      },
+      {
+        "title": "No heat? Use plain bleach",
+        "body": "Per gallon of clear water, add 8 drops of unscented 6% household bleach, or 6 drops of 8.25%. Stir well."
+      },
+      {
+        "title": "Wait 30 minutes",
+        "body": "The water should smell faintly of bleach. If it does not, repeat the dose and wait another 15 minutes."
+      },
+      {
+        "title": "Store it covered",
+        "body": "Keep treated water in clean, covered containers out of sunlight."
+      }
+    ]
+  },
+  {
+    "id": "hypothermia",
+    "title": "Hypothermia",
+    "lead": "Call 911. Shivering that stops on its own is a bad sign, not a good one.",
+    "tone": "normal",
+    "icon": "cold",
+    "source": "CDC guidance on hypothermia and cold stress",
+    "timer": null,
+    "draft": true,
+    "steps": [
+      {
+        "title": "Know the signs",
+        "body": "Adults: shivering, slurred speech, clumsy hands, confusion, drowsiness. Babies: bright red, cold skin and very low energy."
+      },
+      {
+        "title": "Get out of the cold",
+        "body": "Move the person into a warm room or shelter. Handle them gently and keep them lying still."
+      },
+      {
+        "title": "Take off wet clothes",
+        "body": "Remove anything wet and dry the skin."
+      },
+      {
+        "title": "Warm the middle first",
+        "body": "Cover the chest, neck, head and groin with blankets, or use skin-to-skin contact under a blanket. Do not rub the arms and legs."
+      },
+      {
+        "title": "Warm drinks only if fully awake",
+        "body": "Give warm, sweet, non-alcoholic drinks. Never give alcohol, and never give anything to someone who cannot swallow."
+      },
+      {
+        "title": "Keep them covered",
+        "body": "Once they start to warm, wrap the whole body including the head and keep them still until help arrives."
+      }
+    ]
+  },
+  {
+    "id": "signal",
+    "title": "Signal for help",
+    "lead": "Text instead of calling — short messages get through when calls do not.",
+    "tone": "normal",
+    "icon": "signal",
+    "source": "FEMA / Ready.gov guidance on communicating during a disaster",
+    "timer": null,
+    "draft": true,
+    "steps": [
+      {
+        "title": "Text, do not call",
+        "body": "Send a short text. Voice calls tie up the networks that emergency crews need."
+      },
+      {
+        "title": "Save your battery",
+        "body": "Turn on low-power mode, dim the screen and close everything you are not using."
+      },
+      {
+        "title": "Tell your out-of-area contact",
+        "body": "Message the contact in your plan and let them pass the word on to everyone else."
+      },
+      {
+        "title": "Make yourself seen and heard",
+        "body": "Three of anything means distress: three whistle blasts, three flashes, three fires. Use a mirror or bright cloth by day."
+      },
+      {
+        "title": "Stay where you are if you can",
+        "body": "Rescuers search last known locations. If you must move, leave a note saying where you are going and when you left."
+      }
+    ]
+  },
+  {
+    "id": "shelter",
+    "title": "Shelter in place",
+    "lead": "Get inside, stay inside, stay tuned.",
+    "tone": "normal",
+    "icon": "shelter",
+    "source": "FEMA / Ready.gov shelter-in-place guidance; CDC carbon monoxide guidance",
+    "timer": null,
+    "draft": true,
+    "steps": [
+      {
+        "title": "Get everyone inside",
+        "body": "Bring people and pets in. Lock the doors and close the windows, vents and fireplace damper."
+      },
+      {
+        "title": "Pick an interior room",
+        "body": "Choose a small room with as few windows as possible, and take your kit and radio with you."
+      },
+      {
+        "title": "Turn off air movement",
+        "body": "Shut off fans, heating and air conditioning so outside air is not pulled in."
+      },
+      {
+        "title": "Seal the room only if told to",
+        "body": "If officials report a chemical or radiological release, tape plastic sheeting over the doors, windows and vents of that room."
+      },
+      {
+        "title": "Listen for the all-clear",
+        "body": "Keep a battery or hand-crank radio on NOAA Weather Radio and wait for officials to say it is safe."
+      },
+      {
+        "title": "Never burn fuel indoors",
+        "body": "No generator, grill or camp stove inside, in a garage or near a window. Carbon monoxide has no smell and kills."
+      }
+    ]
+  }
+]

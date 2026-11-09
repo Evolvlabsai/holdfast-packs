@@ -1,0 +1,139 @@
+{
+  "pack": {
+    "id": "water-food",
+    "name": "Water & Food",
+    "license": "Public domain (US Government works)",
+    "attribution": "CDC, EPA and USDA water, canning and food-storage guidance"
+  },
+  "_notes": [
+    "Every url below was fetched on 2026-11-09 and returned 2xx with Content-Type application/pdf and a %PDF- magic header. 'verified' records that check, not a licence review.",
+    "www.cdc.gov sits behind Akamai, which refuses non-browser clients by TLS fingerprint from some networks: plain urllib and curl get 403 Access Denied even with a full browser header set. The CDC entry below may therefore fail to download from CI. If it does, the options are a GovInfo or archive mirror, or vendoring the PDF into this repo with its sha256 recorded. Flagged as an open question in the repo README.",
+    "Do NOT use https://www.cdc.gov/healthywater/emergency/pdf/make-water-safe-during-emergency-p.pdf : it answers 200 with text/html (it redirects into a web page despite the .pdf extension) and would put an HTML error page into the pack.",
+    "USDA's Complete Guide to Home Canning has no merged single-file PDF on any official host. It is published as eight files, all listed here. They are hosted on nchfp.uga.edu (a NIFA-funded centre at the University of Georgia), not on a .gov domain; the underlying USDA bulletin is still a US Government work."
+  ],
+  "documents": [
+    {
+      "id": "cdc-make-water-safe-emergency",
+      "title": "Make Water Safe During an Emergency",
+      "url": "https://www.cdc.gov/water-emergency/media/pdfs/make-water-safe-during-emergency-p.pdf",
+      "source": "CDC, National Center for Environmental Health (US Government work, public domain)",
+      "license": "Public domain (US Government work)",
+      "verified": true,
+      "verifiedOn": "2026-11-09",
+      "bytesWhenVerified": 730926,
+      "fetchNote": "Akamai may answer 403 to non-browser clients; see _notes.",
+      "pages": "all"
+    },
+    {
+      "id": "epa-emergency-disinfection-drinking-water",
+      "title": "Emergency Disinfection of Drinking Water (EPA 816-F-15-003, Sept 2017)",
+      "url": "https://www.epa.gov/sites/default/files/2017-09/documents/emergency_disinfection_of_drinking_water_sept2017.pdf",
+      "source": "US Environmental Protection Agency, Office of Water (public domain)",
+      "license": "Public domain (US Government work)",
+      "verified": true,
+      "verifiedOn": "2026-11-09",
+      "bytesWhenVerified": 754723,
+      "pages": "all"
+    },
+    {
+      "id": "fsis-consumers-guide-severe-storms",
+      "title": "A Consumer's Guide to Food Safety: Severe Storms, Hurricanes, Power Outages",
+      "url": "https://www.govinfo.gov/content/pkg/GOVPUB-A110-PURL-gpo140676/pdf/GOVPUB-A110-PURL-gpo140676.pdf",
+      "source": "USDA Food Safety and Inspection Service, via GovInfo (GPO) (public domain)",
+      "license": "Public domain (US Government work)",
+      "verified": true,
+      "verifiedOn": "2026-11-09",
+      "bytesWhenVerified": 727269,
+      "fetchNote": "The GovInfo mirror is used deliberately: fsis.usda.gov is behind the same Akamai block as cdc.gov. The FSIS original is https://www.fsis.usda.gov/sites/default/files/media_file/2021-04/Severe-Storms-5-Panel-Brochure-ENGLISH.pdf (1,884,504 bytes). FSIS has no standalone power-outage PDF any more; that guidance lives in this brochure.",
+      "pages": "all"
+    },
+    {
+      "id": "usda-canning-intro",
+      "title": "Complete Guide to Home Canning: Introduction",
+      "url": "https://nchfp.uga.edu/papers/guide/INTRO_HomeCanrev0715.pdf",
+      "source": "USDA Agriculture Information Bulletin 539 (rev. 2015), National Center for Home Food Preservation",
+      "license": "Public domain (US Government work)",
+      "verified": true,
+      "verifiedOn": "2026-11-09",
+      "bytesWhenVerified": 467339,
+      "pages": "all"
+    },
+    {
+      "id": "usda-canning-1-principles",
+      "title": "Complete Guide to Home Canning, Part 1: Principles of Home Canning",
+      "url": "https://nchfp.uga.edu/papers/guide/GUIDE01_HomeCan_rev0715.pdf",
+      "source": "USDA Agriculture Information Bulletin 539 (rev. 2015), National Center for Home Food Preservation",
+      "license": "Public domain (US Government work)",
+      "verified": true,
+      "verifiedOn": "2026-11-09",
+      "bytesWhenVerified": 3794234,
+      "pages": "all"
+    },
+    {
+      "id": "usda-canning-2-fruit",
+      "title": "Complete Guide to Home Canning, Part 2: Fruit and Fruit Products",
+      "url": "https://nchfp.uga.edu/papers/guide/GUIDE02_HomeCan_rev0715.pdf",
+      "source": "USDA Agriculture Information Bulletin 539 (rev. 2015), National Center for Home Food Preservation",
+      "license": "Public domain (US Government work)",
+      "verified": true,
+      "verifiedOn": "2026-11-09",
+      "bytesWhenVerified": 1098841,
+      "pages": "all"
+    },
+    {
+      "id": "usda-canning-3-tomatoes",
+      "title": "Complete Guide to Home Canning, Part 3: Tomatoes and Tomato Products",
+      "url": "https://nchfp.uga.edu/papers/guide/GUIDE03_HomeCan_rev0715.pdf",
+      "source": "USDA Agriculture Information Bulletin 539 (rev. 2015), National Center for Home Food Preservation",
+      "license": "Public domain (US Government work)",
+      "verified": true,
+      "verifiedOn": "2026-11-09",
+      "bytesWhenVerified": 976490,
+      "pages": "all"
+    },
+    {
+      "id": "usda-canning-4-vegetables",
+      "title": "Complete Guide to Home Canning, Part 4: Vegetables and Vegetable Products",
+      "url": "https://nchfp.uga.edu/papers/guide/GUIDE04_HomeCan_rev0715.pdf",
+      "source": "USDA Agriculture Information Bulletin 539 (rev. 2015), National Center for Home Food Preservation",
+      "license": "Public domain (US Government work)",
+      "verified": true,
+      "verifiedOn": "2026-11-09",
+      "bytesWhenVerified": 2013613,
+      "pages": "all"
+    },
+    {
+      "id": "usda-canning-5-meat",
+      "title": "Complete Guide to Home Canning, Part 5: Poultry, Red Meats and Seafoods",
+      "url": "https://nchfp.uga.edu/papers/guide/GUIDE05_HomeCan_rev0715.pdf",
+      "source": "USDA Agriculture Information Bulletin 539 (rev. 2015), National Center for Home Food Preservation",
+      "license": "Public domain (US Government work)",
+      "verified": true,
+      "verifiedOn": "2026-11-09",
+      "bytesWhenVerified": 1356485,
+      "pages": "all"
+    },
+    {
+      "id": "usda-canning-6-fermented",
+      "title": "Complete Guide to Home Canning, Part 6: Fermented Foods and Pickled Vegetables",
+      "url": "https://nchfp.uga.edu/papers/guide/GUIDE06_HomeCan_rev0715.pdf",
+      "source": "USDA Agriculture Information Bulletin 539 (rev. 2015), National Center for Home Food Preservation",
+      "license": "Public domain (US Government work)",
+      "verified": true,
+      "verifiedOn": "2026-11-09",
+      "bytesWhenVerified": 3173534,
+      "pages": "all"
+    },
+    {
+      "id": "usda-canning-7-jams",
+      "title": "Complete Guide to Home Canning, Part 7: Preparing and Canning Jams and Jellies",
+      "url": "https://nchfp.uga.edu/papers/guide/GUIDE07_HomeCan_rev0715.pdf",
+      "source": "USDA Agriculture Information Bulletin 539 (rev. 2015), National Center for Home Food Preservation",
+      "license": "Public domain (US Government work)",
+      "verified": true,
+      "verifiedOn": "2026-11-09",
+      "bytesWhenVerified": 1300368,
+      "pages": "all"
+    }
+  ]
+}

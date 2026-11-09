@@ -1,0 +1,15 @@
+{
+  "id": "maps-routing-us-md",
+  "hosting": "hosted",
+  "builder": "scripts/build_routing.py (TODO stub: builds nothing)",
+  "region": "US-MD",
+  "upstream": {
+    "kind": "geofabrik",
+    "path": "north-america/us/maryland",
+    "currentTimestamp": "2026-11-08T21:21:00Z",
+    "notes": "state.txt timestamp read 2026-11-09 (sequenceNumber 4967). The .osm.pbf was 216,810,553 bytes. Geofabrik publishes .md5 only, no sha256."
+  },
+  "sizeChangeThresholdPercent": 20,
+  "allowSizeChange": false,
+  "notes": "Not built, and blocked on two things outside this repo: (1) the graph builder tools/Holdfast.RouteBuild lives in the private app repo, so public CI cannot run it; (2) the manifest's format enum has no value for a routing graph, and the entry currently says 'pmtiles', which is wrong. See packs/maps-routing-us-md/README.md and scripts/build_routing.py."
+}

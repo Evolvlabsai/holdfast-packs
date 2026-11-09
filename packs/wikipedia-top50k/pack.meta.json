@@ -1,0 +1,29 @@
+{
+  "id": "wikipedia-top50k",
+  "hosting": "linked",
+  "builder": null,
+  "upstream": {
+    "kind": "kiwix",
+    "book": "wikipedia_en_top",
+    "flavour": "maxi",
+    "currentFile": "wikipedia_en_top_maxi_2026-09.zim",
+    "notes": "Verified 2026-11-09: 6,991,081,681 bytes, Last-Modified 2026-09-18."
+  },
+  "alternatives": [
+    {
+      "what": "nopic -- same article selection, no images, 2.7 GB",
+      "url": "https://download.kiwix.org/zim/wikipedia/wikipedia_en_top_nopic_2026-09.zim",
+      "size": 2745850723,
+      "verifiedOn": "2026-11-09"
+    },
+    {
+      "what": "mini -- lead sections only, 283 MB. Good as a cheap default; not 'top 50k articles'.",
+      "url": "https://download.kiwix.org/zim/wikipedia/wikipedia_en_top_mini_2026-09.zim",
+      "size": 296858160,
+      "verifiedOn": "2026-11-09"
+    }
+  ],
+  "sizeChangeThresholdPercent": 35,
+  "allowSizeChange": false,
+  "notes": "The spec budgets 5.2 GB; the real maxi file is 6.5 GiB and the 2026-06 edition was 7.8 GiB, so the Packs screen's size estimate needs updating. Kiwix names this selection 'top', not 'top 50k'; the pack id keeps the spec's name. The file is over 2 GB and we do not host it, so the manifest's 'parts' splitting cannot apply -- the app has to manage one >2 GB download, and that is worth confirming on a real phone before this pack ships."
+}

@@ -1,0 +1,12 @@
+{
+  "id": "core",
+  "hosting": "hosted",
+  "builder": "scripts/build_core.py",
+  "upstream": {
+    "kind": "none",
+    "notes": "Written in this repo from public-domain federal guidance. Nothing to watch; it changes when we change it. The Maryland overlays are meant to refresh weekly, which needs a per-state shelter/hospital data source (spec: Open questions)."
+  },
+  "sizeChangeThresholdPercent": 20,
+  "allowSizeChange": false,
+  "notes": "Required pack. sources/ holds the cards, docs and overlays; every quick card is \"draft\": true and build_core.py refuses to build without --allow-draft until a reviewer signs them off."
+}

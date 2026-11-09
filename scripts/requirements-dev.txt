@@ -1,0 +1,8 @@
+# Test-only dependencies. Checked against PyPI on 2026-11-09.
+-r requirements.txt
+
+pytest==9.2.0
+
+# Only needed if a pack ever uses sources.yaml instead of sources.json.
+# build_pdf_pack.py reads JSON without it.
+pyyaml==6.0.3

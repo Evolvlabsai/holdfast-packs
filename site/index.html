@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Holdfast packs</title>
+<meta name="description" content="The signed content catalog for the Holdfast offline survival app.">
+<style>
+  :root { color-scheme: light dark; --fg: #16181c; --bg: #fbfbfa; --muted: #5c6168; --line: #e2e2df; --accent: #8a4b1f; }
+  @media (prefers-color-scheme: dark) {
+    :root { --fg: #e8e6e3; --bg: #16181a; --muted: #9ba1a8; --line: #2c2f33; --accent: #e0a060; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg);
+         font: 16px/1.6 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 46rem; margin: 0 auto; padding: 3rem 1rem 5rem; }
+  h1 { font-size: 1.6rem; margin: 0 0 .25rem; letter-spacing: -.01em; }
+  h2 { font-size: 1rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted);
+       margin: 2.5rem 0 .75rem; }
+  p { margin: 0 0 1rem; }
+  .lede { color: var(--muted); margin-bottom: 2rem; }
+  ul { padding-left: 1.2rem; margin: 0 0 1rem; }
+  li { margin-bottom: .4rem; }
+  code, a.file { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .9em; }
+  a { color: var(--accent); }
+  .files { list-style: none; padding: 0; border-top: 1px solid var(--line); }
+  .files li { border-bottom: 1px solid var(--line); margin: 0; padding: .7rem 0; }
+  .files span { display: block; color: var(--muted); font-size: .85rem; }
+  footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--line);
+           color: var(--muted); font-size: .85rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Holdfast packs</h1>
+  <p class="lede">The signed content catalog for Holdfast, an offline survival and
+  emergency-prep app. This page exists so the catalog has a stable address; it is
+  not a download site.</p>
+
+  <h2>Files</h2>
+  <ul class="files">
+    <li><a class="file" href="manifest.json">manifest.json</a>
+        <span>The catalog. Every pack the app may install, with a size and a SHA-256 for each file.</span></li>
+    <li><a class="file" href="manifest.json.sig">manifest.json.sig</a>
+        <span>Detached Ed25519 signature over the manifest's exact bytes, base64.</span></li>
+    <li><a class="file" href="schema/manifest.schema.json">schema/manifest.schema.json</a>
+        <span>JSON Schema for the catalog.</span></li>
+  </ul>
+
+  <h2>Trust model</h2>
+  <ul>
+    <li>The app carries one Ed25519 public key, compiled in. A catalog whose
+      signature does not verify is ignored and the last good one is kept.</li>
+    <li>Every file in the catalog carries a size and a SHA-256. A download that
+      does not match is discarded, whichever mirror served it.</li>
+    <li>The signing key lives only in this repository's CI secrets, and a
+      manifest is signed only after a human merges the change.</li>
+    <li>No accounts, no analytics, no server. The app's only network calls are
+      fetching this catalog and downloading packs.</li>
+  </ul>
+
+  <h2>Licences</h2>
+  <p>Each pack records its own <code>license</code> and <code>attribution</code>
+  in the catalog. The material comes from US federal agencies (public domain),
+  OpenStreetMap (ODbL), Wikipedia and Stack Exchange (CC BY-SA) and iFixit
+  (CC BY-NC-SA). Credits are shown in the app, and on the map for map data.</p>
+
+  <footer>
+    Built and published from the public <code>holdfast-packs</code> repository.
+    Holdfast is a working name.
+  </footer>
+</main>
+</body>
+</html>

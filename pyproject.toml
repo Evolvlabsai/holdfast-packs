@@ -1,0 +1,20 @@
+# No package is published from this repo; this file exists to configure pytest
+# and the linters. Dependencies live in scripts/requirements.txt so CI can
+# install them with pip and nothing else.
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+pythonpath = ["scripts"]
+addopts = "-ra --strict-markers"
+markers = [
+  "network: hits a real upstream; skipped unless HOLDFAST_TEST_NETWORK=1",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM"]
+ignore = ["E501"]

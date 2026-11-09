@@ -1,0 +1,75 @@
+name: validate
+
+# Every change to the manifest, the schema or the pipeline is checked here
+# before a human merges it. Nothing is signed and nothing is published in this
+# workflow, so it needs no write access to anything.
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          # The size-drift check compares against the previous manifest, so the
+          # base commit has to be in the clone.
+          fetch-depth: 0
+
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: scripts/requirements*.txt
+
+      - name: Install pinned dependencies
+        run: python -m pip install -r scripts/requirements-dev.txt
+
+      - name: Tests
+        run: python -m pytest -q
+
+      - name: Take the base branch's manifest as the drift baseline
+        id: baseline
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          set -euo pipefail
+          if [ -n "${BASE_REF:-}" ] && git show "origin/${BASE_REF}:manifest.json" > /tmp/baseline.json 2>/dev/null; then
+            echo "path=/tmp/baseline.json" >> "$GITHUB_OUTPUT"
+            echo "Comparing against origin/${BASE_REF}:manifest.json"
+          else
+            echo "path=" >> "$GITHUB_OUTPUT"
+            echo "No base manifest to compare against; drift checks will be skipped."
+          fi
+
+      - name: Validate the manifest (schema, structure, placeholders, drift)
+        run: |
+          set -euo pipefail
+          if [ -n "${{ steps.baseline.outputs.path }}" ]; then
+            python scripts/validate_manifest.py --allow-placeholders --baseline "${{ steps.baseline.outputs.path }}"
+          else
+            python scripts/validate_manifest.py --allow-placeholders --no-drift
+          fi
+
+      - name: Validate the manifest against the network (every url and mirror)
+        # Reachability depends on other people's servers, so a flake here must
+        # not block a merge that is otherwise fine. The failure is reported and
+        # the step is marked as such, but the job can still pass.
+        continue-on-error: true
+        run: python scripts/validate_manifest.py --allow-placeholders --no-drift --network
+
+      - name: Check the manifest's bytes are signable
+        # A guard against the classic mistake: reformatting manifest.json in a
+        # pull request, which silently invalidates the published signature.
+        run: python scripts/pipeline_query.py manifest-bytes
