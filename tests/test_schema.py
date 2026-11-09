@@ -79,6 +79,7 @@ def test_the_repos_manifest_lists_the_launch_packs():
     assert ids == [
         "core",
         "medical",
+        "medical-wikimed",
         "water-food",
         "manuals",
         "maps-roads-us-md",

@@ -1,0 +1,26 @@
+{
+  "id": "medical-wikimed",
+  "hosting": "linked",
+  "builder": null,
+  "upstream": {
+    "kind": "kiwix",
+    "book": "wikipedia_en_medicine",
+    "flavour": "nopic",
+    "currentFile": "wikipedia_en_medicine_nopic_2026-10.zim",
+    "notes": "Verified 2026-11-09: 1047708415 bytes; sha256 from Kiwix's .sha256 sidecar."
+  },
+  "alternatives": [
+    {
+      "what": "maxi -- with images",
+      "url": "https://download.kiwix.org/zim/wikipedia/wikipedia_en_medicine_maxi_2026-10.zim"
+    },
+    {
+      "what": "mini -- lead sections only, 174 MB",
+      "url": "https://download.kiwix.org/zim/wikipedia/wikipedia_en_medicine_mini_2026-10.zim",
+      "size": 174350854
+    }
+  ],
+  "sizeChangeThresholdPercent": 35,
+  "allowSizeChange": false,
+  "notes": "Linked, not hosted: Kiwix serves it. CC BY-SA 4.0, so the app shows the attribution. Needs app 0.2.0 or later (the first build with the ZIM reader); older builds hide it. Encyclopedia content, not clinician reviewed; the app must not present it as medical advice."
+}

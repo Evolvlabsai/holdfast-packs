@@ -44,6 +44,25 @@
       "description": "First aid, Where There Is No Doctor, WikiMed (mini)"
     },
     {
+      "id": "medical-wikimed",
+      "name": "WikiMed — medical encyclopedia",
+      "group": "reference",
+      "version": "2026.10.01",
+      "published": "2026-10-01",
+      "format": "zim",
+      "size": 1047708415,
+      "sha256": "718fadad40b3491be3fa8f95181a948e4d726f97a79a14e0ef1b90c6b2b03625",
+      "url": "https://download.kiwix.org/zim/wikipedia/wikipedia_en_medicine_nopic_2026-10.zim",
+      "mirrors": [],
+      "required": false,
+      "staleAfterDays": 180,
+      "license": "CC-BY-SA-4.0",
+      "attribution": "Wikipedia contributors (WikiProject Medicine); packaged by Kiwix",
+      "changes": "First release: WikiMed full text, no images (Kiwix 2026-10).",
+      "minAppVersion": "0.2.0",
+      "description": "About 340,000 medical articles from Wikipedia, text only"
+    },
+    {
       "id": "water-food",
       "name": "Water & Food",
       "group": "essentials",
@@ -157,7 +176,7 @@
       "license": "CC-BY-NC-SA-3.0",
       "attribution": "iFixit repair guides; packaged by Kiwix",
       "changes": "Current Kiwix edition of the iFixit archive (2025-12).",
-      "minAppVersion": "0.1.0",
+      "minAppVersion": "0.2.0",
       "description": "Repair guides, DIY, knots, basic electrical"
     },
     {
@@ -176,7 +195,7 @@
       "license": "CC-BY-SA-4.0",
       "attribution": "Wikipedia contributors; packaged by Kiwix",
       "changes": "Current Kiwix edition of the most-read English articles (2026-09), with images.",
-      "minAppVersion": "0.1.0",
+      "minAppVersion": "0.2.0",
       "description": "Most-read articles, text and images"
     },
     {
