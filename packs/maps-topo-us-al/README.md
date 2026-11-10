@@ -20,7 +20,13 @@ intersecting the bbox `[-88.48, 30.14, -84.88, 35.01]` present. Metadata name: `
 Unlike Maryland, this pack is built from the **1 arc-second** (~30 m) 3DEP
 product (`--source 1`). At z12 a pixel is already ~30 m, so the finer product
 only buys a box average; the 1 arc-second cells are about a ninth of the
-download (30 cells, ~1,712 MB).
+download (54 cells including one ring of neighbouring cells, ~2,873 MB).
+
+## Edge tiles: one ring of neighbouring cells
+
+Rebuilt 2026-11-10 with `build_topo.py`'s cell ring (`CELL_RING = 1`): besides the 30 1x1 degree cells under the bbox, the builder fetches the ring of neighbouring cells (56 cells in all, 54 published by USGS, ~2,873 MB). Before, an edge tile that reached past the bbox into a cell that was not fetched read 0 m there, a flat strip of fake sea along the edge. Now 20 of 426 edge tiles changed (at z12 the edge tiles already stayed inside fetched cells; the fixes are in lower-zoom tiles, which reach further past the bbox, e.g. 29.999, -84.94 at z11: 0 m before, 10.4 m now); every tile lying fully inside the bbox is byte-identical to the previous build. Cells USGS does not publish (open sea) are still 0 m. One ring covers every tile at z9 and above; z5-z8 tiles reaching more than a degree past the bbox are still 0 m out there.
+
+Rebuilt file: 419,287,666 bytes (was 418,819,502), sha256 `c786036f67b7eb87017446eaec7f4529019250f63f84a3ee0b488332d7a4a421`.
 
 ## Building it
 

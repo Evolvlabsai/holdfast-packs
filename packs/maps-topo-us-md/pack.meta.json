@@ -6,9 +6,9 @@
   "format": "pmtiles: one archive of Terrarium-encoded PNG raster-dem tiles, z5-12, 256 px",
   "upstream": {
     "kind": "manual",
-    "notes": "USGS 3DEP 1/3 arc-second seamless DEM, 1x1 degree GeoTIFFs from https://prd-tnm.s3.amazonaws.com/StagedProducts/Elevation/13/TIFF/current/ (15 cells, ~6.1 GB for Maryland). Quarterly at most, and 3DEP has no feed worth polling weekly; a rebuild is a deliberate workflow_dispatch. TNM Access API: https://tnmaccess.nationalmap.gov/api/v1/products"
+    "notes": "USGS 3DEP 1/3 arc-second seamless DEM, 1x1 degree GeoTIFFs from https://prd-tnm.s3.amazonaws.com/StagedProducts/Elevation/13/TIFF/current/ (33 cells including one ring of neighbours, ~14,250 MB for Maryland). Quarterly at most, and 3DEP has no feed worth polling weekly; a rebuild is a deliberate workflow_dispatch. TNM Access API: https://tnmaccess.nationalmap.gov/api/v1/products"
   },
   "sizeChangeThresholdPercent": 15,
   "allowSizeChange": false,
-  "notes": "One file: elevation only, as Terrarium raster-dem (height_m = R*256 + G + B/256 - 32768; sea and no-data 0 m). Contours and hillshade are drawn on the phone from these tiles, so there is no separate vector-contour or hillshade pack. Builder needs no GDAL or tippecanoe (numpy, tifffile, imagecodecs, Pillow, pmtiles)."
+  "notes": "Rebuilt 2026-11-10 with one ring of neighbouring 3DEP cells (build_topo.py CELL_RING) so edge tiles have real terrain past the bbox: 206,540,895 bytes, sha256 7dc07d4615de918a82d9513ea2dc68b6a68fce426575529f3880b2914c3605a0. Interior tiles are byte-identical to the previous build; 40 edge tiles changed. One file: elevation only, as Terrarium raster-dem (height_m = R*256 + G + B/256 - 32768; sea and no-data 0 m). Contours and hillshade are drawn on the phone from these tiles, so there is no separate vector-contour or hillshade pack. Builder needs no GDAL or tippecanoe (numpy, tifffile, imagecodecs, Pillow, pmtiles)."
 }

@@ -3,7 +3,7 @@
 Elevation for off-road travel. The phone draws hillshade and contours from it.
 
 - **Hosting:** ours, per region.
-- **Format:** `pmtiles` — **one file**, `us-ne-topo.pmtiles`, 683 MB (6,317 tiles, z5–12).
+- **Format:** `pmtiles` — **one file**, `us-ne-topo.pmtiles`, 684 MB (6,317 tiles, z5–12).
 - **Cadence:** quarterly.
 - **`staleAfterDays`:** 180.
 - **Licence:** public domain (USGS 3DEP), credited anyway.
@@ -20,7 +20,13 @@ intersecting the bbox `[-104.06, 39.99, -95.30, 43.01]` present. Metadata name: 
 Unlike Maryland, this pack is built from the **1 arc-second** (~30 m) 3DEP
 product (`--source 1`). At z12 a pixel is already ~30 m, so the finer product
 only buys a box average; the 1 arc-second cells are about a ninth of the
-download (50 cells, ~2,522 MB).
+download (84 cells including one ring of neighbouring cells, ~4,221 MB).
+
+## Edge tiles: one ring of neighbouring cells
+
+Rebuilt 2026-11-10 with `build_topo.py`'s cell ring (`CELL_RING = 1`): besides the 50 1x1 degree cells under the bbox, the builder fetches the ring of neighbouring cells (84 cells in all, 84 published by USGS, ~4,221 MB). Before, an edge tile that reached past the bbox into a cell that was not fetched read 0 m there, a flat strip of fake sea along the edge. Now 24 of 572 edge tiles changed (at z12 the edge tiles already stayed inside fetched cells; the fixes are in lower-zoom tiles, which reach further past the bbox, e.g. 41.881, -94.978 at z9: 0 m before, 466.3 m now); every tile lying fully inside the bbox is byte-identical to the previous build. Cells USGS does not publish (open sea) are still 0 m. One ring covers every tile at z9 and above; z5-z8 tiles reaching more than a degree past the bbox are still 0 m out there.
+
+Rebuilt file: 683,712,247 bytes (was 683,016,604), sha256 `80572d6c705bf90222c57989caf09c0fb6bbec7aa732eea1e6fd561807d48286`.
 
 ## Building it
 
