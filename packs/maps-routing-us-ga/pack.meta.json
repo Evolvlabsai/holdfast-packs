@@ -1,0 +1,15 @@
+{
+  "id": "maps-routing-us-ga",
+  "hosting": "hosted",
+  "builder": "scripts/build_routing.py (stub: the graph is built by hand with Holdfast.RouteBuild)",
+  "region": "US-GA",
+  "upstream": {
+    "kind": "geofabrik",
+    "path": "north-america/us/georgia",
+    "currentTimestamp": "2026-11-08T21:21:00Z",
+    "notes": "state.txt timestamp read 2026-11-09 (sequenceNumber 4967). The .osm.pbf was 358,492,132 bytes. Geofabrik publishes .md5 only, no sha256."
+  },
+  "sizeChangeThresholdPercent": 20,
+  "allowSizeChange": false,
+  "notes": "Uses 'hfroute'. The graph is built locally with tools/Holdfast.RouteBuild from the holdfast-app repo (dotnet run --project tools/Holdfast.RouteBuild -c Release -- --pbf georgia-latest.osm.pbf --out us-ga-routing.hfroute --bbox -85.61,30.35,-80.83,35.01) and uploaded by hand. Public CI cannot run it, because holdfast-app is a private repo. See packs/maps-routing-us-md/README.md."
+}
