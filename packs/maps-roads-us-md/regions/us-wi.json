@@ -1,0 +1,16 @@
+{
+  "id": "us-wi",
+  "name": "Wisconsin",
+  "region": "US-WI",
+  "bbox": [-92.89, 42.49, -86.80, 47.09],
+  "maxzoom": 14,
+  "license": "ODbL-1.0",
+  "attribution": "© OpenStreetMap contributors",
+  "notes": "bbox is [min_lon, min_lat, max_lon, max_lat], matching pmtiles extract --bbox. Wisconsin's extent (Census TIGER land, rounded outward): the St. Croix and Mississippi in the west, Illinois in the south, Washington and Rock Islands off Door County in the east, the Apostle Islands (Outer Island) in the north. Open Lake Superior beyond the Apostles and open Lake Michigan east of Door County are trimmed. maxzoom 14 is where OSM street geometry stops adding detail; z15+ roughly doubles the file for labels the phone can render from z14 data.",
+  "geofabrik": {
+    "pbf": "https://download.geofabrik.de/north-america/us/wisconsin-latest.osm.pbf",
+    "md5": "https://download.geofabrik.de/north-america/us/wisconsin-latest.osm.pbf.md5",
+    "state": "https://download.geofabrik.de/north-america/us/wisconsin-updates/state.txt",
+    "notes": "Not used for the roads basemap (Protomaps already renders the planet). It is the input the routing graph needs, and the state.txt timestamp is what check_upstream.py watches for maps-routing-us-wi."
+  }
+}

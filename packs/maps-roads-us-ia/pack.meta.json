@@ -1,0 +1,14 @@
+{
+  "id": "maps-roads-us-ia",
+  "hosting": "hosted",
+  "builder": "scripts/extract_maps.py",
+  "region": "US-IA",
+  "upstream": {
+    "kind": "protomaps",
+    "currentBuild": "20261108",
+    "notes": "The daily planet build at build.protomaps.com. Resolved through https://build-metadata.protomaps.dev/builds.json: the bucket root has no listing and there is no 'latest' alias. Set currentBuild after the first real extract."
+  },
+  "sizeChangeThresholdPercent": 20,
+  "allowSizeChange": false,
+  "notes": "HOSTED, although the spec's pack table calls roads 'Linked'. Neither Protomaps nor Geofabrik publishes a per-state PMTiles file: Protomaps publishes one ~130 GB planet archive, Geofabrik publishes .osm.pbf data, not tiles. The per-state extract has to be built and hosted by us. See the hosting note at the top of scripts/extract_maps.py."
+}
