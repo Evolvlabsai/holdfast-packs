@@ -111,6 +111,7 @@ jobs:
           cp schema/manifest.schema.json schema/news.schema.json _site/schema/
           if [ -n "$(ls -A news/img 2>/dev/null)" ]; then cp news/img/* _site/news/img/; fi
           if [ -f site/index.html ]; then cp site/index.html _site/index.html; fi
+          if [ -f site/privacy.html ]; then cp site/privacy.html _site/privacy.html; fi
           ls -l _site _site/schema _site/news/img
 
       - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5
