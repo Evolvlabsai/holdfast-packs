@@ -1,0 +1,16 @@
+{
+  "id": "us-ct",
+  "name": "Connecticut",
+  "region": "US-CT",
+  "bbox": [-73.73, 40.98, -71.78, 42.06],
+  "maxzoom": 14,
+  "license": "ODbL-1.0",
+  "attribution": "© OpenStreetMap contributors",
+  "notes": "bbox is [min_lon, min_lat, max_lon, max_lat], matching pmtiles extract --bbox. Connecticut's extent (Census TIGER, rounded outward). The south edge is the Greenwich shore islands on Long Island Sound; the Sound itself is not open ocean, and the rest of it south of the shore is left out. maxzoom 14 is where OSM street geometry stops adding detail; z15+ roughly doubles the file for labels the phone can render from z14 data.",
+  "geofabrik": {
+    "pbf": "https://download.geofabrik.de/north-america/us/connecticut-latest.osm.pbf",
+    "md5": "https://download.geofabrik.de/north-america/us/connecticut-latest.osm.pbf.md5",
+    "state": "https://download.geofabrik.de/north-america/us/connecticut-updates/state.txt",
+    "notes": "Not used for the roads basemap (Protomaps already renders the planet). It is the input the routing graph needs, and the state.txt timestamp is what check_upstream.py watches for maps-routing-us-ct."
+  }
+}

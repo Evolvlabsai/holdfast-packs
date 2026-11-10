@@ -1,0 +1,16 @@
+{
+  "id": "us-fl",
+  "name": "Florida",
+  "region": "US-FL",
+  "bbox": [-87.64, 24.52, -80.03, 31.01],
+  "maxzoom": 14,
+  "license": "ODbL-1.0",
+  "attribution": "© OpenStreetMap contributors",
+  "notes": "bbox is [min_lon, min_lat, max_lon, max_lat], matching pmtiles extract --bbox. Florida's extent (Census TIGER, rounded outward), including the Keys down to Key West (the south edge, 24.52) and so the Dry Tortugas, which fall inside the box. The west edge is the Perdido River, the east edge the Atlantic shore at Jupiter (-80.03), so open Atlantic east of the peninsula is trimmed. The Gulf west of the peninsula and Florida Bay inside the box cannot be trimmed with a rectangle; those ocean tiles are cheap. maxzoom 14 is where OSM street geometry stops adding detail; z15+ roughly doubles the file for labels the phone can render from z14 data.",
+  "geofabrik": {
+    "pbf": "https://download.geofabrik.de/north-america/us/florida-latest.osm.pbf",
+    "md5": "https://download.geofabrik.de/north-america/us/florida-latest.osm.pbf.md5",
+    "state": "https://download.geofabrik.de/north-america/us/florida-updates/state.txt",
+    "notes": "Not used for the roads basemap (Protomaps already renders the planet). It is the input the routing graph needs, and the state.txt timestamp is what check_upstream.py watches for maps-routing-us-fl."
+  }
+}

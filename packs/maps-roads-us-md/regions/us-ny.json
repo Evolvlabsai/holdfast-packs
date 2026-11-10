@@ -1,0 +1,16 @@
+{
+  "id": "us-ny",
+  "name": "New York",
+  "region": "US-NY",
+  "bbox": [-79.77, 40.49, -71.85, 45.02],
+  "maxzoom": 14,
+  "license": "ODbL-1.0",
+  "attribution": "© OpenStreetMap contributors",
+  "notes": "bbox is [min_lon, min_lat, max_lon, max_lat], matching pmtiles extract --bbox. New York's extent (Census TIGER, rounded outward): Lake Erie in the west, Staten Island in the south, Montauk Point in the east, the Canadian border in the north. Long Island is included, so the east edge stops at Montauk and no open Atlantic beyond it is paid for; the NY parts of Lakes Erie and Ontario, Long Island Sound and the New York Bight inside the box cannot be trimmed with a rectangle. maxzoom 14 is where OSM street geometry stops adding detail; z15+ roughly doubles the file for labels the phone can render from z14 data.",
+  "geofabrik": {
+    "pbf": "https://download.geofabrik.de/north-america/us/new-york-latest.osm.pbf",
+    "md5": "https://download.geofabrik.de/north-america/us/new-york-latest.osm.pbf.md5",
+    "state": "https://download.geofabrik.de/north-america/us/new-york-updates/state.txt",
+    "notes": "Not used for the roads basemap (Protomaps already renders the planet). It is the input the routing graph needs, and the state.txt timestamp is what check_upstream.py watches for maps-routing-us-ny."
+  }
+}

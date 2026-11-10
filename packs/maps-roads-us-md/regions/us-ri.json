@@ -1,0 +1,16 @@
+{
+  "id": "us-ri",
+  "name": "Rhode Island",
+  "region": "US-RI",
+  "bbox": [-71.91, 41.14, -71.11, 42.02],
+  "maxzoom": 14,
+  "license": "ODbL-1.0",
+  "attribution": "© OpenStreetMap contributors",
+  "notes": "bbox is [min_lon, min_lat, max_lon, max_lat], matching pmtiles extract --bbox. Rhode Island's extent (Census TIGER, rounded outward), including Block Island, which sets the south edge at 41.14. The east edge is Little Compton; the open Atlantic beyond Block Island and Sakonnet is trimmed. maxzoom 14 is where OSM street geometry stops adding detail; z15+ roughly doubles the file for labels the phone can render from z14 data.",
+  "geofabrik": {
+    "pbf": "https://download.geofabrik.de/north-america/us/rhode-island-latest.osm.pbf",
+    "md5": "https://download.geofabrik.de/north-america/us/rhode-island-latest.osm.pbf.md5",
+    "state": "https://download.geofabrik.de/north-america/us/rhode-island-updates/state.txt",
+    "notes": "Not used for the roads basemap (Protomaps already renders the planet). It is the input the routing graph needs, and the state.txt timestamp is what check_upstream.py watches for maps-routing-us-ri."
+  }
+}
