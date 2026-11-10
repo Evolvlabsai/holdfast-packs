@@ -1,21 +1,28 @@
 name: publish
 
-# Signs manifest.json with the Ed25519 private key and publishes the manifest
-# and its detached signature to GitHub Pages. This is the ONLY workflow that
+# Signs manifest.json and news.json (the News & tips feed) with the Ed25519
+# private key and publishes both, each with its detached signature, to GitHub
+# Pages. This is the ONLY workflow that
 # touches HOLDFAST_SIGNING_KEY, and it runs only on main -- that is the whole
 # trust model: a manifest is signed because a human merged it.
 #
 # The app reads
 #   https://<owner>.github.io/holdfast-packs/manifest.json
 #   https://<owner>.github.io/holdfast-packs/manifest.json.sig
-# and ignores any catalog whose signature does not verify against the public key
-# compiled into the app.
+#   https://<owner>.github.io/holdfast-packs/news.json
+#   https://<owner>.github.io/holdfast-packs/news.json.sig
+#   https://<owner>.github.io/holdfast-packs/news/img/<file>
+# and ignores any catalog or feed whose signature does not verify against the
+# public key compiled into the app. Images are trusted through the sha256 the
+# signed feed carries for each one.
 
 on:
   push:
     branches: [main]
     paths:
       - manifest.json
+      - news.json
+      - news/**
       - schema/**
       - .github/workflows/publish.yml
       - site/**
@@ -37,6 +44,7 @@ jobs:
       contents: read
     outputs:
       bytes: ${{ steps.sign.outputs.bytes }}
+      news_bytes: ${{ steps.sign.outputs.news_bytes }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
@@ -55,6 +63,15 @@ jobs:
         # not built yet; they cannot install anyway (their checksums never match).
         run: python scripts/validate_manifest.py --allow-placeholders --no-drift
 
+      - name: Validate the News & tips feed before signing
+        # Every item against schema/news.schema.json and the image limits, and
+        # news.json must be byte-for-byte what news/items builds: we sign the
+        # committed bytes, never a file regenerated here.
+        run: |
+          set -euo pipefail
+          python scripts/build_news.py --check
+          python scripts/pipeline_query.py manifest-bytes --manifest news.json
+
       - name: Sign manifest.json
         id: sign
         env:
@@ -68,7 +85,9 @@ jobs:
             exit 1
           fi
           python scripts/sign_manifest.py
+          python scripts/sign_manifest.py --file news.json
           echo "bytes=$(wc -c < manifest.json)" >> "$GITHUB_OUTPUT"
+          echo "news_bytes=$(wc -c < news.json)" >> "$GITHUB_OUTPUT"
 
       - name: Verify the signature we just made
         # Derive the public key from the secret and check the signature the way
@@ -81,15 +100,18 @@ jobs:
           echo "public key in use: $PUB"
           echo "it must match HoldfastConfig.PublicKeyBase64 in the app, or every app ignores this catalog"
           python scripts/verify_manifest.py --pub "$PUB"
+          python scripts/verify_manifest.py --pub "$PUB" --file news.json
 
       - name: Assemble the Pages site
         run: |
           set -euo pipefail
-          mkdir -p _site/schema
+          mkdir -p _site/schema _site/news/img
           cp manifest.json manifest.json.sig _site/
-          cp schema/manifest.schema.json _site/schema/
+          cp news.json news.json.sig _site/
+          cp schema/manifest.schema.json schema/news.schema.json _site/schema/
+          if [ -n "$(ls -A news/img 2>/dev/null)" ]; then cp news/img/* _site/news/img/; fi
           if [ -f site/index.html ]; then cp site/index.html _site/index.html; fi
-          ls -l _site _site/schema
+          ls -l _site _site/schema _site/news/img
 
       - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5
         with:
@@ -116,3 +138,4 @@ jobs:
           echo "manifest:  ${{ steps.deploy.outputs.page_url }}manifest.json"
           echo "signature: ${{ steps.deploy.outputs.page_url }}manifest.json.sig"
           echo "signed over ${{ needs.sign.outputs.bytes }} bytes"
+          echo "news:      ${{ steps.deploy.outputs.page_url }}news.json (+ .sig, signed over ${{ needs.sign.outputs.news_bytes }} bytes)"

@@ -1,0 +1,133 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://evolvlabsai.github.io/holdfast-packs/schema/news.schema.json",
+  "title": "Holdfast News & tips feed (news.json)",
+  "description": "The signed feed the Holdfast app shows on its Home screen. Signed with the same Ed25519 key and in the same detached-signature format as manifest.json. Written only by scripts/build_news.py from news/items/*.json. additionalProperties is false everywhere so a misspelled field fails CI instead of being skipped on the phone. Rules a schema cannot express (unique ids, newest-first order, image dimensions and hashes, body formatting, UTF-16 lengths) are checked by build_news.py.",
+  "type": "object",
+  "required": ["schema", "published", "items"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "description": "Feed schema number. 1 is the only version the app understands.",
+      "type": "integer",
+      "const": 1
+    },
+    "published": {
+      "description": "UTC, yyyy-MM-ddTHH:mm:ssZ. build_news.py sets it to the newest item's date at midnight UTC, so the same sources always produce the same bytes.",
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+    },
+    "items": {
+      "description": "Newest first. At most 50.",
+      "type": "array",
+      "maxItems": 50,
+      "items": { "$ref": "#/$defs/item" }
+    }
+  },
+  "$defs": {
+    "id": {
+      "description": "Unique and stable forever: the app remembers which ids it has shown.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "semver": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "text": {
+      "description": "Plain text. No control characters other than newline.",
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[^\\u0000-\\u0009\\u000b-\\u001f\\u007f]*$"
+    },
+    "common": {
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "date": { "$ref": "#/$defs/date" },
+        "kind": { "enum": ["news", "tip"] },
+        "title": { "allOf": [{ "$ref": "#/$defs/text" }, { "maxLength": 80, "pattern": "^[^\\n]*$" }] },
+        "summary": { "allOf": [{ "$ref": "#/$defs/text" }, { "maxLength": 200, "pattern": "^[^\\n]*$" }] },
+        "body": {
+          "description": "Plain text: paragraphs separated by one blank line, and bullet lines that start with \"- \". Nothing else (no Markdown, no HTML).",
+          "allOf": [{ "$ref": "#/$defs/text" }, { "maxLength": 4000 }]
+        },
+        "expires": {
+          "description": "Optional. The app hides the item after this date.",
+          "$ref": "#/$defs/date"
+        },
+        "minAppVersion": {
+          "description": "Optional. Apps older than this do not show the item.",
+          "$ref": "#/$defs/semver"
+        }
+      }
+    },
+    "item": {
+      "description": "One published item, as the app reads it.",
+      "allOf": [{ "$ref": "#/$defs/common" }],
+      "type": "object",
+      "required": ["id", "date", "kind", "title", "summary", "body"],
+      "properties": {
+        "id": true,
+        "date": true,
+        "kind": true,
+        "title": true,
+        "summary": true,
+        "body": true,
+        "expires": true,
+        "minAppVersion": true,
+        "image": { "$ref": "#/$defs/image" }
+      },
+      "additionalProperties": false
+    },
+    "image": {
+      "description": "Optional image, published next to the feed. The app checks size and sha256 before showing it.",
+      "type": "object",
+      "required": ["url", "sha256", "size", "width", "height", "alt"],
+      "additionalProperties": false,
+      "properties": {
+        "url": {
+          "type": "string",
+          "pattern": "^https://evolvlabsai\\.github\\.io/holdfast-packs/news/img/[a-z0-9][a-z0-9._-]*\\.(jpg|jpeg|png|webp)$"
+        },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "size": { "type": "integer", "minimum": 1, "maximum": 400000 },
+        "width": { "type": "integer", "minimum": 1, "maximum": 1600 },
+        "height": { "type": "integer", "minimum": 1, "maximum": 1600 },
+        "alt": { "allOf": [{ "$ref": "#/$defs/text" }, { "maxLength": 200, "pattern": "^[^\\n]*$" }] }
+      }
+    },
+    "sourceItem": {
+      "description": "One news/items/<id>.json source file: an item without the computed image fields. The image names a file in news/img/ instead of a url.",
+      "allOf": [{ "$ref": "#/$defs/common" }],
+      "type": "object",
+      "required": ["id", "date", "kind", "title", "summary", "body"],
+      "properties": {
+        "id": true,
+        "date": true,
+        "kind": true,
+        "title": true,
+        "summary": true,
+        "body": true,
+        "expires": true,
+        "minAppVersion": true,
+        "image": {
+          "type": "object",
+          "required": ["file", "alt"],
+          "additionalProperties": false,
+          "properties": {
+            "file": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*\\.(jpg|jpeg|png|webp)$" },
+            "alt": { "allOf": [{ "$ref": "#/$defs/text" }, { "maxLength": 200, "pattern": "^[^\\n]*$" }] }
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

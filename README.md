@@ -23,6 +23,11 @@ here. The manifest points the app straight at its upstream host.
 manifest.json                 the signed catalog: the app installs nothing not listed here
 manifest.json.sig             detached Ed25519 signature — NOT committed; CI makes it
 schema/manifest.schema.json   JSON Schema for the catalog, matching the app's parser
+news.json                     the signed News & tips feed; written only by build_news.py
+news.json.sig                 its detached signature — NOT committed; CI makes it
+news/items/<id>.json          one News & tips post per file
+news/img/<file>               images for posts, published next to news.json
+schema/news.schema.json       JSON Schema for the feed (and for the source items)
 packs/<id>/README.md          what the pack is, where it comes from, what is unresolved
 packs/<id>/pack.meta.json     pipeline metadata: hosting, upstream to watch, size threshold
 packs/<id>/sources.json       for PDF packs: the documents, with verification status
@@ -225,13 +230,73 @@ Everything per-state is one region file plus manifest entries. For Virginia:
    ids. A second state needs that to become a list, which is an app change, not
    a content change.
 
+## News & tips
+
+The app's Home screen shows a short feed, `news.json`, published at
+<https://evolvlabsai.github.io/holdfast-packs/news.json>. It is trusted exactly
+like the catalog: the same key signs it, the same detached `.sig` format covers
+its exact bytes, and the app ignores a feed whose signature does not verify.
+Images are published under `news/img/` on the same site and carry their
+`sha256` and `size` inside the signed feed.
+
+To add a post:
+
+1. **Write `news/items/<id>.json`.** The id is lower-case `[a-z0-9-]`, starts
+   with the date (`2026-12-winter-driving`), and never changes once published;
+   the file name must match it.
+
+   ```json
+   {
+     "id": "2026-12-winter-driving",
+     "date": "2026-12-01",
+     "kind": "tip",
+     "title": "Pack a winter car kit",
+     "summary": "One plain-text line, up to 200 characters.",
+     "body": "Paragraphs separated by one blank line.
+
+Bullets:
+- one
+- two",
+     "expires": "2027-03-31"
+   }
+   ```
+
+   `kind` is `news` or `tip`. Title up to 80 characters, summary up to 200,
+   body up to 4,000. The body is plain text: paragraphs and `- ` bullet lines,
+   no Markdown or HTML. `expires` and `minAppVersion` are optional.
+
+2. **Optionally add an image** to `news/img/` (JPEG, PNG or WebP, at most
+   400,000 bytes and 1,600 px on the longest side) and reference it with
+   `"image": {"file": "<file>", "alt": "<what it shows>"}`. Do not type the
+   url, hash, size or dimensions: the build computes them.
+
+3. **Build and check:**
+
+   ```bash
+   python scripts/build_news.py      # validates every item, writes news.json
+   python -m pytest -q
+   ```
+
+   The build sorts newest first (news before tips on the same day), keeps the
+   newest 50, and sets `published` to the newest item's date, so the same
+   sources always give the same bytes.
+
+4. **Open a pull request** with the item, any image, and the rebuilt
+   `news.json`. `validate.yml` runs `build_news.py --check`; after merge,
+   `publish.yml` checks again, signs `news.json`, verifies the signature and
+   publishes the feed, its `.sig` and `news/img/`.
+
+Keep posts factual and name the source for any safety advice. No medicine
+doses, same as quick cards. To retract a post, delete its item file and rebuild;
+the next signed feed no longer lists it.
+
 ## Cost
 
 $0 a month. The only fixed costs are the app-store fees (~$124 in year one).
 
 | Item | Where | Cost |
 | --- | --- | --- |
-| Manifest, signature, schema | GitHub Pages on this repo | free |
+| Manifest, News & tips feed, signatures, schemas | GitHub Pages on this repo | free |
 | Packs we build (core, medical, water-food, manuals, maps) | GitHub Releases, assets under 2 GB | free |
 | Wikipedia, WikiMed, iFixit, Stack Exchange | linked to Kiwix | free |
 | AI model | linked to Hugging Face | free |

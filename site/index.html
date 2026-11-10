@@ -45,6 +45,12 @@
         <span>Detached Ed25519 signature over the manifest's exact bytes, base64.</span></li>
     <li><a class="file" href="schema/manifest.schema.json">schema/manifest.schema.json</a>
         <span>JSON Schema for the catalog.</span></li>
+    <li><a class="file" href="news.json">news.json</a>
+        <span>The News &amp; tips feed shown on the app's Home screen. Images live under news/img/.</span></li>
+    <li><a class="file" href="news.json.sig">news.json.sig</a>
+        <span>Detached Ed25519 signature over the feed's exact bytes, same key as the manifest.</span></li>
+    <li><a class="file" href="schema/news.schema.json">schema/news.schema.json</a>
+        <span>JSON Schema for the feed.</span></li>
   </ul>
 
   <h2>Trust model</h2>
@@ -56,7 +62,7 @@
     <li>The signing key lives only in this repository's CI secrets, and a
       manifest is signed only after a human merges the change.</li>
     <li>No accounts, no analytics, no server. The app's only network calls are
-      fetching this catalog and downloading packs.</li>
+      fetching this catalog and the News &amp; tips feed, and downloading packs.</li>
   </ul>
 
   <h2>Licences</h2>

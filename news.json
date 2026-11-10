@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "published": "2026-11-10T00:00:00Z",
+  "items": [
+    {
+      "id": "2026-11-welcome",
+      "date": "2026-11-10",
+      "kind": "news",
+      "title": "Welcome to Holdfast",
+      "summary": "Free, offline emergency prep with no accounts. Offline maps now cover every US state and DC.",
+      "body": "Holdfast is a free emergency-prep app built to keep working when the network does not. Once you download the packs you want, the guides, checklists and maps on your phone work offline. There are no accounts and nothing to sign in to.\n\nOffline maps now cover every US state and Washington, DC. Each state has three map packs:\n- Roads: streets, trails and points of interest from OpenStreetMap\n- Terrain: elevation from USGS 3DEP, drawn as hillshade and contours\n- Directions: offline routing from OpenStreetMap data\n\nFamily in another state? Go to Settings → My states and add it, then download its maps in Packs. You can then find your way there without a signal.\n\nHoldfast is free. Where your app store supports it, you can leave a tip from Settings to help cover running costs. Tips are optional and unlock nothing: every feature and every pack is the same with or without one.",
+      "image": {
+        "url": "https://evolvlabsai.github.io/holdfast-packs/news/img/holdfast-share-card.png",
+        "sha256": "8531d8e46dfed346a41edb31d43f6758b709f18930c9a55b417fd6fc51046214",
+        "size": 45439,
+        "width": 1200,
+        "height": 630,
+        "alt": "The Holdfast logo, a compass arrow between two arcs, on dark green with the words Offline survival and emergency prep."
+      }
+    },
+    {
+      "id": "2026-11-paper-plan",
+      "date": "2026-11-10",
+      "kind": "tip",
+      "title": "Keep a paper copy of your plan",
+      "summary": "Phones run out of battery. Write down your emergency contacts and meeting places, and keep a copy where you can reach it.",
+      "body": "An app is only useful while your phone has power. In a long outage or an evacuation, a sheet of paper still works.\n\nFEMA's Ready.gov recommends making a family emergency communication plan and writing it down. Put these on paper:\n- Phone numbers for family members and an out-of-town contact\n- Where to meet if you cannot get home, near home and out of the neighborhood\n- Numbers for work, school or child care, and your doctors\n- Your home address, so anyone can give it to a dispatcher\n\nGive everyone in the household a copy, and keep one in your emergency kit, your car and your wallet or bag. Look it over every six months and update anything that has changed.\n\nReady.gov has a fillable plan template: https://www.ready.gov/plan"
+    }
+  ]
+}

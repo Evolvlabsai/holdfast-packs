@@ -1,0 +1,12 @@
+{
+  "id": "2026-11-welcome",
+  "date": "2026-11-10",
+  "kind": "news",
+  "title": "Welcome to Holdfast",
+  "summary": "Free, offline emergency prep with no accounts. Offline maps now cover every US state and DC.",
+  "body": "Holdfast is a free emergency-prep app built to keep working when the network does not. Once you download the packs you want, the guides, checklists and maps on your phone work offline. There are no accounts and nothing to sign in to.\n\nOffline maps now cover every US state and Washington, DC. Each state has three map packs:\n- Roads: streets, trails and points of interest from OpenStreetMap\n- Terrain: elevation from USGS 3DEP, drawn as hillshade and contours\n- Directions: offline routing from OpenStreetMap data\n\nFamily in another state? Go to Settings → My states and add it, then download its maps in Packs. You can then find your way there without a signal.\n\nHoldfast is free. Where your app store supports it, you can leave a tip from Settings to help cover running costs. Tips are optional and unlock nothing: every feature and every pack is the same with or without one.",
+  "image": {
+    "file": "holdfast-share-card.png",
+    "alt": "The Holdfast logo, a compass arrow between two arcs, on dark green with the words Offline survival and emergency prep."
+  }
+}

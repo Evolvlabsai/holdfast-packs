@@ -13,3 +13,11 @@
 # checkout that rewrote one CRLF would make a valid signature look forged.
 manifest.json     -text
 manifest.json.sig -text
+news.json         -text
+news.json.sig     -text
+
+# News images are published byte for byte; their sha256 is in the signed feed.
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.webp binary

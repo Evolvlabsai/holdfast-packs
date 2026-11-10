@@ -16,6 +16,7 @@
 # NOT in the repo: a committed .sig is stale the moment anyone edits the
 # manifest, and a stale signature looks like a tampered manifest to the app.
 /manifest.json.sig
+/news.json.sig
 
 # Keys. The private signing key must never be here; this is belt and braces.
 *.key

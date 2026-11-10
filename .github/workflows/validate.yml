@@ -73,3 +73,11 @@ jobs:
         # A guard against the classic mistake: reformatting manifest.json in a
         # pull request, which silently invalidates the published signature.
         run: python scripts/pipeline_query.py manifest-bytes
+
+      - name: Validate the News & tips feed
+        # Every item and image, and news.json must be exactly what news/items
+        # builds -- publish.yml signs the committed bytes.
+        run: |
+          set -euo pipefail
+          python scripts/build_news.py --check
+          python scripts/pipeline_query.py manifest-bytes --manifest news.json
