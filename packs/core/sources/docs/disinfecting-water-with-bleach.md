@@ -8,7 +8,7 @@ but is less reliable than boiling, and it does nothing about chemical contaminat
 ## Check the bottle first
 
 Use plain, unscented household bleach whose only active ingredient is sodium hypochlorite. Do not
-use scented bleach, colour-safe bleach, bleach with added cleaners, or pool chlorine. Bleach loses
+use scented bleach, color-safe bleach, bleach with added cleaners, or pool chlorine. Bleach loses
 strength on the shelf: replace the bottle you keep for water treatment every year.
 
 ## How much to add, per gallon of water

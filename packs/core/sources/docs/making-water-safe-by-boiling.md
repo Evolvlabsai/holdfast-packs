@@ -16,7 +16,7 @@ own, but it removes the particles that protect germs from heat and from disinfec
 1. Bring the water to a rolling boil — a boil you can see rolling over on itself, not just bubbles
    forming on the bottom of the pan.
 2. Hold the rolling boil for 1 minute.
-3. At elevations above 6,500 feet (about 2,000 metres), hold the rolling boil for 3 minutes instead.
+3. At elevations above 6,500 feet (about 2,000 meters), hold the rolling boil for 3 minutes instead.
 4. Let the water cool on its own. Do not add ice or cold tap water to speed it up.
 
 ## Afterwards

@@ -23,7 +23,7 @@ long time. Call 911 for anyone you think has hypothermia.
 
 1. Get the person into a warm room or shelter and handle them gently.
 2. Remove any wet clothing and dry the skin.
-3. Warm the centre of the body first — chest, neck, head and groin — with blankets, dry clothing or
+3. Warm the center of the body first — chest, neck, head and groin — with blankets, dry clothing or
    skin-to-skin contact under a blanket. Do not rub or massage the arms and legs.
 4. Give warm, sweet, non-alcoholic drinks only if the person is fully awake and able to swallow.
    Never give alcohol.
