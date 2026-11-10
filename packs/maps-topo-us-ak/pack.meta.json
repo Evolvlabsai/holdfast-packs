@@ -1,0 +1,14 @@
+{
+  "id": "maps-topo-us-ak",
+  "hosting": "hosted",
+  "builder": "scripts/build_topo.py --region us-ak --source 1 --maxzoom 10",
+  "region": "US-AK",
+  "format": "pmtiles: one archive of Terrarium-encoded PNG raster-dem tiles, z5-10, 256 px",
+  "upstream": {
+    "kind": "manual",
+    "notes": "USGS 3DEP 1 arc-second seamless DEM, 1x1 degree GeoTIFFs from https://prd-tnm.s3.amazonaws.com/StagedProducts/Elevation/1/TIFF/current/ (587 cells, ~22,469 MB for Alaska). Built with --source 1: z12 pixels are ~30 m anyway, and the 1/3 arc-second product is ~9x the download. Quarterly at most; a rebuild is a deliberate workflow_dispatch. TNM Access API: https://tnmaccess.nationalmap.gov/api/v1/products"
+  },
+  "sizeChangeThresholdPercent": 15,
+  "allowSizeChange": false,
+  "notes": "maxzoom 10: Alaska at z11 is 95,207 tiles (~4x z10's 23,957, ~5 GB), far over GitHub's 2 GiB per-asset limit; z10 is 1,290,605,142 bytes. Source: 3DEP 1 arc-second, which covers all of Alaska (587 cells published in the box; the 2 arc-second Alaska product has 504, a subset except n63w141 in Yukon and n69w168 in the Chukchi Sea). Clipped at the antimeridian: the Rat and Near Islands west of 180 are left out. One file: elevation only, as Terrarium raster-dem (height_m = R*256 + G + B/256 - 32768; sea and no-data 0 m). Contours and hillshade are drawn on the phone from these tiles, so there is no separate vector-contour or hillshade pack. Builder needs no GDAL or tippecanoe (numpy, tifffile, imagecodecs, Pillow, pmtiles)."
+}

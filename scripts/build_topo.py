@@ -45,15 +45,22 @@ byte-identically.
 
 The tile name is the cell's NW corner: ``n{ceil(lat)}w{abs(floor(lon))}``.
 Each is 10812x10812 float32 (10800 + a 6-pixel overlap on every side),
-120-520 MB. Only the cells overlapping the region bbox are downloaded (Maryland:
-15 cells, ~6.5 GB), with conditional GETs (``holdfast.httpcache``), into
+120-520 MB. The cells overlapping the region bbox are downloaded **plus one
+ring of neighbouring cells** (``CELL_RING``), so an edge tile that reaches past
+the bbox into the next 1x1 degree cell still has real elevation to its edges
+instead of a 0 m strip. Maryland: 15 overlapping cells, 35 with the ring. The
+ring changes only pixels outside the bbox's own cells, so tiles lying fully
+inside the bbox are byte-identical with or without it. One ring covers every
+tile at z9 and above (a z9 tile is ~0.7 degrees wide); z5-z8 tiles that reach
+more than a degree past the bbox are still 0 m out there. Downloads use conditional GETs (``holdfast.httpcache``), into
 ``--cache-dir`` (default ``../holdfast-dist/topo-cache``, outside the repo so a
 ``git clean`` never throws away gigabytes). The bbox comes from the same region
 file roads uses: ``packs/maps-roads-us-md/regions/<region>.json``.
 
 STEPS
 -----
-1. Download the overlapping 3DEP cells (missing cells, e.g. open ocean, are 0 m).
+1. Download the overlapping 3DEP cells plus one ring of neighbours (missing
+   cells, e.g. open ocean, are 0 m).
 2. Read each with tifffile; georeference from ModelTiepoint/ModelPixelScale;
    no-data -> 0; box-average by an integer factor to roughly the maxzoom pixel
    size (3x3 at z12, ~30 m), which is the anti-aliasing step. The reduced grid
@@ -94,21 +101,26 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from holdfast import httpcache, util  # noqa: E402
 
 #: 3DEP products, by the directory name USGS uses: "13" is 1/3 arc-second (~10 m),
-#: "1" is 1 arc-second (~30 m). Same 1x1 degree cells, same NW-corner names.
+#: "1" is 1 arc-second (~30 m), "2" is 2 arc-second (~60 m; Alaska only, the
+#: statewide Alaska product). Same 1x1 degree cells, same NW-corner names.
 DEM_URL_TEMPLATE = "https://prd-tnm.s3.amazonaws.com/StagedProducts/Elevation/{res}/TIFF/current/{name}/USGS_{res}_{name}.tif"
-SOURCES = ("13", "1")
+SOURCES = ("13", "1", "2")
 DEFAULT_SOURCE = "13"
 DEM_URL = DEM_URL_TEMPLATE.replace("{res}", DEFAULT_SOURCE)
 
 #: Human label for the metadata description.
-SOURCE_LABEL = {"13": "1/3 arc-second", "1": "1 arc-second"}
+SOURCE_LABEL = {"13": "1/3 arc-second", "1": "1 arc-second", "2": "2 arc-second"}
 
 TILE_SIZE = 256
 MIN_ZOOM = 5
 MAX_ZOOM = 12
 
 #: Source pixel size in metres along a meridian (the coarser axis of the cell).
-SOURCE_RES_M_BY_SOURCE = {"13": (1.0 / 3.0) / 3600.0 * 111_320.0, "1": 1.0 / 3600.0 * 111_320.0}
+SOURCE_RES_M_BY_SOURCE = {
+    "13": (1.0 / 3.0) / 3600.0 * 111_320.0,
+    "1": 1.0 / 3600.0 * 111_320.0,
+    "2": 2.0 / 3600.0 * 111_320.0,
+}
 SOURCE_RES_M = SOURCE_RES_M_BY_SOURCE[DEFAULT_SOURCE]
 
 #: Anything below this is a no-data marker (3DEP uses -999999), not terrain.
@@ -190,6 +202,27 @@ def dem_filename(name: str, source: str = DEFAULT_SOURCE) -> str:
     if source not in SOURCES:
         raise ValueError(f"unknown 3DEP source {source!r}; expected one of {SOURCES}")
     return f"USGS_{source}_{name}.tif"
+
+
+#: Extra rings of 1x1 degree cells fetched around the bbox, so edge tiles are not cut off at 0 m.
+CELL_RING = 1
+
+
+def dem_cells_with_ring(bbox, ring: int = CELL_RING) -> list[tuple[int, int]]:
+    """The cells overlapping ``bbox`` plus ``ring`` rings of neighbours.
+
+    Clamped to +-90 latitude and +-180 longitude: a bbox that stops at the
+    antimeridian (Alaska's, at -180) gets no ring past it, since there are no
+    cells named w181 and the archive does not wrap.
+    """
+    min_lon, min_lat, max_lon, max_lat = bbox
+    grown = [
+        max(-180.0, min_lon - ring),
+        max(-90.0, min_lat - ring),
+        min(180.0, max_lon + ring),
+        min(90.0, max_lat + ring),
+    ]
+    return dem_cells_for_bbox(grown)
 
 
 def dem_cells_for_bbox(bbox) -> list[tuple[int, int]]:
@@ -493,7 +526,8 @@ def main(argv: list[str] | None = None) -> int:
         "--source",
         choices=SOURCES,
         default=DEFAULT_SOURCE,
-        help='3DEP product: "13" = 1/3 arc-second (~10 m, default) or "1" = 1 arc-second (~30 m, ~9x less download)',
+        help='3DEP product: "13" = 1/3 arc-second (~10 m, default), "1" = 1 arc-second (~30 m, ~9x less download), '
+        '"2" = 2 arc-second (~60 m, Alaska only)',
     )
     parser.add_argument("--dry-run", action="store_true", help="print the DEM cells and tile counts, estimate size, download nothing")
     args = parser.parse_args(argv)
@@ -508,7 +542,7 @@ def main(argv: list[str] | None = None) -> int:
     out = Path(args.out) if args.out else root / "dist" / f"{region['id']}-topo.pmtiles"
     cache_dir = Path(args.cache_dir) if args.cache_dir else root.parent / "holdfast-dist" / "topo-cache"
 
-    cells = dem_cells_for_bbox(bbox)
+    cells = dem_cells_with_ring(bbox)
     counts = {z: len(tiles_for_bbox(bbox, z)) for z in range(args.minzoom, args.maxzoom + 1)}
     total = sum(counts.values())
     util.info(f"region {region['id']} ({name}), bbox {bbox}")

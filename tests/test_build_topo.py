@@ -119,6 +119,56 @@ def test_md_needs_fifteen_cells():
     assert "n39w077" in names and "n38w075" not in names
 
 
+def test_ring_adds_one_cell_of_neighbours_on_every_side():
+    core = set(bt.dem_cells_for_bbox(MD_BBOX))
+    ring = set(bt.dem_cells_with_ring(MD_BBOX))
+    assert core < ring
+    # 5 x 3 core cells grow to 7 x 5.
+    assert len(core) == 15 and len(ring) == 35
+    souths = sorted({s for s, _ in ring})
+    wests = sorted({w for _, w in ring})
+    assert souths == [36, 37, 38, 39, 40] and wests == [-81, -80, -79, -78, -77, -76, -75]
+    names = {bt.dem_cell_name(*c) for c in ring}
+    # Neighbours of Maryland: Delaware's coast (n39w076's east neighbour) and southern Pennsylvania.
+    assert "n39w075" in names and "n41w078" in names and "n37w081" in names
+
+
+def test_ring_zero_is_the_overlapping_cells():
+    assert bt.dem_cells_with_ring(MD_BBOX, ring=0) == bt.dem_cells_for_bbox(MD_BBOX)
+
+
+def test_ring_on_integer_edges_still_adds_a_full_ring():
+    # bbox edges on whole degrees: 1 core cell, 3 x 3 with the ring.
+    cells = set(bt.dem_cells_with_ring([-77.0, 38.0, -76.0, 39.0]))
+    assert len(cells) == 9 and (38, -77) in cells and (37, -78) in cells and (39, -76) in cells
+
+
+def test_ring_clamps_at_the_poles():
+    cells = bt.dem_cells_with_ring([10.0, 89.2, 10.5, 89.8])
+    assert max(s for s, _ in cells) == 89 and min(s for s, _ in cells) == 88
+
+
+def test_ring_fills_the_edge_tile_strip_and_leaves_inner_tiles_alone():
+    """A pixel just past the bbox, in the next cell, is sampled only when the ring brought that cell in."""
+    bbox = [-77.3, 38.2, -76.01, 38.8]
+    core = {c: _ramp_cell(*c) for c in bt.dem_cells_for_bbox(bbox)}
+    ringed = {c: _ramp_cell(*c) for c in bt.dem_cells_with_ring(bbox)}
+    z = 12
+    # The east edge tile reaches past -76.0 into cell (38, -76), which only the ring fetches.
+    x1 = bt.tile_range(bbox, z)[2]
+    y = int(bt.lat_to_tile_y(38.5, z))
+    lons, _ = bt.pixel_lonlat(z, x1, y)
+    assert lons[-1] > -76.0
+    edge_core = bt.Mosaic(core).sample_tile(z, x1, y)
+    edge_ring = bt.Mosaic(ringed).sample_tile(z, x1, y)
+    past = lons > -76.0
+    assert not edge_core[:, past].any() and edge_ring[:, past].all()
+    assert np.array_equal(edge_core[:, ~past], edge_ring[:, ~past])
+    # A tile fully inside the bbox is identical either way.
+    xi = int(bt.lon_to_tile_x(-76.8, z))
+    assert np.array_equal(bt.Mosaic(core).sample_tile(z, xi, y), bt.Mosaic(ringed).sample_tile(z, xi, y))
+
+
 def test_dem_url_scheme():
     assert bt.DEM_URL.format(name="n39w077") == (
         "https://prd-tnm.s3.amazonaws.com/StagedProducts/Elevation/13/TIFF/current/n39w077/USGS_13_n39w077.tif"
@@ -189,9 +239,30 @@ def test_source_1_url_and_file_naming():
     assert bt.dem_filename("n39w077", "1") != bt.dem_filename("n39w077", "13")
 
 
+def test_source_2_url_naming_and_scale():
+    assert bt.dem_url("n61w150", "2") == (
+        "https://prd-tnm.s3.amazonaws.com/StagedProducts/Elevation/2/TIFF/current/n61w150/USGS_2_n61w150.tif"
+    )
+    assert bt.dem_filename("n61w150", "2") == "USGS_2_n61w150.tif"
+    assert bt.SOURCE_LABEL["2"] == "2 arc-second"
+    # ~62 m source pixels: no reduction at Alaska's z10 (~74 m at 61N), 2x at z9.
+    assert bt.reduce_factor(10, 61.0, "2") == 1
+    assert bt.reduce_factor(9, 61.0, "2") == 2
+    assert bt.reduce_factor(10, 61.0, "1") == 2
+
+
+def test_ring_stops_at_the_antimeridian():
+    # Alaska's bbox is clipped at -180: no ring cells west of it (there is no w181).
+    cells = bt.dem_cells_with_ring([-180.0, 51.2, -129.97, 71.4])
+    assert min(w for _, w in cells) == -180
+    assert max(w for _, w in cells) == -129
+    assert min(s for s, _ in cells) == 50 and max(s for s, _ in cells) == 72
+    assert all(bt.dem_cell_name(*c).startswith("n") for c in cells)
+
+
 def test_unknown_source_is_rejected():
     with pytest.raises(ValueError):
-        bt.dem_url("n39w077", "2")
+        bt.dem_url("n39w077", "3")
     with pytest.raises(ValueError):
         bt.dem_filename("n39w077", "1m")
 
@@ -215,10 +286,13 @@ def test_dry_run_heads_the_chosen_source(monkeypatch):
 
     monkeypatch.setattr(bt.httpcache, "head", fake_head)
     assert bt.main(["--region", "us-md", "--dry-run"]) == 0
-    assert len(urls) == 15 and all("/Elevation/13/" in u and "/USGS_13_" in u for u in urls)
+    assert len(urls) == 35  # 15 overlapping cells + one ring and all("/Elevation/13/" in u and "/USGS_13_" in u for u in urls)
     urls.clear()
     assert bt.main(["--region", "us-md", "--dry-run", "--source", "1"]) == 0
-    assert len(urls) == 15 and all("/Elevation/1/" in u and "/USGS_1_" in u for u in urls)
+    assert len(urls) == 35  # 15 overlapping cells + one ring and all("/Elevation/1/" in u and "/USGS_1_" in u for u in urls)
+    urls.clear()
+    assert bt.main(["--region", "us-md", "--dry-run", "--source", "2"]) == 0
+    assert len(urls) == 35 and all("/Elevation/2/" in u and "/USGS_2_" in u for u in urls)
     with pytest.raises(SystemExit) as exc:
         bt.main(["--region", "us-md", "--source", "10"])
     assert exc.value.code == 2  # argparse: invalid choice
