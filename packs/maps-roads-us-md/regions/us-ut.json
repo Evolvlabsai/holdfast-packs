@@ -1,0 +1,16 @@
+{
+  "id": "us-ut",
+  "name": "Utah",
+  "region": "US-UT",
+  "bbox": [-114.06, 36.99, -109.04, 42.01],
+  "maxzoom": 14,
+  "license": "ODbL-1.0",
+  "attribution": "© OpenStreetMap contributors",
+  "notes": "bbox is [min_lon, min_lat, max_lon, max_lat], matching pmtiles extract --bbox. Utah's extent (Census TIGER, rounded outward). Landlocked, so there is no water to trim. maxzoom 14 is where OSM street geometry stops adding detail; z15+ roughly doubles the file for labels the phone can render from z14 data.",
+  "geofabrik": {
+    "pbf": "https://download.geofabrik.de/north-america/us/utah-latest.osm.pbf",
+    "md5": "https://download.geofabrik.de/north-america/us/utah-latest.osm.pbf.md5",
+    "state": "https://download.geofabrik.de/north-america/us/utah-updates/state.txt",
+    "notes": "Not used for the roads basemap (Protomaps already renders the planet). It is the input the routing graph needs, and the state.txt timestamp is what check_upstream.py watches for maps-routing-us-ut."
+  }
+}

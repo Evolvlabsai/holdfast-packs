@@ -1,0 +1,16 @@
+{
+  "id": "us-az",
+  "name": "Arizona",
+  "region": "US-AZ",
+  "bbox": [-114.82, 31.33, -109.04, 37.01],
+  "maxzoom": 14,
+  "license": "ODbL-1.0",
+  "attribution": "© OpenStreetMap contributors",
+  "notes": "bbox is [min_lon, min_lat, max_lon, max_lat], matching pmtiles extract --bbox. Arizona's extent (Census TIGER, rounded outward): the Colorado River at Yuma in the west, the Mexican border in the south. Landlocked, so there is no water to trim. The box takes in parts of Sonora, California, Nevada and New Mexico. maxzoom 14 is where OSM street geometry stops adding detail; z15+ roughly doubles the file for labels the phone can render from z14 data.",
+  "geofabrik": {
+    "pbf": "https://download.geofabrik.de/north-america/us/arizona-latest.osm.pbf",
+    "md5": "https://download.geofabrik.de/north-america/us/arizona-latest.osm.pbf.md5",
+    "state": "https://download.geofabrik.de/north-america/us/arizona-updates/state.txt",
+    "notes": "Not used for the roads basemap (Protomaps already renders the planet). It is the input the routing graph needs, and the state.txt timestamp is what check_upstream.py watches for maps-routing-us-az."
+  }
+}

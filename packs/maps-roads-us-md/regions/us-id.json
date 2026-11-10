@@ -1,0 +1,16 @@
+{
+  "id": "us-id",
+  "name": "Idaho",
+  "region": "US-ID",
+  "bbox": [-117.25, 41.98, -111.04, 49.01],
+  "maxzoom": 14,
+  "license": "ODbL-1.0",
+  "attribution": "© OpenStreetMap contributors",
+  "notes": "bbox is [min_lon, min_lat, max_lon, max_lat], matching pmtiles extract --bbox. Idaho's extent (Census TIGER, rounded outward), panhandle to the Canadian border. Landlocked, so there is no water to trim. The box takes in large parts of Oregon, Washington, Montana, Wyoming, Utah and Nevada around the panhandle. maxzoom 14 is where OSM street geometry stops adding detail; z15+ roughly doubles the file for labels the phone can render from z14 data.",
+  "geofabrik": {
+    "pbf": "https://download.geofabrik.de/north-america/us/idaho-latest.osm.pbf",
+    "md5": "https://download.geofabrik.de/north-america/us/idaho-latest.osm.pbf.md5",
+    "state": "https://download.geofabrik.de/north-america/us/idaho-updates/state.txt",
+    "notes": "Not used for the roads basemap (Protomaps already renders the planet). It is the input the routing graph needs, and the state.txt timestamp is what check_upstream.py watches for maps-routing-us-id."
+  }
+}

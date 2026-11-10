@@ -1,0 +1,16 @@
+{
+  "id": "us-nv",
+  "name": "Nevada",
+  "region": "US-NV",
+  "bbox": [-120.01, 35.00, -114.03, 42.01],
+  "maxzoom": 14,
+  "license": "ODbL-1.0",
+  "attribution": "© OpenStreetMap contributors",
+  "notes": "bbox is [min_lon, min_lat, max_lon, max_lat], matching pmtiles extract --bbox. Nevada's extent (Census TIGER, rounded outward): Lake Tahoe and the California line in the west, the southern tip near Laughlin in the south, the Colorado River and Utah line in the east. Landlocked, so there is no water to trim. Because of the diagonal California border, the box takes in a large part of eastern California, including Death Valley. maxzoom 14 is where OSM street geometry stops adding detail; z15+ roughly doubles the file for labels the phone can render from z14 data.",
+  "geofabrik": {
+    "pbf": "https://download.geofabrik.de/north-america/us/nevada-latest.osm.pbf",
+    "md5": "https://download.geofabrik.de/north-america/us/nevada-latest.osm.pbf.md5",
+    "state": "https://download.geofabrik.de/north-america/us/nevada-updates/state.txt",
+    "notes": "Not used for the roads basemap (Protomaps already renders the planet). It is the input the routing graph needs, and the state.txt timestamp is what check_upstream.py watches for maps-routing-us-nv."
+  }
+}

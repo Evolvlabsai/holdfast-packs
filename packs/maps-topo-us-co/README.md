@@ -1,0 +1,32 @@
+# maps-topo-us-co — Colorado: terrain
+
+Elevation for off-road travel. The phone draws hillshade and contours from it.
+
+- **Hosting:** ours, per region.
+- **Format:** `pmtiles` — **one file**, `us-co-topo.pmtiles`, 772 MB (6,611 tiles, z5–12).
+- **Cadence:** quarterly.
+- **`staleAfterDays`:** 180.
+- **Licence:** public domain (USGS 3DEP), credited anyway.
+
+## What is in the file
+
+The same contract as Maryland's (`packs/maps-topo-us-md/README.md`): one
+PMTiles v3 archive of Terrarium-encoded raster-dem PNG tiles, z5–12, 256 px,
+`height_m = (R*256 + G + B/256) - 32768`, sea and no-data 0 m, every tile
+intersecting the bbox `[-109.07, 36.99, -102.04, 41.01]` present. Metadata name: `"Colorado terrain"`.
+
+## Source: 1 arc-second, not 1/3
+
+Unlike Maryland, this pack is built from the **1 arc-second** (~30 m) 3DEP
+product (`--source 1`). At z12 a pixel is already ~30 m, so the finer product
+only buys a box average; the 1 arc-second cells are about a ninth of the
+download (48 cells, ~2,332 MB).
+
+## Building it
+
+```
+python scripts/build_topo.py --region us-co --source 1 --dry-run
+python scripts/build_topo.py --region us-co --source 1 --out dist/us-co-topo.pmtiles
+```
+
+Cells are cached in `../holdfast-dist/topo-cache` as `USGS_1_<cell>.tif`.

@@ -1,0 +1,15 @@
+{
+  "id": "maps-routing-us-id",
+  "hosting": "hosted",
+  "builder": "scripts/build_routing.py (stub: the graph is built by hand with Holdfast.RouteBuild)",
+  "region": "US-ID",
+  "upstream": {
+    "kind": "geofabrik",
+    "path": "north-america/us/idaho",
+    "currentTimestamp": "2026-11-08T21:21:00Z",
+    "notes": "state.txt timestamp read 2026-11-09 (sequenceNumber 4966). The .osm.pbf was 130,398,555 bytes. Geofabrik publishes .md5 only, no sha256."
+  },
+  "sizeChangeThresholdPercent": 20,
+  "allowSizeChange": false,
+  "notes": "Uses 'hfroute'. The graph is built locally with tools/Holdfast.RouteBuild from the holdfast-app repo (dotnet run --project tools/Holdfast.RouteBuild -c Release -- --pbf idaho-latest.osm.pbf --out us-id-routing.hfroute --bbox -117.25,41.98,-111.04,49.01) and uploaded by hand. Public CI cannot run it, because holdfast-app is a private repo. See packs/maps-routing-us-md/README.md."
+}
