@@ -1,0 +1,16 @@
+{
+  "id": "us-dc",
+  "name": "District of Columbia",
+  "region": "US-DC",
+  "bbox": [-77.12, 38.79, -76.91, 39.00],
+  "maxzoom": 14,
+  "license": "ODbL-1.0",
+  "attribution": "© OpenStreetMap contributors",
+  "notes": "bbox is [min_lon, min_lat, max_lon, max_lat], matching pmtiles extract --bbox. The District's extent (Census TIGER, rounded outward). DC is tiny (~0.2 x 0.2 degrees), so the box is a handful of tiles and also covers the inner Maryland and Virginia suburbs. maxzoom 14 is where OSM street geometry stops adding detail; z15+ roughly doubles the file for labels the phone can render from z14 data.",
+  "geofabrik": {
+    "pbf": "https://download.geofabrik.de/north-america/us/district-of-columbia-latest.osm.pbf",
+    "md5": "https://download.geofabrik.de/north-america/us/district-of-columbia-latest.osm.pbf.md5",
+    "state": "https://download.geofabrik.de/north-america/us/district-of-columbia-updates/state.txt",
+    "notes": "Not used for the roads basemap (Protomaps already renders the planet). It is the input the routing graph needs, and the state.txt timestamp is what check_upstream.py watches for maps-routing-us-dc."
+  }
+}

@@ -76,20 +76,27 @@ def test_the_repos_own_manifest_validates(validator):
 
 def test_the_repos_manifest_lists_the_launch_packs():
     ids = [p["id"] for p in mf.packs(mf.load())]
-    assert ids == [
+    non_map = [i for i in ids if not i.startswith("maps-")]
+    assert non_map == [
         "core",
         "medical",
         "medical-wikimed",
         "water-food",
         "manuals",
-        "maps-roads-us-md",
-        "maps-topo-us-md",
-        "maps-routing-us-md",
         "shelter-repair",
         "wikipedia-top50k",
         "offline-ai-model",
         "offline-ai-embedder",
     ]
+
+
+def test_every_state_has_roads_topo_and_routing_together():
+    ids = [p["id"] for p in mf.packs(mf.load()) if p["id"].startswith("maps-")]
+    regions = sorted({i.rsplit("-us-", 1)[1] for i in ids})
+    assert "md" in regions
+    for r in regions:
+        group = [i for i in ids if i.endswith("-us-" + r)]
+        assert group == [f"maps-roads-us-{r}", f"maps-topo-us-{r}", f"maps-routing-us-{r}"], r
 
 
 def test_a_fully_populated_pack_validates(validator):

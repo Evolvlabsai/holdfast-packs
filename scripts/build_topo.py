@@ -3,6 +3,7 @@
 
     python scripts/build_topo.py --region us-md --out dist/us-md-topo.pmtiles
     python scripts/build_topo.py --region us-md --dry-run      # tile list + size estimate, no download
+    python scripts/build_topo.py --region us-va --source 1     # 1 arc-second (~30 m) source cells
 
 No GDAL, no tippecanoe. numpy + tifffile (+ imagecodecs for the LZW/deflate
 GeoTIFFs) read the DEM, Pillow writes the PNGs, the ``pmtiles`` package writes
@@ -32,6 +33,15 @@ INPUTS
 USGS 3DEP 1/3 arc-second seamless DEM, 1x1 degree GeoTIFFs, public domain:
 
     https://prd-tnm.s3.amazonaws.com/StagedProducts/Elevation/13/TIFF/current/n39w077/USGS_13_n39w077.tif
+
+``--source 1`` uses the 1 arc-second (~30 m) product instead, same layout:
+
+    https://prd-tnm.s3.amazonaws.com/StagedProducts/Elevation/1/TIFF/current/n39w077/USGS_1_n39w077.tif
+
+3612x3612 cells of ~40-60 MB, about a ninth of the download. At maxzoom 12 a
+pixel is already ~30 m, so the output is nearly the same; it needs no box
+reduction (factor 1). The default stays ``13`` so Maryland rebuilds
+byte-identically.
 
 The tile name is the cell's NW corner: ``n{ceil(lat)}w{abs(floor(lon))}``.
 Each is 10812x10812 float32 (10800 + a 6-pixel overlap on every side),
@@ -83,14 +93,23 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from holdfast import httpcache, util  # noqa: E402
 
-DEM_URL = "https://prd-tnm.s3.amazonaws.com/StagedProducts/Elevation/13/TIFF/current/{name}/USGS_13_{name}.tif"
+#: 3DEP products, by the directory name USGS uses: "13" is 1/3 arc-second (~10 m),
+#: "1" is 1 arc-second (~30 m). Same 1x1 degree cells, same NW-corner names.
+DEM_URL_TEMPLATE = "https://prd-tnm.s3.amazonaws.com/StagedProducts/Elevation/{res}/TIFF/current/{name}/USGS_{res}_{name}.tif"
+SOURCES = ("13", "1")
+DEFAULT_SOURCE = "13"
+DEM_URL = DEM_URL_TEMPLATE.replace("{res}", DEFAULT_SOURCE)
+
+#: Human label for the metadata description.
+SOURCE_LABEL = {"13": "1/3 arc-second", "1": "1 arc-second"}
 
 TILE_SIZE = 256
 MIN_ZOOM = 5
 MAX_ZOOM = 12
 
-#: 1/3 arc-second, in metres along a meridian (the coarser axis of the cell).
-SOURCE_RES_M = (1.0 / 3.0) / 3600.0 * 111_320.0
+#: Source pixel size in metres along a meridian (the coarser axis of the cell).
+SOURCE_RES_M_BY_SOURCE = {"13": (1.0 / 3.0) / 3600.0 * 111_320.0, "1": 1.0 / 3600.0 * 111_320.0}
+SOURCE_RES_M = SOURCE_RES_M_BY_SOURCE[DEFAULT_SOURCE]
 
 #: Anything below this is a no-data marker (3DEP uses -999999), not terrain.
 NODATA_FLOOR = -10_000.0
@@ -159,6 +178,20 @@ def dem_name_for_point(lat: float, lon: float) -> str:
     return dem_cell_name(math.floor(lat), math.floor(lon))
 
 
+def dem_url(name: str, source: str = DEFAULT_SOURCE) -> str:
+    """Download URL of one 3DEP cell for ``source`` ("13" or "1")."""
+    if source not in SOURCES:
+        raise ValueError(f"unknown 3DEP source {source!r}; expected one of {SOURCES}")
+    return DEM_URL_TEMPLATE.format(res=source, name=name)
+
+
+def dem_filename(name: str, source: str = DEFAULT_SOURCE) -> str:
+    """Local cache file name, as USGS names it: ``USGS_13_n39w077.tif`` / ``USGS_1_n39w077.tif``."""
+    if source not in SOURCES:
+        raise ValueError(f"unknown 3DEP source {source!r}; expected one of {SOURCES}")
+    return f"USGS_{source}_{name}.tif"
+
+
 def dem_cells_for_bbox(bbox) -> list[tuple[int, int]]:
     """(south, west) integer corners of every 1x1 degree cell overlapping ``bbox``."""
     min_lon, min_lat, max_lon, max_lat = bbox
@@ -208,10 +241,10 @@ def box_reduce(arr: np.ndarray, factor: int) -> np.ndarray:
     return (out / (factor * factor)).astype(np.float32)
 
 
-def reduce_factor(maxzoom: int, lat: float) -> int:
-    """Integer box factor taking 1/3" pixels to about the maxzoom pixel size."""
+def reduce_factor(maxzoom: int, lat: float, source: str = DEFAULT_SOURCE) -> int:
+    """Integer box factor taking source pixels to about the maxzoom pixel size."""
     target = 40_075_016.686 * math.cos(math.radians(lat)) / (TILE_SIZE << maxzoom)
-    return max(1, round(target / SOURCE_RES_M))
+    return max(1, round(target / SOURCE_RES_M_BY_SOURCE[source]))
 
 
 # --------------------------------------------------------------------------- DEM grids
@@ -362,7 +395,9 @@ def build_tiles(mosaic: Mosaic, bbox, minzoom: int, maxzoom: int, log=util.info)
     return out
 
 
-def write_pmtiles(path: Path, tiles: dict[tuple[int, int, int], bytes], bbox, region_name: str) -> None:
+def write_pmtiles(
+    path: Path, tiles: dict[tuple[int, int, int], bytes], bbox, region_name: str, source: str = DEFAULT_SOURCE
+) -> None:
     from pmtiles.tile import Compression, TileType, zxy_to_tileid
     from pmtiles.writer import write
 
@@ -390,7 +425,7 @@ def write_pmtiles(path: Path, tiles: dict[tuple[int, int, int], bytes], bbox, re
         "vector_layers": [],
         "type": "baselayer",
         "format": "png",
-        "description": "USGS 3DEP 1/3 arc-second DEM as Terrarium raster-dem tiles: "
+        "description": f"USGS 3DEP {SOURCE_LABEL[source]} DEM as Terrarium raster-dem tiles: "
         "height_m = (R*256 + G + B/256) - 32768; sea and no-data are 0 m.",
         "minzoom": zooms[0],
         "maxzoom": zooms[-1],
@@ -405,15 +440,17 @@ def write_pmtiles(path: Path, tiles: dict[tuple[int, int, int], bytes], bbox, re
     tmp.replace(path)
 
 
-def fetch_cells(cells: list[tuple[int, int]], cache_dir: Path) -> dict[tuple[int, int], Path | None]:
+def fetch_cells(
+    cells: list[tuple[int, int]], cache_dir: Path, source: str = DEFAULT_SOURCE
+) -> dict[tuple[int, int], Path | None]:
     """Download (conditionally) every cell; None for a cell 3DEP does not publish."""
     cache = httpcache.Cache.load(cache_dir / "http.json")
     result: dict[tuple[int, int], Path | None] = {}
 
     def one(cell: tuple[int, int]) -> tuple[tuple[int, int], Path | None, str]:
         name = dem_cell_name(*cell)
-        url = DEM_URL.format(name=name)
-        dest = cache_dir / f"USGS_13_{name}.tif"
+        url = dem_url(name, source)
+        dest = cache_dir / dem_filename(name, source)
         try:
             wrote = httpcache.download(url, dest, cache=cache, timeout=120)
         except urllib.error.HTTPError as exc:
@@ -452,6 +489,12 @@ def main(argv: list[str] | None = None) -> int:
         default=None,
         help="where the 3DEP GeoTIFFs are kept (default: ../holdfast-dist/topo-cache next to the repo)",
     )
+    parser.add_argument(
+        "--source",
+        choices=SOURCES,
+        default=DEFAULT_SOURCE,
+        help='3DEP product: "13" = 1/3 arc-second (~10 m, default) or "1" = 1 arc-second (~30 m, ~9x less download)',
+    )
     parser.add_argument("--dry-run", action="store_true", help="print the DEM cells and tile counts, estimate size, download nothing")
     args = parser.parse_args(argv)
 
@@ -470,13 +513,13 @@ def main(argv: list[str] | None = None) -> int:
     total = sum(counts.values())
     util.info(f"region {region['id']} ({name}), bbox {bbox}")
     util.info(f"tiles: {total} (" + ", ".join(f"z{z} {n}" for z, n in counts.items()) + ")")
-    util.info(f"3DEP cells: {len(cells)}")
+    util.info(f"3DEP cells: {len(cells)} ({SOURCE_LABEL[args.source]})")
 
     if args.dry_run:
         source_bytes = 0
         for cell in cells:
             cell_name = dem_cell_name(*cell)
-            head = httpcache.head(DEM_URL.format(name=cell_name))
+            head = httpcache.head(dem_url(cell_name, args.source))
             size = head.length if head.ok else None
             source_bytes += size or 0
             status = util.human_bytes(size) if head.ok else f"missing ({head.error})"
@@ -498,9 +541,9 @@ def main(argv: list[str] | None = None) -> int:
 
     started = time.monotonic()
     util.info(f"downloading into {cache_dir}")
-    paths = fetch_cells(cells, cache_dir)
+    paths = fetch_cells(cells, cache_dir, args.source)
 
-    factor = reduce_factor(args.maxzoom, (bbox[1] + bbox[3]) / 2)
+    factor = reduce_factor(args.maxzoom, (bbox[1] + bbox[3]) / 2, args.source)
     util.info(f"reading DEMs, box factor {factor}")
     dems: dict[tuple[int, int], Dem | None] = {}
     for cell, path in paths.items():
@@ -509,7 +552,7 @@ def main(argv: list[str] | None = None) -> int:
 
     util.info("rendering tiles")
     tiles = build_tiles(mosaic, bbox, args.minzoom, args.maxzoom)
-    write_pmtiles(out, tiles, bbox, name)
+    write_pmtiles(out, tiles, bbox, name, args.source)
 
     size, sha = util.size_and_sha256(out)
     util.info("")

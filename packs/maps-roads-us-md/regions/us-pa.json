@@ -1,0 +1,16 @@
+{
+  "id": "us-pa",
+  "name": "Pennsylvania",
+  "region": "US-PA",
+  "bbox": [-80.52, 39.71, -74.69, 42.27],
+  "maxzoom": 14,
+  "license": "ODbL-1.0",
+  "attribution": "© OpenStreetMap contributors",
+  "notes": "bbox is [min_lon, min_lat, max_lon, max_lat], matching pmtiles extract --bbox. Pennsylvania's land extent (Census TIGER, rounded outward). The north edge is the tip of the Erie triangle on the Lake Erie shore (42.27); the state's share of the lake itself, which runs to ~42.5, is trimmed because every extra degree of water is paid for in tiles. maxzoom 14 is where OSM street geometry stops adding detail; z15+ roughly doubles the file for labels the phone can render from z14 data.",
+  "geofabrik": {
+    "pbf": "https://download.geofabrik.de/north-america/us/pennsylvania-latest.osm.pbf",
+    "md5": "https://download.geofabrik.de/north-america/us/pennsylvania-latest.osm.pbf.md5",
+    "state": "https://download.geofabrik.de/north-america/us/pennsylvania-updates/state.txt",
+    "notes": "Not used for the roads basemap (Protomaps already renders the planet). It is the input the routing graph needs, and the state.txt timestamp is what check_upstream.py watches for maps-routing-us-pa."
+  }
+}
