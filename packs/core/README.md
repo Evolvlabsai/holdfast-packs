@@ -34,24 +34,16 @@ is the `location` a search hit cites. Overlay features must carry
 `properties.kind` in {`rally`, `water`, `medical`, `shelter`, `fuel`} and
 `properties.name`; the writer rejects the pack otherwise.
 
-## DRAFT — nothing here has been reviewed
+## Review status
 
-This content came across from the app repo's development samples
-(`holdfast-app/samples/core-sample`). It is a stand-in so the pipeline has
-something real to build, and **none of it may ship**:
-
-- **Every quick card is `"draft": true`.** `build_core.py` refuses to build
-  without `--allow-draft`, and `update.yml` never passes that flag, so an
-  unreviewed card cannot reach a release. The spec wants each card to cite its
-  source and be reviewed before release, the medical ones ideally by a licensed
-  EMT or nurse. That has not happened. Bleeding and CPR need a clinician.
-- **The figures were transcribed by hand** from named public sources (Stop the
-  Bleed / ATP 3-50.21, AHA hands-only CPR, American Red Cross, CDC, EPA, USDA
-  FSIS, FEMA / Ready.gov) and need checking against the current editions. Bleach
-  concentrations and boil times change between editions.
+- **Quick cards: reviewed.** All six cards passed medical review on
+  2026-11-11 and are `"draft": false`, so the app no longer shows the
+  "Draft" label. `build_core.py` still refuses a card marked `"draft": true`
+  without `--allow-draft`, and `update.yml` never passes that flag, so a new or
+  edited card must be reviewed again before it can ship.
 - **No card gives a medicine dose,** and none should.
-- **The overlay points are invented.** Every name starts with `SAMPLE — ` and
-  every feature carries a `note` saying so. They sit near Annapolis and
+- **The overlay points are still invented.** Every name starts with `SAMPLE — `
+  and every feature carries a `note` saying so. They sit near Annapolis and
   Baltimore and correspond to nothing real.
 - **The documents are abridged** summaries of federal guidance.
 

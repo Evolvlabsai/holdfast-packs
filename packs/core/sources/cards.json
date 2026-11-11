@@ -7,7 +7,7 @@
     "icon": "drop",
     "source": "Stop the Bleed guidance and ATP 3-50.21",
     "timer": "tourniquet",
-    "draft": true,
+    "draft": false,
     "steps": [
       {
         "title": "Press hard",
@@ -35,7 +35,7 @@
     "icon": "heart",
     "source": "American Heart Association hands-only CPR and American Red Cross first aid guidance",
     "timer": null,
-    "draft": true,
+    "draft": false,
     "steps": [
       {
         "title": "Check and call",
@@ -67,7 +67,7 @@
     "icon": "water",
     "source": "CDC: Making Water Safe in an Emergency; EPA emergency disinfection of drinking water",
     "timer": null,
-    "draft": true,
+    "draft": false,
     "steps": [
       {
         "title": "Clear it first",
@@ -99,7 +99,7 @@
     "icon": "cold",
     "source": "CDC guidance on hypothermia and cold stress",
     "timer": null,
-    "draft": true,
+    "draft": false,
     "steps": [
       {
         "title": "Know the signs",
@@ -135,7 +135,7 @@
     "icon": "signal",
     "source": "FEMA / Ready.gov guidance on communicating during a disaster",
     "timer": null,
-    "draft": true,
+    "draft": false,
     "steps": [
       {
         "title": "Text, do not call",
@@ -167,7 +167,7 @@
     "icon": "shelter",
     "source": "FEMA / Ready.gov shelter-in-place guidance; CDC carbon monoxide guidance",
     "timer": null,
-    "draft": true,
+    "draft": false,
     "steps": [
       {
         "title": "Get everyone inside",

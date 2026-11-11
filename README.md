@@ -342,12 +342,10 @@ Found while building this. The first five are the ones that block packs.
 5. **Topo is two tile types and one `url`.** A PMTiles archive holds one tile
    type; contours are vector and hillshade is raster. Two packs, or contours
    only? See `packs/maps-topo-us-md/README.md`.
-6. **Nothing in `packs/core/sources` has been reviewed.** It is the app repo's
-   development sample: every quick card is `"draft": true`, the medical figures
-   were transcribed by hand, and the overlay points are invented and marked
-   `SAMPLE — `. `build_core.py` refuses to build without `--allow-draft` and the
-   weekly workflow never passes it. The spec wants a licensed EMT or nurse on
-   the medical cards; that has not happened.
+6. **Core quick cards are reviewed (2026-11-11).** All six cards are
+   `"draft": false`. `build_core.py` still refuses any card marked draft
+   without `--allow-draft`, and the weekly workflow never passes it. The
+   overlay points are still invented and marked `SAMPLE — `.
 7. **No per-state source for shelter and hospital overlays.** The spec's own
    open question, still open. Core claims a weekly cadence it cannot honour
    without one.

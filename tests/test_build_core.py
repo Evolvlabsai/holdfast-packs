@@ -1,12 +1,13 @@
 """build_core.py on the repo's real sources must produce a pack the app accepts.
 
-This is the end-to-end check: the draft content in ``packs/core/sources`` goes
+This is the end-to-end check: the reviewed content in ``packs/core/sources`` goes
 in, a ``core.hfdb`` comes out, and it answers the app's own search SQL.
 """
 
 from __future__ import annotations
 
 import json
+import shutil
 
 import pytest
 
@@ -27,7 +28,6 @@ def built(tmp_path_factory):
             "--name", "Core",
             "--version", "2026.11.09",
             "--region", "US-MD",
-            "--allow-draft",
         ]
     )
     assert code == 0
@@ -105,10 +105,22 @@ def test_the_overlay_keeps_its_geojson_verbatim(built):
     assert json.loads(geojson) == json.loads(raw)
 
 
-def test_building_without_allow_draft_is_refused(tmp_path):
-    """Every card in sources/ is "draft": true and none has been reviewed."""
+def test_every_source_card_is_reviewed():
+    """The quick cards passed medical review on 2026-11-11; none may go back to draft unnoticed."""
+    cards = json.loads((SOURCES / "cards.json").read_text(encoding="utf-8"))
+    assert cards
+    assert [c["id"] for c in cards if c.get("draft")] == []
+
+
+def test_building_a_draft_card_without_allow_draft_is_refused(tmp_path):
+    """An unreviewed card must never reach a release by accident."""
+    sources = tmp_path / "src"
+    shutil.copytree(SOURCES, sources)
+    cards = json.loads((sources / "cards.json").read_text(encoding="utf-8"))
+    cards[0]["draft"] = True
+    (sources / "cards.json").write_text(json.dumps(cards), encoding="utf-8")
     with pytest.raises(SystemExit) as exc:
-        build_core.main(["--sources", str(SOURCES), "--out", str(tmp_path / "core.hfdb"), "--id", "core"])
+        build_core.main(["--sources", str(sources), "--out", str(tmp_path / "core.hfdb"), "--id", "core"])
     assert exc.value.code == 1
 
 
