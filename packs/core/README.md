@@ -42,9 +42,9 @@ is the `location` a search hit cites. Overlay features must carry
   without `--allow-draft`, and `update.yml` never passes that flag, so a new or
   edited card must be reviewed again before it can ship.
 - **No card gives a medicine dose,** and none should.
-- **The overlay points are still invented.** Every name starts with `SAMPLE — `
-  and every feature carries a `note` saying so. They sit near Annapolis and
-  Baltimore and correspond to nothing real.
+- **No map overlays ship.** The invented `SAMPLE — ` points near Annapolis
+  and Baltimore were removed on 2026-11-11 (Core 2026.11.12). Overlays come
+  back only from a real per-state source (see the open question below).
 - **The documents are abridged** summaries of federal guidance.
 
 ## Open question

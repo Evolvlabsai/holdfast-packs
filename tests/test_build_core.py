@@ -37,17 +37,21 @@ def built(tmp_path_factory):
 def test_sources_are_present():
     assert (SOURCES / "cards.json").exists()
     assert list((SOURCES / "docs").glob("*.md"))
-    assert list((SOURCES / "overlays").glob("*.geojson"))
 
 
-def test_the_pack_has_cards_docs_and_overlays(built):
+def test_no_invented_map_points_ship():
+    """The old SAMPLE overlay points were made up. Core ships no overlays until a real source exists."""
+    assert not list((SOURCES / "overlays").glob("*.geojson"))
+
+
+def test_the_pack_has_cards_and_docs_and_no_overlays(built):
     described = hfdb.describe(built)
     assert described["meta"]["id"] == "core"
     assert described["meta"]["version"] == "2026.11.09"
     assert described["meta"]["region"] == "US-MD"
     assert described["docs"] == len(list((SOURCES / "docs").glob("*.md")))
     assert described["cards"] > 0
-    assert described["overlays"] == 1
+    assert described["overlays"] == 0
 
 
 def test_searching_it_finds_the_water_guidance(built):
@@ -91,16 +95,30 @@ def test_cards_are_stored_in_home_grid_order(built):
     assert [r[1] for r in rows] == list(range(len(source_ids)))
 
 
-def test_the_overlay_keeps_its_geojson_verbatim(built):
+def test_an_overlay_keeps_its_geojson_verbatim(tmp_path):
     import sqlite3
 
-    raw = (SOURCES / "overlays" / "us-md-sample.geojson").read_text(encoding="utf-8")
-    cn = sqlite3.connect(f"file:{built.as_posix()}?mode=ro", uri=True)
+    raw = json.dumps({
+        "type": "FeatureCollection",
+        "features": [{
+            "type": "Feature",
+            "geometry": {"type": "Point", "coordinates": [-76.5, 39.0]},
+            "properties": {"kind": "water", "name": "Test point"},
+        }],
+    })
+    sources = tmp_path / "src"
+    shutil.copytree(SOURCES, sources)
+    (sources / "overlays").mkdir(exist_ok=True)
+    (sources / "overlays" / "us-md-test.geojson").write_text(raw, encoding="utf-8")
+    out = tmp_path / "core.hfdb"
+    assert build_core.main(["--sources", str(sources), "--out", str(out), "--id", "core"]) == 0
+
+    cn = sqlite3.connect(f"file:{out.as_posix()}?mode=ro", uri=True)
     try:
         overlay_id, region, geojson = cn.execute("select overlay_id, region, geojson from overlays").fetchone()
     finally:
         cn.close()
-    assert overlay_id == "us-md-sample"
+    assert overlay_id == "us-md-test"
     assert region == "US-MD"
     assert json.loads(geojson) == json.loads(raw)
 

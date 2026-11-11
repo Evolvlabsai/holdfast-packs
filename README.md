@@ -345,7 +345,7 @@ Found while building this. The first five are the ones that block packs.
 6. **Core quick cards are reviewed (2026-11-11).** All six cards are
    `"draft": false`. `build_core.py` still refuses any card marked draft
    without `--allow-draft`, and the weekly workflow never passes it. The
-   overlay points are still invented and marked `SAMPLE — `.
+   invented `SAMPLE — ` overlay points were removed (Core 2026.11.12).
 7. **No per-state source for shelter and hospital overlays.** The spec's own
    open question, still open. Core claims a weekly cadence it cannot honour
    without one.

@@ -1,7 +1,7 @@
 {
   "_comment": "The signed pack catalog. The app installs nothing that is not listed here. Packs whose url contains 'PLACEHOLDER' and whose sha256 is 64 zeros have not been built or hosted yet: they are listed so the Packs screen can show them, and the app's checksum check makes every download from them fail, which is the intended safe behavior. scripts/validate_manifest.py names every one of them. Do not hand-edit size or sha256; use scripts/update_manifest.py.",
   "schema": 1,
-  "published": "2026-11-11T23:41:57Z",
+  "published": "2026-11-11T23:52:03Z",
   "minAppVersion": "0.1.0",
   "packs": [
     {
@@ -9,18 +9,18 @@
       "name": "Core",
       "group": "essentials",
       "region": "US-MD",
-      "version": "2026.11.11",
+      "version": "2026.11.12",
       "published": "2026-11-11",
       "format": "hfdb",
       "size": 167936,
-      "sha256": "5ef39f439beaa2a4bcc40ee4328c497cdbf231c790faa26efb2ebb6f54a40ea9",
-      "url": "https://github.com/Evolvlabsai/holdfast-packs/releases/download/packs-2026.11.11/core.hfdb",
+      "sha256": "7a43530452bd8352932cb0d3ddc37075ebfd49605b1fe6d274a4830b7af341f2",
+      "url": "https://github.com/Evolvlabsai/holdfast-packs/releases/download/packs-2026.11.12/core.hfdb",
       "mirrors": [],
       "required": true,
       "staleAfterDays": 7,
       "license": "CC BY-NC 4.0 (Holdfast's own writing); underlying sources public domain",
       "attribution": "Written in-house from FEMA, CDC, NOAA and American Red Cross guidance",
-      "changes": "Quick cards medically reviewed. The Draft label is gone.",
+      "changes": "Quick cards medically reviewed. Made-up sample map points removed.",
       "minAppVersion": "0.1.0",
       "description": "Quick cards, checklists, plan vault, radio frequencies"
     },
