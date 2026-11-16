@@ -11,14 +11,14 @@ The one pack the app installs on first run and will not let the user remove.
 ## Build
 
 The release build uses the app's PackTool, which also writes the embeddings
-the offline AI searches. `check_content.py` turns the card files into the JSON
+the offline AI searches. `check_content.py` turns the card and skill files into the JSON
 it reads (reviewed cards only):
 
 ```bash
-python scripts/check_content.py --cards-json dist/cards.json
+python scripts/check_content.py --cards-json dist/cards.json --skills-json dist/skills.json
 dotnet run --project ../holdfast-app/tools/Holdfast.PackTool -c Release -- build-hfdb \
   --id core --name Core --version 2026.11.16 --region US-MD \
-  --cards dist/cards.json --docs packs/core/sources/docs \
+  --cards dist/cards.json --skills dist/skills.json --docs packs/core/sources/docs \
   --embed-model <minilm-l6-v2.onnx> --embed-vocab <minilm-vocab.txt> --out dist/core.hfdb
 ```
 
