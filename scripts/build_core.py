@@ -9,7 +9,7 @@ This is the builder for ``core`` and for every other hand-written hfdb pack
 
 Source layout (all three parts optional, but a pack with none is an error):
 
-    <sources>/cards.json          JSON array of quick cards, in Home-grid order
+    <sources>/cards/*.md          quick cards, one Markdown file each (CONTRIBUTING.md)
     <sources>/docs/**/*.md        library documents, one file per document
     <sources>/overlays/*.geojson  map overlays, one FeatureCollection per file
 
@@ -37,7 +37,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from holdfast import hfdb, util  # noqa: E402
+from holdfast import content, hfdb, util  # noqa: E402
 
 
 def read_markdown(path: Path) -> tuple[str, str | None, str]:
@@ -69,10 +69,21 @@ def region_from_id(overlay_id: str) -> str:
     return ""
 
 
-def add_cards(writer: hfdb.HfdbWriter, cards_path: Path, *, allow_draft: bool) -> None:
+def read_cards(cards_path: Path) -> list[dict]:
+    """Cards from a folder of Markdown files (the source format) or a JSON array (an export)."""
+    if cards_path.is_dir():
+        try:
+            return [content.card_for_pack(c) for c in content.load_cards(cards_path)]
+        except content.ContentError as exc:
+            util.fail(str(exc))
     cards = json.loads(cards_path.read_text(encoding="utf-8"))
     if not isinstance(cards, list):
         util.fail(f"{cards_path}: expected a JSON array of quick cards")
+    return cards
+
+
+def add_cards(writer: hfdb.HfdbWriter, cards_path: Path, *, allow_draft: bool) -> None:
+    cards = read_cards(cards_path)
 
     drafts = []
     for sort, card in enumerate(cards):
@@ -125,19 +136,19 @@ def add_overlays(writer: hfdb.HfdbWriter, overlays: list[Path], region: str | No
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--sources", required=True, help="source directory (cards.json, docs/, overlays/)")
+    parser.add_argument("--sources", required=True, help="source directory (cards/, docs/, overlays/)")
     parser.add_argument("--out", required=True, help="output .hfdb path")
     parser.add_argument("--id", default="core", help="pack id written to meta (default: core)")
     parser.add_argument("--name", default=None, help="display name written to meta (default: the id, capitalised)")
     parser.add_argument("--version", default=None, help="pack version yyyy.MM.dd (default: today, UTC)")
     parser.add_argument("--region", default=None, help="region code for overlays, e.g. US-MD")
-    parser.add_argument("--cards", default=None, help="override the cards.json path")
+    parser.add_argument("--cards", default=None, help="override the cards folder (or a cards.json export)")
     parser.add_argument("--docs", default=None, help="override the docs directory")
     parser.add_argument("--overlays", default=None, help="override the overlays directory or a single .geojson file")
     parser.add_argument(
         "--allow-draft",
         action="store_true",
-        help="build even though quick cards are marked \"draft\": true (development only)",
+        help="build even though quick cards are 'status: draft' (development only)",
     )
     parser.add_argument("--query", default=None, help="after building, run this search against the pack and print the hits")
     args = parser.parse_args(argv)
@@ -146,7 +157,7 @@ def main(argv: list[str] | None = None) -> int:
     if not sources.is_dir():
         util.fail(f"sources directory not found: {sources}")
 
-    cards_path = Path(args.cards) if args.cards else sources / "cards.json"
+    cards_path = Path(args.cards) if args.cards else sources / "cards"
     docs_dir = Path(args.docs) if args.docs else sources / "docs"
     overlays_arg = Path(args.overlays) if args.overlays else sources / "overlays"
 
@@ -158,7 +169,7 @@ def main(argv: list[str] | None = None) -> int:
         overlay_files = []
 
     if not cards_path.exists() and not docs_dir.is_dir() and not overlay_files:
-        util.fail(f"{sources}: nothing to build (no cards.json, no docs/, no overlays/*.geojson)")
+        util.fail(f"{sources}: nothing to build (no cards/, no docs/, no overlays/*.geojson)")
 
     version = args.version or util.version_today()
     name = args.name or args.id.replace("-", " ").capitalize()

@@ -1,0 +1,51 @@
+name: Suggest a quick card or skill
+description: An idea for a new quick card or survival skill, or a fix to one. No GitHub skills needed.
+title: "[Content] "
+labels: ["content"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping. Quick cards are short emergency steps ("Stop bleeding").
+        Survival skills are small projects with drawings ("Water-jug lantern").
+        Please do not paste text copied from another site. Describe it in your own words and name the source.
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What is it?
+      options:
+        - A new quick card
+        - A new survival skill
+        - A fix to an existing card or skill
+    validations:
+      required: true
+  - type: input
+    id: title
+    attributes:
+      label: Title
+      placeholder: "Example: Snakebite"
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: The steps, in plain words
+      description: One action per line. For a fix, say what is wrong and what it should say.
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Source
+      description: Where the advice comes from. A public, trusted source (CDC, FEMA, Red Cross, National Park Service, ...), with a link if you have one.
+    validations:
+      required: true
+  - type: checkboxes
+    id: rules
+    attributes:
+      label: Before you send
+      options:
+        - label: It gives no medicine doses.
+          required: true
+        - label: I wrote it in my own words, and I agree it is published under the repo's writing license (CC BY-NC 4.0).
+          required: true

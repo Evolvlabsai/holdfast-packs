@@ -18,7 +18,8 @@ Creative Commons Attribution-NonCommercial 4.0 International
 ([`LICENSES/CC-BY-NC-4.0.txt`](LICENSES/CC-BY-NC-4.0.txt),
 <https://creativecommons.org/licenses/by-nc/4.0/>) covers:
 
-- everything under `packs/*/sources/` — quick cards (`cards.json`), library
+- everything under `packs/*/sources/` — quick cards (`cards/*.md`), survival
+  skills and their drawings (`skills/`), library
   documents (`docs/*.md`) and map overlays
 - `README.md` files
 

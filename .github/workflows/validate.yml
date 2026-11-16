@@ -36,6 +36,11 @@ jobs:
       - name: Install pinned dependencies
         run: python -m pip install -r scripts/requirements-dev.txt
 
+      - name: Check quick cards and skills (CONTRIBUTING.md)
+        # One plain sentence per problem, for contributors. Drafts pass here;
+        # the medical-review test below keeps a draft card from merging.
+        run: python scripts/check_content.py
+
       - name: Tests
         run: python -m pytest -q
 

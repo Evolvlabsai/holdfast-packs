@@ -24,3 +24,11 @@
 - [ ] the source is named and public, and its licence permits what we are doing with it
 - [ ] figures were checked against the current published edition, not an older one
 - [ ] no medicine doses
+
+## For a quick card or survival skill (see CONTRIBUTING.md)
+
+- [ ] `python scripts/check_content.py` passes
+- [ ] new or changed content is `status: draft`; only a maintainer sets `status: reviewed`
+- [ ] plain, short sentences, one action each, American English
+- [ ] anything with flame or fuel carries a fire and carbon monoxide warning
+- [ ] drawings are my own work

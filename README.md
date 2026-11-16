@@ -9,6 +9,9 @@ two things about content: the catalog URL and one Ed25519 public key. Everything
 else — what packs exist, where they are hosted, how big they are — is decided
 here, so moving a pack never needs an app release.
 
+> Contributing: quick cards and survival skills are plain Markdown files. See
+> [CONTRIBUTING.md](CONTRIBUTING.md) to suggest or change one.
+>
 > Licensing: code is MIT; our own writing (quick cards, documents, overlays) is
 > CC BY-NC 4.0. Third-party packs keep their own licences. See [`LICENSE`](LICENSE).
 
@@ -342,10 +345,13 @@ Found while building this. The first five are the ones that block packs.
 5. **Topo is two tile types and one `url`.** A PMTiles archive holds one tile
    type; contours are vector and hillshade is raster. Two packs, or contours
    only? See `packs/maps-topo-us-md/README.md`.
-6. **Core quick cards are reviewed (2026-11-11).** All six cards are
-   `"draft": false`. `build_core.py` still refuses any card marked draft
-   without `--allow-draft`, and the weekly workflow never passes it. The
-   invented `SAMPLE — ` overlay points were removed (Core 2026.11.12).
+6. **Core quick cards are reviewed.** Six cards on 2026-11-11 and ten more on
+   2026-11-16, each now one Markdown file in `packs/core/sources/cards/` so
+   anyone can propose a change by pull request (`CONTRIBUTING.md`). A draft
+   card keeps the PR red until a maintainer marks it reviewed. `build_core.py`
+   still refuses a draft without `--allow-draft`, and the weekly workflow
+   never passes it. The invented `SAMPLE — ` overlay points were removed
+   (Core 2026.11.12).
 7. **No per-state source for shelter and hospital overlays.** The spec's own
    open question, still open. Core claims a weekly cadence it cannot honour
    without one.

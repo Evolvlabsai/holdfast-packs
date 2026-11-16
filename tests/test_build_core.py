@@ -12,7 +12,7 @@ import shutil
 import pytest
 
 import build_core
-from holdfast import hfdb, util
+from holdfast import content, hfdb, util
 
 SOURCES = util.repo_root() / "packs" / "core" / "sources"
 
@@ -35,7 +35,7 @@ def built(tmp_path_factory):
 
 
 def test_sources_are_present():
-    assert (SOURCES / "cards.json").exists()
+    assert list((SOURCES / "cards").glob("*.md"))
     assert list((SOURCES / "docs").glob("*.md"))
 
 
@@ -85,7 +85,7 @@ def test_the_source_line_is_stored_and_kept_out_of_the_body(built):
 def test_cards_are_stored_in_home_grid_order(built):
     import sqlite3
 
-    source_ids = [c["id"] for c in json.loads((SOURCES / "cards.json").read_text(encoding="utf-8"))]
+    source_ids = [c["id"] for c in content.load_cards(SOURCES / "cards")]
     cn = sqlite3.connect(f"file:{built.as_posix()}?mode=ro", uri=True)
     try:
         rows = cn.execute("select card_id, sort from cards order by sort").fetchall()
@@ -123,20 +123,27 @@ def test_an_overlay_keeps_its_geojson_verbatim(tmp_path):
     assert json.loads(geojson) == json.loads(raw)
 
 
-def test_every_source_card_is_reviewed():
-    """The quick cards passed medical review (2026-11-11 and 2026-11-16); none may go back to draft unnoticed."""
-    cards = json.loads((SOURCES / "cards.json").read_text(encoding="utf-8"))
+def test_every_card_on_main_has_passed_medical_review():
+    """The merge gate for quick cards. A pull request that adds or changes a card stays red here
+    until a maintainer has had it reviewed and set 'status: reviewed' and the review date."""
+    cards = content.load_cards(SOURCES / "cards")
     assert cards
-    assert [c["id"] for c in cards if c.get("draft")] == []
+    drafts = [c["id"] for c in cards if c["status"] != "reviewed"]
+    assert drafts == [], (
+        f"These quick cards still need medical review: {', '.join(drafts)}. "
+        "A maintainer sets 'status: reviewed' and 'reviewed: YYYY-MM-DD' once a clinician has checked them."
+    )
 
 
 def test_building_a_draft_card_without_allow_draft_is_refused(tmp_path):
     """An unreviewed card must never reach a release by accident."""
     sources = tmp_path / "src"
     shutil.copytree(SOURCES, sources)
-    cards = json.loads((sources / "cards.json").read_text(encoding="utf-8"))
-    cards[0]["draft"] = True
-    (sources / "cards.json").write_text(json.dumps(cards), encoding="utf-8")
+    card = sorted((sources / "cards").glob("*.md"))[0]
+    text = card.read_text(encoding="utf-8")
+    text = text.replace("status: reviewed\n", "status: draft\n")
+    text = "\n".join(ln for ln in text.split("\n") if not ln.startswith("reviewed: "))
+    card.write_text(text, encoding="utf-8")
     with pytest.raises(SystemExit) as exc:
         build_core.main(["--sources", str(sources), "--out", str(tmp_path / "core.hfdb"), "--id", "core"])
     assert exc.value.code == 1
