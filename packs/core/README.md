@@ -58,6 +58,10 @@ is the `location` a search hit cites. Overlay features must carry
   `"draft": true` without `--allow-draft`, and `update.yml` never passes that
   flag, so a new or edited card must be reviewed again before it can ship.
 - **No card gives a medicine dose,** and none should.
+- **Survival skills** (app 0.5.3 and later) live in `sources/skills/<id>/`
+  with their line drawings and ship in Core's optional `skills` table. Older
+  apps ignore the table. `test_every_skill_on_main_has_passed_review` is their
+  merge gate, the same as for cards.
 - **New and changed cards arrive as pull requests** with `status: draft`
   (see `CONTRIBUTING.md`). The test
   `test_every_card_on_main_has_passed_medical_review` keeps them red until a
