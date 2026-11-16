@@ -19,6 +19,9 @@ Tables (see the app's doc comment):
 * ``overlays(overlay_id TEXT PRIMARY KEY, region TEXT, geojson TEXT)`` -- a
   GeoJSON FeatureCollection whose features carry ``properties.kind`` in
   {rally, water, medical, shelter, fuel} and ``properties.name``.
+* ``skills(skill_id TEXT PRIMARY KEY, sort INTEGER, json TEXT)`` -- optional:
+  one survival skill as JSON per row, drawings inline (``SKILLS_SQL``). Created
+  only when a skill is added; an app older than 0.5.3 never reads it.
 
 Content packs are plain, unencrypted SQLite; only the on-device vault is encrypted.
 """
@@ -29,6 +32,15 @@ import json
 import sqlite3
 from pathlib import Path
 from types import TracebackType
+
+# Copied verbatim from Holdfast.Core.Search.HfdbSchema.SkillsSql.
+SKILLS_SQL = """
+CREATE TABLE IF NOT EXISTS skills (
+    skill_id TEXT PRIMARY KEY,
+    sort     INTEGER,
+    json     TEXT
+);
+"""
 
 # Copied verbatim from Holdfast.Core.Search.HfdbSchema.CreateSql.
 CREATE_SQL = """
@@ -109,6 +121,7 @@ class HfdbWriter:
         self.docs = 0
         self.cards = 0
         self.overlays = 0
+        self.skills = 0
         self._completed = False
         self._closed = False
 
@@ -189,6 +202,20 @@ class HfdbWriter:
             (card_id, int(sort), raw_json or ""),
         )
         self.cards += 1
+
+    def add_skill(self, skill: dict, sort: int) -> None:
+        """Add one survival skill in its pack shape (``content.skill_for_pack``)."""
+        skill_id = skill.get("id")
+        if not isinstance(skill_id, str) or not skill_id:
+            raise HfdbError(f"skill at sort {sort} has no string 'id'")
+        if self.skills == 0:
+            # execute, not executescript: executescript would commit the writer's open transaction.
+            self._cn.execute(SKILLS_SQL)
+        self._cn.execute(
+            "INSERT INTO skills (skill_id, sort, json) VALUES (?, ?, ?)",
+            (skill_id, int(sort), json.dumps(skill, ensure_ascii=False)),
+        )
+        self.skills += 1
 
     def add_overlay(self, overlay_id: str, region: str, geojson_text: str) -> None:
         """Add one GeoJSON FeatureCollection. The text is validated, not rewritten."""

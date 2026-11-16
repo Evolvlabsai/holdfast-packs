@@ -28,6 +28,9 @@ def built(tmp_path_factory):
             "--name", "Core",
             "--version", "2026.11.09",
             "--region", "US-MD",
+            # These tests are about how documents and cards are stored. Whether everything on
+            # main is reviewed is the job of the two review tests below, which say so plainly.
+            "--allow-draft",
         ]
     )
     assert code == 0
@@ -111,7 +114,7 @@ def test_an_overlay_keeps_its_geojson_verbatim(tmp_path):
     (sources / "overlays").mkdir(exist_ok=True)
     (sources / "overlays" / "us-md-test.geojson").write_text(raw, encoding="utf-8")
     out = tmp_path / "core.hfdb"
-    assert build_core.main(["--sources", str(sources), "--out", str(out), "--id", "core"]) == 0
+    assert build_core.main(["--sources", str(sources), "--out", str(out), "--id", "core", "--allow-draft"]) == 0
 
     cn = sqlite3.connect(f"file:{out.as_posix()}?mode=ro", uri=True)
     try:
@@ -132,6 +135,16 @@ def test_every_card_on_main_has_passed_medical_review():
     assert drafts == [], (
         f"These quick cards still need medical review: {', '.join(drafts)}. "
         "A maintainer sets 'status: reviewed' and 'reviewed: YYYY-MM-DD' once a clinician has checked them."
+    )
+
+
+def test_every_skill_on_main_has_passed_review():
+    """The merge gate for survival skills, like the one for quick cards above."""
+    skills = content.load_skills(SOURCES / "skills")
+    drafts = [s["id"] for s in skills if s["status"] != "reviewed"]
+    assert drafts == [], (
+        f"These survival skills still need review: {', '.join(drafts)}. "
+        "A maintainer sets 'status: reviewed' and 'reviewed: YYYY-MM-DD' once they have been checked."
     )
 
 

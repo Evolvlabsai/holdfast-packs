@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" fill="none" stroke="#1C1F1A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <title>rain-catcher: setup</title>
+  <path d="M40 50 L40 144 M200 40 L200 144 M70 64 L70 144 M170 92 L170 144"/>
+  <path d="M40 50 L200 40 L170 92 L70 64 Z"/>
+  <path class="water" stroke="#2B7BB9" d="M30 4 L26 18 M52 4 L48 18 M74 4 L70 18 M96 4 L92 18 M118 4 L114 18 M140 4 L136 18 M162 4 L158 18 M184 4 L180 18 M206 4 L202 18"/>
+  <path class="water" stroke="#2B7BB9" d="M170 92 Q174 104 172 112"/>
+  <path d="M152 114 C152 110.1 161 107 172 107 C183 107 192 110.1 192 114 C192 117.9 183 121 172 121 C161 121 152 117.9 152 114 Z M152 114 L156 144 M192 114 L188 144 M156 144 C156 147.1 163.2 149.6 172 149.6 C180.8 149.6 188 147.1 188 144"/>
+  <path d="M20 144 L152 144 M192 144 L220 144"/>
+</svg>

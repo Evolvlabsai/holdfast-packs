@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" fill="none" stroke="#1C1F1A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <title>two-bucket-toilet: bag</title>
+  <path d="M76 140 C60 140 58 100 70 76 C78 62 88 58 92 54 L100 54 C104 58 114 62 122 76 C134 100 132 140 116 140 Z"/>
+  <path class="accent" stroke="#D88A13" d="M92 54 L86 42 M100 54 L106 42 M90 54 L102 54"/>
+  <path d="M148 70 L204 70 Q208 70 208 74 L208 140 Q208 144 204 144 L148 144 Q144 144 144 140 L144 74 Q144 70 148 70 Z M143 60 L209 60 Q212 60 212 63 L212 67 Q212 70 209 70 L143 70 Q140 70 140 67 L140 63 Q140 60 143 60 Z M164 56 L188 56"/>
+  <path d="M20 144 L144 144 M208 144 L220 144"/>
+</svg>

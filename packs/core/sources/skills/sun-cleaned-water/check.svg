@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" fill="none" stroke="#1C1F1A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <title>sun-cleaned-water: check</title>
+  <path d="M32 20 L144 20 Q148 20 148 24 L148 136 Q148 140 144 140 L32 140 Q28 140 28 136 L28 24 Q28 20 32 20 Z"/>
+  <path d="M42 40 L134 40 M42 54 L116 54 M42 68 L98 68 M42 82 L134 82 M42 96 L116 96 M42 110 L98 110 M42 124 L134 124"/>
+  <path d="M102 146 Q102 150 106 150 L150 150 Q154 150 154 146 L154 54 C154 44 134 40 134 34 L134 32 L122 32 L122 34 C122 40 102 44 102 54 Z M122 24 L134 24 Q136 24 136 26 L136 30 Q136 32 134 32 L122 32 Q120 32 120 30 L120 26 Q120 24 122 24 Z"/>
+  <path class="water" stroke="#2B7BB9" d="M104 60 Q116 58 128 60 Q140 62 152 60"/>
+</svg>

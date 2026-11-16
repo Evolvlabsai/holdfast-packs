@@ -141,6 +141,8 @@ own colors, so they look right in the dark theme.
 - An `.svg` file, under 40 KB, with `viewBox="0 0 240 160"`.
 - Only `<path>` elements, plus an optional `<title>`. No text, images,
   gradients, scripts or links. Turn text into paths, or leave it out.
+- Use lines and curves only (path commands M, L, H, V, C, S, Q, T, Z). No arcs
+  (`A`): draw a circle with four curves. Most drawing apps export curves already.
 - Draw with strokes, about 3 units wide. Set the look on the `<svg>` element so
   the file previews well on GitHub:
 

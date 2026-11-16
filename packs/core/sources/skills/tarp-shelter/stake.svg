@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" fill="none" stroke="#1C1F1A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <title>tarp-shelter: stake</title>
+  <path d="M20 40 L150 70 L120 110 L20 92"/>
+  <path d="M144 70 C144 66.7 146.7 64 150 64 C153.3 64 156 66.7 156 70 C156 73.3 153.3 76 150 76 C146.7 76 144 73.3 144 70 Z"/>
+  <path class="accent" stroke="#D88A13" d="M156 74 L196 124"/>
+  <path d="M188 104 L204 146"/>
+  <path d="M20 144 L200 144 M210 144 L220 144"/>
+</svg>

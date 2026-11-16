@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" fill="none" stroke="#1C1F1A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <title>tin-can-stove: door</title>
+  <path d="M84 44 C84 39 100.1 35 120 35 C139.9 35 156 39 156 44 C156 49 139.9 53 120 53 C100.1 53 84 49 84 44 Z M84 44 L84 132 M156 44 L156 132 M84 132 C84 137 100.1 141 120 141 C139.9 141 156 137 156 132"/>
+  <path class="accent" stroke="#D88A13" d="M104 140 L104 112 L136 112 L136 140"/>
+  <path d="M184 100 L144 124 M147.5 118 L144 124 L151 123.7"/>
+  <path d="M20 144 L84 144 M156 144 L220 144"/>
+</svg>

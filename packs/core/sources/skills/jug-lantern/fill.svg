@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" fill="none" stroke="#1C1F1A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <title>jug-lantern: fill</title>
+  <path d="M92 144 L148 144 Q156 144 156 136 L156 72 Q156 62 146 58 L132 52 L132 42 L108 42 L108 52 L94 58 Q84 62 84 72 L84 136 Q84 144 92 144 Z M146 58 C164 52 168 70 156 80"/>
+  <path class="water" stroke="#2B7BB9" d="M86 80 Q94.5 76 103 80 Q111.5 84 120 80 Q128.5 76 137 80 Q145.5 84 154 80"/>
+  <path d="M52 16 L112 16 Q120 16 120 24 L120 28 M52 10 L52 22"/>
+  <path class="water" stroke="#2B7BB9" d="M120 32 L120 66"/>
+  <path d="M178 132 L200 132 Q202 132 202 134 L202 140 Q202 142 200 142 L178 142 Q176 142 176 140 L176 134 Q176 132 178 132 Z"/>
+  <path d="M20 144 L84 144 M156 144 L174 144 M204 144 L220 144"/>
+</svg>

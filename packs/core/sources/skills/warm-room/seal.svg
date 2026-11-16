@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" fill="none" stroke="#1C1F1A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <title>warm-room: seal</title>
+  <path d="M24 26 L106 26 L106 96 Q94 100 82 96 Q70 92 58 96 Q44 100 24 96 Z"/>
+  <path d="M46 30 L46 92 M84 30 L84 92"/>
+  <path d="M142 24 L202 24 Q204 24 204 26 L204 142 Q204 144 202 144 L142 144 Q140 144 140 142 L140 26 Q140 24 142 24 Z M189 88 C189 86.3 190.3 85 192 85 C193.7 85 195 86.3 195 88 C195 89.7 193.7 91 192 91 C190.3 91 189 89.7 189 88 Z"/>
+  <path class="accent" stroke="#D88A13" d="M142 132 L202 132 Q208 132 208 138 L208 138 Q208 144 202 144 L142 144 Q136 144 136 138 L136 138 Q136 132 142 132 Z"/>
+  <path d="M20 144 L136 144 M208 144 L220 144"/>
+</svg>

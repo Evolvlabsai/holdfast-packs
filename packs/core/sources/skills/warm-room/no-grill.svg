@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" fill="none" stroke="#1C1F1A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <title>warm-room: no-grill</title>
+  <path d="M40 70 L120 20 L200 70 Z M52 64 L52 144 M188 64 L188 144"/>
+  <path d="M94 92 C94 82.1 105.6 74 120 74 C134.4 74 146 82.1 146 92 C146 101.9 134.4 110 120 110 C105.6 110 94 101.9 94 92 Z M102 106 L94 136 M138 106 L146 136 M120 110 L120 136"/>
+  <path class="accent" stroke="#D88A13" d="M84 64 L156 136 M156 64 L84 136"/>
+  <path d="M20 144 L52 144 M188 144 L220 144"/>
+</svg>

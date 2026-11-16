@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" fill="none" stroke="#1C1F1A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <title>signals: whistle</title>
+  <path d="M52 70 L98 70 Q110 70 110 82 L110 88 Q110 100 98 100 L52 100 Q40 100 40 88 L40 82 Q40 70 52 70 Z M106 76 L122 76 Q126 76 126 80 L126 90 Q126 94 122 94 L106 94 Q102 94 102 90 L102 80 Q102 76 106 76 Z M60 85 C60 81.7 62.7 79 66 79 C69.3 79 72 81.7 72 85 C72 88.3 69.3 91 66 91 C62.7 91 60 88.3 60 85 Z"/>
+  <path class="accent" stroke="#D88A13" d="M140 62 Q152 85 140 108 M166 62 Q178 85 166 108 M192 62 Q204 85 192 108"/>
+  <path d="M52 70 L44 54"/>
+</svg>

@@ -74,7 +74,8 @@ SVG_ROOT_ATTRS = {"xmlns", "viewBox", "width", "height", "fill", "stroke", "stro
                   "stroke-linecap", "stroke-linejoin"}
 SVG_PATH_ATTRS = {"d", "class", "fill", "stroke", "stroke-width"}
 SVG_PATH_CLASSES = ("accent", "water", "solid")
-SVG_PATH_DATA_RE = re.compile(r"^[MmLlHhVvCcSsQqTtAaZz0-9eE.,+\-\s]+$")
+# No arcs (A/a): the app's path reader is only relied on for lines and curves. Draw circles with C.
+SVG_PATH_DATA_RE = re.compile(r"^[MmLlHhVvCcSsQqTtZz0-9eE.,+\-\s]+$")
 
 
 class ContentError(ValueError):
@@ -377,7 +378,42 @@ def load_skill(folder: Path) -> dict:
         "status": status,
         "reviewed": reviewed,
         "draft": status != "reviewed",
+        "folder": str(folder),
     }
+
+
+def read_drawing(path: Path) -> dict:
+    """A checked drawing as the app draws it: its description and its paths, in order."""
+    check_svg(path)
+    root = SafeET.fromstring(path.read_bytes())
+    paths = []
+    for child in root:
+        if child.tag.split("}", 1)[-1] == "path":
+            paths.append({"d": " ".join(child.get("d").split()), "style": child.get("class") or "line"})
+    return {"paths": paths}
+
+
+def skill_for_pack(skill: dict) -> dict:
+    """The skill as the app reads it, with each step's drawing inline."""
+    folder = Path(skill["folder"])
+    steps = []
+    for step in skill["steps"]:
+        drawing = None
+        if step["image"]:
+            drawing = read_drawing(folder / step["image"])
+            drawing["alt"] = step["alt"]
+        steps.append({"title": step["title"], "body": step["body"], "drawing": drawing})
+    keep = ("id", "title", "summary", "category", "difficulty", "time", "needs", "warnings", "source")
+    return {**{k: skill[k] for k in keep}, "steps": steps}
+
+
+def write_skills_json(skills: list[dict], out: Path, *, include_drafts: bool = False) -> list[str]:
+    """Writes the skills the app should get to ``out``. Returns the ids of drafts left out."""
+    shipped = [skill_for_pack(s) for s in skills if include_drafts or not s["draft"]]
+    skipped = [s["id"] for s in skills if s["draft"] and not include_drafts]
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(shipped, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
+    return skipped
 
 
 def load_skills(folder: Path) -> list[dict]:
@@ -445,7 +481,7 @@ def check_svg(path: Path) -> None:
         _attrs(child, SVG_PATH_ATTRS, where)
         d = child.get("d") or ""
         if not d.strip() or not SVG_PATH_DATA_RE.match(d):
-            raise ContentError(f"{where}: a <path> needs plain path data in 'd'")
+            raise ContentError(f"{where}: a <path> needs plain path data in 'd' (lines and curves; no arcs)")
         cls = child.get("class")
         if cls is not None and cls not in SVG_PATH_CLASSES:
             raise ContentError(f"{where}: path class must be one of {', '.join(SVG_PATH_CLASSES)} (got {cls!r})")

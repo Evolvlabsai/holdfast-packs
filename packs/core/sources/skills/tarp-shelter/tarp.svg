@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" fill="none" stroke="#1C1F1A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <title>tarp-shelter: tarp</title>
+  <path d="M36 144 L36 93.6 M10 98.4 L36 24 L62 98.4 Z M204 144 L204 93.6 M178 98.4 L204 24 L230 98.4 Z"/>
+  <path class="accent" stroke="#D88A13" d="M36 70 L204 70"/>
+  <path d="M64 70 L176 70 L192 136 L80 136 Z"/>
+  <path d="M64 70 L44 130 M44 130 L80 136"/>
+  <path d="M80 136 L74 146 M192 136 L198 146 M44 130 L36 140"/>
+  <path d="M60 140 Q66 134 72 140 M74 140 Q80 134 86 140 M88 140 Q94 134 100 140 M102 140 Q108 134 114 140 M116 140 Q122 134 128 140 M130 140 Q136 134 142 140 M144 140 Q150 134 156 140 M158 140 Q164 134 170 140 M172 140 Q178 134 184 140"/>
+  <path d="M20 144 L40 144 M200 144 L220 144"/>
+</svg>

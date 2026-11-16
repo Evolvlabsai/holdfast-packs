@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" fill="none" stroke="#1C1F1A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <title>shortening-candle: wick</title>
+  <path d="M78 64 C78 57.9 96.8 53 120 53 C143.2 53 162 57.9 162 64 C162 70.1 143.2 75 120 75 C96.8 75 78 70.1 78 64 Z M78 64 L78 136 M162 64 L162 136 M78 136 C78 142.1 96.8 147 120 147 C143.2 147 162 142.1 162 136"/>
+  <path d="M84 70 C84 74.4 100.1 78 120 78 C139.9 78 156 74.4 156 70"/>
+  <path class="accent" stroke="#D88A13" d="M120 40 L120 66 M120 40 Q112 36 116 30"/>
+  <path class="accent" stroke="#D88A13" d="M120 78 L120 85 M120 92 L120 99 M120 106 L120 113 M120 120 L120 127"/>
+  <path d="M156 20 L156 52 M152.6 45.9 L156 52 L159.4 45.9"/>
+  <path d="M20 144 L78 144 M162 144 L220 144"/>
+</svg>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" fill="none" stroke="#1C1F1A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <title>warm-room: tent</title>
+  <path d="M40 80 L200 80 M52 80 L52 144 M188 80 L188 144"/>
+  <path d="M36 76 C120 64 120 64 204 76 L212 140 L150 140 Q120 104 90 140 L28 140 Z"/>
+  <path d="M102 126 C102 121.6 105.6 118 110 118 C114.4 118 118 121.6 118 126 C118 130.4 114.4 134 110 134 C105.6 134 102 130.4 102 126 Z M125 128 C125 124.1 128.1 121 132 121 C135.9 121 139 124.1 139 128 C139 131.9 135.9 135 132 135 C128.1 135 125 131.9 125 128 Z"/>
+  <path d="M20 144 L220 144"/>
+</svg>

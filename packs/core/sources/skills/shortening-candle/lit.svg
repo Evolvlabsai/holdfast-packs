@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" fill="none" stroke="#1C1F1A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <title>shortening-candle: lit</title>
+  <path d="M78 64 C78 57.9 96.8 53 120 53 C143.2 53 162 57.9 162 64 C162 70.1 143.2 75 120 75 C96.8 75 78 70.1 78 64 Z M78 64 L78 128 M162 64 L162 128 M78 128 C78 134.1 96.8 139 120 139 C143.2 139 162 134.1 162 128"/>
+  <path d="M84 70 C84 74.4 100.1 78 120 78 C139.9 78 156 74.4 156 70"/>
+  <path d="M120 50 L120 64"/>
+  <path class="accent" stroke="#D88A13" d="M120 24 C116 35.7 112 42.2 112 46.1 C112 49.5 116 50 120 50 C124 50 128 49.5 128 46.1 C128 42.2 124 35.7 120 24 Z"/>
+  <path class="accent" stroke="#D88A13" d="M92 30 L84 22 M148 30 L156 22 M120 14 L120 8"/>
+  <path d="M48 134 C48 128.5 80.2 124 120 124 C159.8 124 192 128.5 192 134 C192 139.5 159.8 144 120 144 C80.2 144 48 139.5 48 134 Z"/>
+  <path d="M20 152 L220 152"/>
+</svg>
