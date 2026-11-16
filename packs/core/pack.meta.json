@@ -7,6 +7,6 @@
     "notes": "Written in this repo from public-domain federal guidance. Nothing to watch; it changes when we change it. The Maryland overlays are meant to refresh weekly, which needs a per-state shelter/hospital data source (spec: Open questions)."
   },
   "sizeChangeThresholdPercent": 20,
-  "allowSizeChange": true,
-  "notes": "Required pack. sources/ holds the cards, docs and overlays; quick cards are one Markdown file each in sources/cards/ (CONTRIBUTING.md); every card on main has passed medical review (status: reviewed); build_core.py refuses a draft without --allow-draft. Release builds use the app PackTool (embeddings); see README.md. Core 2026.11.17 roughly doubled in size (184 KB to 360 KB) because it now carries twelve survival skills with line drawings; allowSizeChange is set for that release only."
+  "allowSizeChange": false,
+  "notes": "Required pack. sources/ holds the cards, docs and overlays; quick cards are one Markdown file each in sources/cards/ (CONTRIBUTING.md); every card on main has passed medical review (status: reviewed); build_core.py refuses a draft without --allow-draft. Release builds use the app PackTool (embeddings); see README.md. Core 2026.11.17 roughly doubled in size (184 KB to 360 KB) because it now carries twelve survival skills with line drawings; allowSizeChange was set for that release only and is off again."
 }
