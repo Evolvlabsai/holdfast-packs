@@ -42,6 +42,11 @@ is the `location` a search hit cites. Overlay features must carry
   without `--allow-draft`, and `update.yml` never passes that flag, so a new or
   edited card must be reviewed again before it can ship.
 - **No card gives a medicine dose,** and none should.
+- **New cards wait in `review/cards-draft.json`** (`"draft": true`) until they
+  pass medical review. The build never reads that folder. After review, move a
+  card into `sources/cards.json` with `"draft": false`. Ten cards went in for
+  review on 2026-11-16 (choking to lost outdoors). Home shows the first six
+  cards; app 0.5.2 build 30 adds "See all" for the rest.
 - **No map overlays ship.** The invented `SAMPLE — ` points near Annapolis
   and Baltimore were removed on 2026-11-11 (Core 2026.11.12). Overlays come
   back only from a real per-state source (see the open question below).
