@@ -13,7 +13,8 @@ needs:
 warnings:
   - Sunlight does not remove chemicals. Do not use water that smells of fuel or chemicals, or floodwater.
 source: CDC and World Health Organization guidance on solar water disinfection (SODIS)
-status: draft
+status: reviewed
+reviewed: 2026-11-16
 ---
 
 ## Use clear bottles

@@ -17,7 +17,8 @@ warnings:
   - Clear dry leaves from around it and keep water nearby. Follow local burn bans.
   - Cut edges are sharp and the can gets very hot. Wear gloves.
 source: Scouting camp-stove practice; U.S. Forest Service campfire safety; CDC carbon monoxide guidance
-status: draft
+status: reviewed
+reviewed: 2026-11-16
 ---
 
 ## Get the can ready

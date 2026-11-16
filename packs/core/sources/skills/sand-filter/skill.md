@@ -16,7 +16,8 @@ needs:
 warnings:
   - A filter makes water clearer, not safe. Always boil or disinfect the water afterward.
 source: CDC: Making Water Safe in an Emergency (clear the water, then disinfect it); U.S. Army FM 3-05.70 Survival
-status: draft
+status: reviewed
+reviewed: 2026-11-16
 ---
 
 ## Cut the bottle

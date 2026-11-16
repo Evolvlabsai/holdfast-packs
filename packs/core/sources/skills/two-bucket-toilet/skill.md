@@ -14,7 +14,8 @@ needs:
 warnings:
   - Keep the buckets away from food, drinking water and children.
 source: Oregon and Portland emergency-management two-bucket toilet guidance; CDC hygiene guidance
-status: draft
+status: reviewed
+reviewed: 2026-11-16
 ---
 
 ## Set up two buckets

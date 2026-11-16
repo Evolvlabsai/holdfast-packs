@@ -13,7 +13,8 @@ needs:
 warnings:
   - Use a battery light only. Never put a candle or any flame inside or near a plastic jug.
 source: Ready.gov power outage guidance (use flashlights, not candles); common preparedness practice
-status: draft
+status: reviewed
+reviewed: 2026-11-16
 ---
 
 ## Fill the jug

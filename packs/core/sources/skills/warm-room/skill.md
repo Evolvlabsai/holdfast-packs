@@ -15,7 +15,8 @@ warnings:
   - Never heat your home with a grill, camp stove, generator or gas oven. Carbon monoxide can kill in minutes.
   - Run a generator only outside, at least 20 feet from doors and windows.
 source: CDC winter weather and carbon monoxide guidance; Ready.gov winter storms and power outages
-status: draft
+status: reviewed
+reviewed: 2026-11-16
 ---
 
 ## Pick one small room

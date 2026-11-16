@@ -13,7 +13,8 @@ needs:
 warnings:
   - Do not set up under dead branches, in a dry streambed, or at the bottom of a slope.
 source: U.S. Army FM 3-05.70 Survival (shelters); National Park Service backcountry safety
-status: draft
+status: reviewed
+reviewed: 2026-11-16
 ---
 
 ## Tie the ridge line

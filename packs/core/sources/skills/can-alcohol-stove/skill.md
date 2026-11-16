@@ -18,7 +18,8 @@ warnings:
   - Never add fuel while it burns or while it is still hot.
   - Never use gasoline or any other fuel.
 source: Common backpacking practice; NFPA flammable liquid safety; CDC carbon monoxide guidance
-status: draft
+status: reviewed
+reviewed: 2026-11-16
 ---
 
 ## Punch a ring of holes

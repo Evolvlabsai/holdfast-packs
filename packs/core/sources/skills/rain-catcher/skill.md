@@ -13,7 +13,8 @@ needs:
 warnings:
   - Rainwater is not safe to drink as caught. Boil or disinfect it first.
 source: U.S. Army FM 3-05.70 Survival (water procurement); CDC: Making Water Safe in an Emergency
-status: draft
+status: reviewed
+reviewed: 2026-11-16
 ---
 
 ## Tilt the tarp

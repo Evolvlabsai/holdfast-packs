@@ -18,7 +18,8 @@ warnings:
   - If the grease catches fire, cover it with a metal lid. Never pour water on a grease fire.
   - Use flashlights when you can. Candles start many fires during power outages.
 source: Common preparedness practice; NFPA candle safety; Ready.gov power outage guidance
-status: draft
+status: reviewed
+reviewed: 2026-11-16
 ---
 
 ## Open the tub

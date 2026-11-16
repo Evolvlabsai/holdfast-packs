@@ -17,7 +17,7 @@ it reads (reviewed cards only):
 ```bash
 python scripts/check_content.py --cards-json dist/cards.json --skills-json dist/skills.json
 dotnet run --project ../holdfast-app/tools/Holdfast.PackTool -c Release -- build-hfdb \
-  --id core --name Core --version 2026.11.16 --region US-MD \
+  --id core --name Core --version 2026.11.17 --region US-MD \
   --cards dist/cards.json --skills dist/skills.json --docs packs/core/sources/docs \
   --embed-model <minilm-l6-v2.onnx> --embed-vocab <minilm-vocab.txt> --out dist/core.hfdb
 ```
@@ -62,6 +62,7 @@ is the `location` a search hit cites. Overlay features must carry
   with their line drawings and ship in Core's optional `skills` table. Older
   apps ignore the table. `test_every_skill_on_main_has_passed_review` is their
   merge gate, the same as for cards.
+  The first twelve passed review on 2026-11-16 (Core 2026.11.17).
 - **New and changed cards arrive as pull requests** with `status: draft`
   (see `CONTRIBUTING.md`). The test
   `test_every_card_on_main_has_passed_medical_review` keeps them red until a

@@ -13,7 +13,8 @@ needs:
 warnings:
   - Never shine a mirror flash at a pilot or driver for long. Flash, then move the light away.
 source: U.S. Army FM 3-05.70 Survival (signaling) and the international ground-to-air signal code
-status: draft
+status: reviewed
+reviewed: 2026-11-16
 ---
 
 ## Make a big X or V

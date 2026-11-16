@@ -14,7 +14,8 @@ warnings:
   - Light fires only in a fire ring or a cleared spot outdoors. Follow local burn bans.
   - Keep water nearby, never leave a fire alone, and put it out until it is cold.
 source: Common outdoor practice; U.S. Forest Service campfire safety
-status: draft
+status: reviewed
+reviewed: 2026-11-16
 ---
 
 ## Gather the supplies
