@@ -11,14 +11,14 @@ The one pack the app installs on first run and will not let the user remove.
 ## Build
 
 The release build uses the app's PackTool, which also writes the embeddings
-the offline AI searches. `check_content.py` turns the card files into the JSON
+the offline AI searches. `check_content.py` turns the card and skill files into the JSON
 it reads (reviewed cards only):
 
 ```bash
-python scripts/check_content.py --cards-json dist/cards.json
+python scripts/check_content.py --cards-json dist/cards.json --skills-json dist/skills.json
 dotnet run --project ../holdfast-app/tools/Holdfast.PackTool -c Release -- build-hfdb \
-  --id core --name Core --version 2026.11.16 --region US-MD \
-  --cards dist/cards.json --docs packs/core/sources/docs \
+  --id core --name Core --version 2026.11.17 --region US-MD \
+  --cards dist/cards.json --skills dist/skills.json --docs packs/core/sources/docs \
   --embed-model <minilm-l6-v2.onnx> --embed-vocab <minilm-vocab.txt> --out dist/core.hfdb
 ```
 
@@ -58,6 +58,11 @@ is the `location` a search hit cites. Overlay features must carry
   `"draft": true` without `--allow-draft`, and `update.yml` never passes that
   flag, so a new or edited card must be reviewed again before it can ship.
 - **No card gives a medicine dose,** and none should.
+- **Survival skills** (app 0.5.3 and later) live in `sources/skills/<id>/`
+  with their line drawings and ship in Core's optional `skills` table. Older
+  apps ignore the table. `test_every_skill_on_main_has_passed_review` is their
+  merge gate, the same as for cards.
+  The first twelve passed review on 2026-11-16 (Core 2026.11.17).
 - **New and changed cards arrive as pull requests** with `status: draft`
   (see `CONTRIBUTING.md`). The test
   `test_every_card_on_main_has_passed_medical_review` keeps them red until a

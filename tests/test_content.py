@@ -211,6 +211,74 @@ def test_an_unsafe_or_odd_drawing_is_refused(tmp_path, drawing, message):
         content.load_skill(_skill(tmp_path, drawing=drawing))
 
 
+@pytest.mark.parametrize("cls", ["thin", "accent thin", "water tint", "solid", "accent", "tint"])
+def test_detail_classes_are_allowed(tmp_path, cls):
+    content.load_skill(_skill(tmp_path, drawing=DRAWING.replace('class="accent"', f'class="{cls}"')))
+
+
+@pytest.mark.parametrize("cls", ["accent water", "thin solid", "accent accent", "glow thin"])
+def test_mixed_up_classes_are_refused(tmp_path, cls):
+    with pytest.raises(content.ContentError, match="path class must be"):
+        content.load_skill(_skill(tmp_path, drawing=DRAWING.replace('class="accent"', f'class="{cls}"')))
+
+
 def test_a_missing_drawing_is_refused(tmp_path):
     with pytest.raises(content.ContentError, match="picture file is missing"):
         content.load_skill(_skill(tmp_path, drawing=None))
+
+
+# --- skills in a built pack ----------------------------------------------------
+
+def test_a_skill_lands_in_the_pack_with_its_drawing_inline(tmp_path):
+    import shutil
+    import sqlite3
+
+    import build_core
+
+    sources = tmp_path / "src"
+    shutil.copytree(CARDS.parent / "cards", sources / "cards")
+    skill_dir = _skill(tmp_path)
+    shutil.copytree(skill_dir, sources / "skills" / "test-skill")
+    out = tmp_path / "core.hfdb"
+
+    with pytest.raises(SystemExit):
+        build_core.main(["--sources", str(sources), "--out", str(out), "--id", "core"])  # a draft skill
+    assert build_core.main(["--sources", str(sources), "--out", str(out), "--id", "core", "--allow-draft"]) == 0
+
+    cn = sqlite3.connect(f"file:{out.as_posix()}?mode=ro", uri=True)
+    try:
+        skill_id, sort, raw = cn.execute("select skill_id, sort, json from skills").fetchone()
+    finally:
+        cn.close()
+    skill = json.loads(raw)
+    assert (skill_id, sort) == ("test-skill", 0)
+    assert "folder" not in skill and "status" not in skill
+    drawing = skill["steps"][0]["drawing"]
+    assert drawing["alt"] == "A jug full of water."
+    assert drawing["paths"] == [{"d": "M80 40 h80 v100 h-80 z", "style": "line"},
+                                {"d": "M120 20 v20", "style": "accent"}]
+    assert skill["steps"][1]["drawing"] is None
+
+
+def test_a_pack_without_skills_has_no_skills_table(tmp_path):
+    import shutil
+    import sqlite3
+
+    import build_core
+
+    sources = tmp_path / "src"
+    shutil.copytree(CARDS, sources / "cards")
+    out = tmp_path / "core.hfdb"
+    assert build_core.main(["--sources", str(sources), "--out", str(out), "--id", "core"]) == 0
+    cn = sqlite3.connect(f"file:{out.as_posix()}?mode=ro", uri=True)
+    try:
+        tables = {r[0] for r in cn.execute("select name from sqlite_master where type = 'table'")}
+    finally:
+        cn.close()
+    assert "skills" not in tables
+
+
+def test_a_drawing_with_an_arc_is_refused(tmp_path):
+    drawing = DRAWING.replace('d="M120 20 v20"', 'd="M100 20 A10 10 0 0 1 120 20"')
+    with pytest.raises(content.ContentError, match="no arcs"):
+        content.load_skill(_skill(tmp_path, drawing=drawing))

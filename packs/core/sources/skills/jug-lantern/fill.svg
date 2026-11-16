@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" fill="none" stroke="#1C1F1A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <title>jug-lantern: fill</title>
+  <path class="tint" fill="#1C1F1A" fill-opacity="0.14" stroke="none" d="M74 144 C74 141.2 94.6 138.9 120 138.9 C145.4 138.9 166 141.2 166 144 C166 146.8 145.4 149.1 120 149.1 C94.6 149.1 74 146.8 74 144 Z"/>
+  <path class="water tint" fill="#2B7BB9" fill-opacity="0.28" stroke="none" d="M86 86 Q94.5 83 103 86 Q111.5 89 120 86 Q128.5 83 137 86 Q145.5 89 154 86 L154 136 Q154 142 148 142 L92 142 Q86 142 86 136 Z"/>
+  <path d="M92 144 L148 144 Q156 144 156 136 L156 72 Q156 62 146 58 L132 52 L132 42 L108 42 L108 52 L94 58 Q84 62 84 72 L84 136 Q84 144 92 144 Z"/>
+  <path d="M146 58 C164 52 168 70 156 80"/>
+  <path class="thin" stroke-width="1.2" d="M100 86 L140 86 Q146 86 146 92 L146 124 Q146 130 140 130 L100 130 Q94 130 94 124 L94 92 Q94 86 100 86 Z M147 63 C157 61 159 69 155 74 M89 80 L89 132 M108 48 L132 48"/>
+  <path class="water" stroke="#2B7BB9" d="M86 86 Q94.5 83 103 86 Q111.5 89 120 86 Q128.5 83 137 86 Q145.5 89 154 86"/>
+  <path d="M36 4 L36 26 M36 12 L112 12 Q128 12 128 28 M36 19 L108 19 Q120 19 120 28 M120 28 L128 28"/>
+  <path class="thin" stroke-width="1.2" d="M68 2 L84 2 Q86 2 86 4 L86 5 Q86 7 84 7 L68 7 Q66 7 66 5 L66 4 Q66 2 68 2 Z M76 7 L76 12"/>
+  <path class="water" stroke="#2B7BB9" d="M124 30 L124 82"/>
+  <path class="water thin" stroke="#2B7BB9" stroke-width="1.2" d="M121 32 L121 80"/>
+  <path class="water thin" stroke="#2B7BB9" stroke-width="1.2" d="M114 84 Q116 78 119 82 M126 82 Q129 77 132 83"/>
+  <path class="water thin" stroke="#2B7BB9" stroke-width="1.2" d="M108 67 C106.9 69.7 105.7 71.2 105.7 72.1 C105.7 72.9 106.9 73 108 73 C109.1 73 110.3 72.9 110.3 72.1 C110.3 71.2 109.1 69.7 108 67 Z M140 71.5 C139.1 73.8 138.1 75 138.1 75.8 C138.1 76.4 139.1 76.5 140 76.5 C140.9 76.5 141.9 76.4 141.9 75.8 C141.9 75 140.9 73.8 140 71.5 Z"/>
+  <path d="M180 132 L202 132 Q204 132 204 134 L204 142 Q204 144 202 144 L180 144 Q178 144 178 142 L178 134 Q178 132 180 132 Z"/>
+  <path class="thin" stroke-width="1.2" d="M182 134 L182 142 M188 134 L188 142 M194 134 L194 142 M200 134 L200 142"/>
+  <path d="M12 144 L84 144 M156 144 L176 144 M206 144 L228 144"/>
+  <path class="thin" stroke-width="1.2" d="M12 151 L228 151 M40 151 L36 160 M100 151 L96 160 M160 151 L156 160 M210 151 L206 160"/>
+</svg>

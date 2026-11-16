@@ -10,6 +10,7 @@ This is the builder for ``core`` and for every other hand-written hfdb pack
 Source layout (all three parts optional, but a pack with none is an error):
 
     <sources>/cards/*.md          quick cards, one Markdown file each (CONTRIBUTING.md)
+    <sources>/skills/<id>/        survival skills: skill.md and its drawings
     <sources>/docs/**/*.md        library documents, one file per document
     <sources>/overlays/*.geojson  map overlays, one FeatureCollection per file
 
@@ -109,6 +110,21 @@ def add_cards(writer: hfdb.HfdbWriter, cards_path: Path, *, allow_draft: bool) -
             )
 
 
+def add_skills(writer: hfdb.HfdbWriter, skills_dir: Path, *, allow_draft: bool) -> None:
+    try:
+        skills = content.load_skills(skills_dir)
+    except content.ContentError as exc:
+        util.fail(str(exc))
+    drafts = [s["id"] for s in skills if s["draft"]]
+    if drafts and not allow_draft:
+        util.fail(
+            f"{len(drafts)} survival skill(s) are drafts and have not been reviewed: {', '.join(drafts)}. "
+            "Pass --allow-draft to build a development pack anyway; never pass it in a release job."
+        )
+    for sort, skill in enumerate(skills):
+        writer.add_skill(content.skill_for_pack(skill), sort)
+
+
 def add_docs(writer: hfdb.HfdbWriter, docs_dir: Path) -> None:
     files = sorted(docs_dir.rglob("*.md"), key=lambda p: str(p).lower())
     if not files:
@@ -160,6 +176,7 @@ def main(argv: list[str] | None = None) -> int:
     cards_path = Path(args.cards) if args.cards else sources / "cards"
     docs_dir = Path(args.docs) if args.docs else sources / "docs"
     overlays_arg = Path(args.overlays) if args.overlays else sources / "overlays"
+    skills_dir = sources / "skills"
 
     if overlays_arg.is_dir():
         overlay_files = sorted(overlays_arg.glob("*.geojson"))
@@ -187,15 +204,17 @@ def main(argv: list[str] | None = None) -> int:
             add_docs(writer, docs_dir)
         if overlay_files:
             add_overlays(writer, overlay_files, args.region)
+        if skills_dir.is_dir():
+            add_skills(writer, skills_dir, allow_draft=args.allow_draft)
 
-        docs, cards, overlays = writer.docs, writer.cards, writer.overlays
+        docs, cards, overlays, skills = writer.docs, writer.cards, writer.overlays, writer.skills
         writer.complete()
 
     size, digest = util.size_and_sha256(out)
     util.info(f"wrote {out.resolve()}")
     util.info(
         f"id {args.id} · name {name} · version {version} · "
-        f"{docs} doc(s) · {cards} card(s) · {overlays} overlay(s)"
+        f"{docs} doc(s) · {cards} card(s) · {overlays} overlay(s) · {skills} skill(s)"
     )
     util.info(f"size   {size} ({util.human_bytes(size)})")
     util.info(f"sha256 {digest}")
