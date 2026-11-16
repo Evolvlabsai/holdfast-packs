@@ -36,17 +36,16 @@ is the `location` a search hit cites. Overlay features must carry
 
 ## Review status
 
-- **Quick cards: reviewed.** All six cards passed medical review on
-  2026-11-11 and are `"draft": false`, so the app no longer shows the
-  "Draft" label. `build_core.py` still refuses a card marked `"draft": true`
-  without `--allow-draft`, and `update.yml` never passes that flag, so a new or
-  edited card must be reviewed again before it can ship.
+- **Quick cards: reviewed.** The first six cards passed medical review on
+  2026-11-11 and ten more (choking to lost outdoors) on 2026-11-16, all
+  `"draft": false`. `build_core.py` still refuses a card marked
+  `"draft": true` without `--allow-draft`, and `update.yml` never passes that
+  flag, so a new or edited card must be reviewed again before it can ship.
 - **No card gives a medicine dose,** and none should.
 - **New cards wait in `review/cards-draft.json`** (`"draft": true`) until they
   pass medical review. The build never reads that folder. After review, move a
-  card into `sources/cards.json` with `"draft": false`. Ten cards went in for
-  review on 2026-11-16 (choking to lost outdoors). Home shows the first six
-  cards; app 0.5.2 build 30 adds "See all" for the rest.
+  card into `sources/cards.json` with `"draft": false`. Home shows the first
+  six cards; app 0.5.2 build 30 and later link to the full list.
 - **No map overlays ship.** The invented `SAMPLE — ` points near Annapolis
   and Baltimore were removed on 2026-11-11 (Core 2026.11.12). Overlays come
   back only from a real per-state source (see the open question below).

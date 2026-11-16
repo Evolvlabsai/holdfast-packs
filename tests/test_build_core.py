@@ -124,7 +124,7 @@ def test_an_overlay_keeps_its_geojson_verbatim(tmp_path):
 
 
 def test_every_source_card_is_reviewed():
-    """The quick cards passed medical review on 2026-11-11; none may go back to draft unnoticed."""
+    """The quick cards passed medical review (2026-11-11 and 2026-11-16); none may go back to draft unnoticed."""
     cards = json.loads((SOURCES / "cards.json").read_text(encoding="utf-8"))
     assert cards
     assert [c["id"] for c in cards if c.get("draft")] == []

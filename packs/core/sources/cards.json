@@ -194,5 +194,357 @@
         "body": "No generator, grill or camp stove inside, in a garage or near a window. Carbon monoxide has no smell and kills."
       }
     ]
+  },
+  {
+    "id": "choking",
+    "title": "Choking",
+    "lead": "Can't cough, speak or breathe? Act now. Have someone call 911.",
+    "tone": "normal",
+    "icon": "alert",
+    "source": "American Red Cross choking first aid (adult); American Heart Association",
+    "timer": null,
+    "draft": false,
+    "steps": [
+      {
+        "title": "Ask: are you choking?",
+        "body": "If they can cough hard or speak, let them keep coughing. Stay with them."
+      },
+      {
+        "title": "Give 5 back blows",
+        "body": "Stand behind them and lean them forward. Hit firmly between the shoulder blades with the heel of your hand, 5 times."
+      },
+      {
+        "title": "Give 5 belly thrusts",
+        "body": "Make a fist just above the belly button. Grab it with your other hand. Pull in and up, hard and fast, 5 times."
+      },
+      {
+        "title": "Keep going",
+        "body": "Switch between 5 back blows and 5 belly thrusts until the object comes out or they can breathe, cough or speak."
+      },
+      {
+        "title": "Pregnant or very large?",
+        "body": "Put your fist on the center of the chest instead of the belly, and pull straight back."
+      },
+      {
+        "title": "If they pass out",
+        "body": "Lower them to the floor, call 911 and start CPR. Look in the mouth and take out any object you can see."
+      }
+    ]
+  },
+  {
+    "id": "burns",
+    "title": "Burns",
+    "lead": "Cool the burn with running water. No ice, butter or grease.",
+    "tone": "normal",
+    "icon": "flame",
+    "source": "American Red Cross burn first aid; CDC burn safety",
+    "timer": null,
+    "draft": false,
+    "steps": [
+      {
+        "title": "Stop the burning",
+        "body": "Get away from the heat. If clothing is on fire: stop, drop and roll."
+      },
+      {
+        "title": "Cool it",
+        "body": "Hold the burn under cool running water for at least 10 minutes. Do not use ice, butter or ointment."
+      },
+      {
+        "title": "Take off rings and tight things",
+        "body": "Remove jewelry and tight clothing near the burn before it swells. Leave anything stuck to the skin."
+      },
+      {
+        "title": "Cover it loosely",
+        "body": "Use a clean, dry, non-stick cloth or sterile gauze. Do not break blisters."
+      },
+      {
+        "title": "Call 911 for a bad burn",
+        "body": "Large burns; burns on the face, hands, feet or groin; deep burns that look white, brown or charred; chemical or electrical burns; or trouble breathing after a fire."
+      }
+    ]
+  },
+  {
+    "id": "heat-stroke",
+    "title": "Heat stroke",
+    "lead": "Heat stroke can kill. Call 911 and cool them fast.",
+    "tone": "normal",
+    "icon": "sun",
+    "source": "CDC: Heat-related illness",
+    "timer": null,
+    "draft": false,
+    "steps": [
+      {
+        "title": "Know the signs",
+        "body": "Very hot body, confusion, slurred speech, fainting or seizures. The skin may be hot and dry, or soaked with sweat."
+      },
+      {
+        "title": "Call 911",
+        "body": "Heat stroke is an emergency. Do not wait to see if it gets better."
+      },
+      {
+        "title": "Move them to shade",
+        "body": "Get them out of the sun into a cool place. Take off extra clothing."
+      },
+      {
+        "title": "Cool them fast",
+        "body": "Put them in cold water if you can. If not, soak their skin and clothes with water, fan them, and put ice or cold wet cloths on the neck, armpits and groin."
+      },
+      {
+        "title": "No drinks if confused",
+        "body": "Give nothing to drink if they are confused or not fully awake."
+      },
+      {
+        "title": "Only weak, dizzy and sweaty?",
+        "body": "That may be heat exhaustion. Move them somewhere cool, loosen clothing, use cool wet cloths and give sips of water. Get help if they throw up, get worse, or are not better in an hour."
+      }
+    ]
+  },
+  {
+    "id": "allergic-reaction",
+    "title": "Severe allergic reaction",
+    "lead": "Trouble breathing or swelling after a sting, food or medicine? Use epinephrine and call 911.",
+    "tone": "normal",
+    "icon": "shield-alert",
+    "source": "American College of Allergy, Asthma and Immunology; American Red Cross anaphylaxis guidance",
+    "timer": null,
+    "draft": false,
+    "steps": [
+      {
+        "title": "Know the signs",
+        "body": "Trouble breathing, wheezing, swelling of the lips, tongue or throat, hives, throwing up, or feeling faint."
+      },
+      {
+        "title": "Use their epinephrine",
+        "body": "If they have an auto-injector (such as an EpiPen), help them use it right away. Press it into the outer thigh, through clothing if needed, as the label shows."
+      },
+      {
+        "title": "Call 911",
+        "body": "Call even if they feel better. The reaction can come back."
+      },
+      {
+        "title": "Lay them down",
+        "body": "If they feel faint, lay them flat and raise their legs. If breathing is hard, let them sit up. Do not let them stand or walk."
+      },
+      {
+        "title": "Not better?",
+        "body": "If there is no improvement after 5 to 15 minutes and they have a second auto-injector, use it."
+      },
+      {
+        "title": "If they stop breathing",
+        "body": "Start CPR."
+      }
+    ]
+  },
+  {
+    "id": "stroke",
+    "title": "Stroke",
+    "lead": "Note the time the signs started and call 911. Every minute counts.",
+    "tone": "normal",
+    "icon": "timer",
+    "source": "American Stroke Association (BE FAST); CDC stroke signs and symptoms",
+    "timer": null,
+    "draft": false,
+    "steps": [
+      {
+        "title": "Face",
+        "body": "Ask them to smile. Does one side of the face droop?"
+      },
+      {
+        "title": "Arms",
+        "body": "Ask them to raise both arms. Does one arm drift down?"
+      },
+      {
+        "title": "Speech",
+        "body": "Ask them to repeat a short sentence. Is the speech slurred or strange?"
+      },
+      {
+        "title": "Balance and eyes",
+        "body": "Sudden loss of balance, or sudden trouble seeing in one or both eyes, are signs too."
+      },
+      {
+        "title": "Time: call 911",
+        "body": "Any one of these signs: call 911 now. Write down the time the signs started. Doctors need it."
+      },
+      {
+        "title": "While you wait",
+        "body": "Keep them still and comfortable. Give nothing to eat or drink. Do not let them drive or sleep it off."
+      }
+    ]
+  },
+  {
+    "id": "broken-bone",
+    "title": "Broken bone",
+    "lead": "Keep it still. Do not try to straighten it.",
+    "tone": "normal",
+    "icon": "plus",
+    "source": "American Red Cross first aid; Mayo Clinic first aid: fractures",
+    "timer": null,
+    "draft": false,
+    "steps": [
+      {
+        "title": "Neck or back hurt?",
+        "body": "Do not move them at all unless they are in danger where they are. Call 911."
+      },
+      {
+        "title": "Call 911 if",
+        "body": "Bone shows through the skin, there is heavy bleeding, they do not respond, or the hip, thigh or pelvis may be broken."
+      },
+      {
+        "title": "Stop any bleeding",
+        "body": "Press on the wound with a clean cloth. See the Stop bleeding card."
+      },
+      {
+        "title": "Keep it still",
+        "body": "Support it the way you found it. Do not push a bone back in or straighten the limb."
+      },
+      {
+        "title": "Splint it",
+        "body": "Pad a stiff object, such as a board or rolled newspaper, and tie it along the injury so the joints above and below cannot move. If fingers or toes turn pale, cold or numb, loosen it."
+      },
+      {
+        "title": "Cold and calm",
+        "body": "Put a wrapped cold pack on it. If they turn pale, faint or breathe fast, lay them down, keep them warm, and raise the legs if the legs, hips and back are not hurt."
+      }
+    ]
+  },
+  {
+    "id": "seizure",
+    "title": "Seizure",
+    "lead": "Keep them safe. Do not hold them down or put anything in their mouth.",
+    "tone": "normal",
+    "icon": "bolt",
+    "source": "CDC: Seizure first aid; Epilepsy Foundation",
+    "timer": null,
+    "draft": false,
+    "steps": [
+      {
+        "title": "Time it",
+        "body": "Look at a clock when the seizure starts."
+      },
+      {
+        "title": "Make space",
+        "body": "Ease them to the floor. Move hard or sharp things away. Put something soft under the head. Loosen anything around the neck."
+      },
+      {
+        "title": "Turn them on their side",
+        "body": "This helps them breathe. Do not hold them down. Put nothing in their mouth."
+      },
+      {
+        "title": "Call 911 if",
+        "body": "It lasts more than 5 minutes, another seizure follows, they have trouble breathing or do not wake up, they are hurt, it happened in water, or it is their first seizure."
+      },
+      {
+        "title": "Stay with them",
+        "body": "Stay until they are fully awake. Talk calmly. They may be confused for a while."
+      }
+    ]
+  },
+  {
+    "id": "poisoning",
+    "title": "Poison",
+    "lead": "Call Poison Help: 1-800-222-1222. Free, any time, day or night.",
+    "tone": "normal",
+    "icon": "pill",
+    "source": "America's Poison Centers; HRSA Poison Help line",
+    "timer": null,
+    "draft": false,
+    "steps": [
+      {
+        "title": "Not awake or not breathing?",
+        "body": "Call 911 right away. Start CPR if they are not breathing."
+      },
+      {
+        "title": "Call Poison Help",
+        "body": "Call 1-800-222-1222. Have the container with you. Experts tell you what to do."
+      },
+      {
+        "title": "Do not make them throw up",
+        "body": "Only do it if Poison Help tells you to."
+      },
+      {
+        "title": "On the skin",
+        "body": "Take off any clothing it touched. Rinse the skin with running water for 15 to 20 minutes."
+      },
+      {
+        "title": "In the eye",
+        "body": "Rinse the eye with lukewarm running water for 15 to 20 minutes."
+      },
+      {
+        "title": "Fumes",
+        "body": "Get to fresh air right away. Carbon monoxide has no smell: leave the building if a CO alarm sounds or several people feel sick, dizzy or sleepy."
+      }
+    ]
+  },
+  {
+    "id": "flood",
+    "title": "Flood",
+    "lead": "Turn around, don't drown. Six inches of moving water can knock you down.",
+    "tone": "normal",
+    "icon": "water",
+    "source": "National Weather Service: Turn Around Don't Drown; Ready.gov floods",
+    "timer": null,
+    "draft": false,
+    "steps": [
+      {
+        "title": "Get to high ground",
+        "body": "If you are told to leave, leave. If water is rising, move to higher ground now."
+      },
+      {
+        "title": "Do not walk in moving water",
+        "body": "Six inches of fast water can knock you down."
+      },
+      {
+        "title": "Do not drive into water",
+        "body": "One foot of moving water can float a car. Two feet can sweep away an SUV or truck. Turn around."
+      },
+      {
+        "title": "Car in fast water?",
+        "body": "Stay inside. If water rises inside the car, get out onto the roof."
+      },
+      {
+        "title": "Trapped in a building?",
+        "body": "Go to the highest floor. Do not climb into a closed attic. Go on the roof only if you must, then signal for help."
+      },
+      {
+        "title": "After the water",
+        "body": "Stay out of floodwater. It can hide sharp objects, sewage and live power lines."
+      }
+    ]
+  },
+  {
+    "id": "lost",
+    "title": "Lost outdoors",
+    "lead": "Stop. Stay put. Being found is easier than finding your way.",
+    "tone": "normal",
+    "icon": "compass",
+    "source": "National Park Service and U.S. Forest Service: STOP (Stop, Think, Observe, Plan)",
+    "timer": null,
+    "draft": false,
+    "steps": [
+      {
+        "title": "Stop",
+        "body": "As soon as you think you are lost, stop moving. Sit down, drink some water and calm down."
+      },
+      {
+        "title": "Think",
+        "body": "How did you get here? What do you remember passing? Do not walk on unless you are sure."
+      },
+      {
+        "title": "Observe",
+        "body": "Check the Map tab (it works with no signal), the sun and the land around you."
+      },
+      {
+        "title": "Plan: stay put",
+        "body": "If you are not sure of the way, stay where you are. Searchers start where you were last seen."
+      },
+      {
+        "title": "Be seen and heard",
+        "body": "Three of anything means help: three whistle blasts, three shouts, three flashes of a light. Spread bright colors in the open."
+      },
+      {
+        "title": "Stay warm and dry",
+        "body": "Get out of wind and rain, and off the cold ground. Text someone your location if you get any signal."
+      }
+    ]
   }
 ]
