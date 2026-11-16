@@ -152,13 +152,23 @@ own colors, so they look right in the dark theme.
      stroke-linecap="round" stroke-linejoin="round">
   <title>A gallon jug filled with water</title>
   <path d="M84 52 h72 v92 h-72 z"/>
+  <path class="water tint" fill="#2B7BB9" fill-opacity="0.25" stroke="none" d="M86 80 h68 v62 h-68 z"/>
   <path class="water" d="M86 80 h68"/>
+  <path class="thin" stroke-width="1.2" d="M92 60 v80"/>
   <path class="accent" d="M120 20 v14"/>
 </svg>
 ```
 
-- `class="accent"` draws a path in amber (a flame, a light, the thing to look at).
-  `class="water"` draws it in blue. `class="solid"` fills it instead of stroking it.
+- A path with no class is a main line. A `class` changes it, with at most one
+  color and at most one kind:
+  - Colors: `accent` (amber: a flame, a light, the thing to look at) or
+    `water` (blue).
+  - Kinds: `thin` (a fine detail line: texture, folds, grain, ripples),
+    `solid` (filled instead of stroked) or `tint` (a soft see-through fill for
+    shadows, water, glow and shading).
+  - For example: `class="thin"`, `class="accent tint"`, `class="water thin"`.
+- Draw tints first, so the lines sit on top of them. The app draws paths in
+  file order.
 
 ## Check your work
 

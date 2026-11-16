@@ -211,6 +211,17 @@ def test_an_unsafe_or_odd_drawing_is_refused(tmp_path, drawing, message):
         content.load_skill(_skill(tmp_path, drawing=drawing))
 
 
+@pytest.mark.parametrize("cls", ["thin", "accent thin", "water tint", "solid", "accent", "tint"])
+def test_detail_classes_are_allowed(tmp_path, cls):
+    content.load_skill(_skill(tmp_path, drawing=DRAWING.replace('class="accent"', f'class="{cls}"')))
+
+
+@pytest.mark.parametrize("cls", ["accent water", "thin solid", "accent accent", "glow thin"])
+def test_mixed_up_classes_are_refused(tmp_path, cls):
+    with pytest.raises(content.ContentError, match="path class must be"):
+        content.load_skill(_skill(tmp_path, drawing=DRAWING.replace('class="accent"', f'class="{cls}"')))
+
+
 def test_a_missing_drawing_is_refused(tmp_path):
     with pytest.raises(content.ContentError, match="picture file is missing"):
         content.load_skill(_skill(tmp_path, drawing=None))

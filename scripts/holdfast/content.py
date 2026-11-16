@@ -72,8 +72,11 @@ SVG_VIEWBOX = "0 0 240 160"
 SVG_MAX_BYTES = 40_000
 SVG_ROOT_ATTRS = {"xmlns", "viewBox", "width", "height", "fill", "stroke", "stroke-width",
                   "stroke-linecap", "stroke-linejoin"}
-SVG_PATH_ATTRS = {"d", "class", "fill", "stroke", "stroke-width"}
-SVG_PATH_CLASSES = ("accent", "water", "solid")
+SVG_PATH_ATTRS = {"d", "class", "fill", "stroke", "stroke-width", "fill-opacity", "stroke-opacity"}
+# A path's class is up to one color and up to one kind, for example "accent thin" or "water tint".
+# No class means the main color drawn as a normal line.
+SVG_PATH_COLORS = ("accent", "water")
+SVG_PATH_KINDS = ("thin", "solid", "tint")
 # No arcs (A/a): the app's path reader is only relied on for lines and curves. Draw circles with C.
 SVG_PATH_DATA_RE = re.compile(r"^[MmLlHhVvCcSsQqTtZz0-9eE.,+\-\s]+$")
 
@@ -389,7 +392,7 @@ def read_drawing(path: Path) -> dict:
     paths = []
     for child in root:
         if child.tag.split("}", 1)[-1] == "path":
-            paths.append({"d": " ".join(child.get("d").split()), "style": child.get("class") or "line"})
+            paths.append({"d": " ".join(child.get("d").split()), "style": " ".join((child.get("class") or "line").split())})
     return {"paths": paths}
 
 
@@ -482,12 +485,22 @@ def check_svg(path: Path) -> None:
         d = child.get("d") or ""
         if not d.strip() or not SVG_PATH_DATA_RE.match(d):
             raise ContentError(f"{where}: a <path> needs plain path data in 'd' (lines and curves; no arcs)")
-        cls = child.get("class")
-        if cls is not None and cls not in SVG_PATH_CLASSES:
-            raise ContentError(f"{where}: path class must be one of {', '.join(SVG_PATH_CLASSES)} (got {cls!r})")
+        _check_class(child.get("class"), where)
         paths += 1
     if paths == 0:
         raise ContentError(f"{where}: the drawing has no <path>")
+
+
+def _check_class(cls: str | None, where: str) -> None:
+    if cls is None:
+        return
+    tokens = cls.split()
+    colors = [t for t in tokens if t in SVG_PATH_COLORS]
+    kinds = [t for t in tokens if t in SVG_PATH_KINDS]
+    if not tokens or len(colors) + len(kinds) != len(tokens) or len(colors) > 1 or len(kinds) > 1:
+        raise ContentError(
+            f"{where}: path class must be at most one of {', '.join(SVG_PATH_COLORS)} plus at most one of "
+            f"{', '.join(SVG_PATH_KINDS)} (got {cls!r})")
 
 
 def _attrs(element, allowed: set[str], where: str) -> None:

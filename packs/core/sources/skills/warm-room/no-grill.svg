@@ -1,7 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" fill="none" stroke="#1C1F1A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" fill="none" stroke="#1C1F1A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
   <title>warm-room: no-grill</title>
-  <path d="M40 70 L120 20 L200 70 Z M52 64 L52 144 M188 64 L188 144"/>
-  <path d="M94 92 C94 82.1 105.6 74 120 74 C134.4 74 146 82.1 146 92 C146 101.9 134.4 110 120 110 C105.6 110 94 101.9 94 92 Z M102 106 L94 136 M138 106 L146 136 M120 110 L120 136"/>
-  <path class="accent" stroke="#D88A13" d="M84 64 L156 136 M156 64 L84 136"/>
-  <path d="M20 144 L52 144 M188 144 L220 144"/>
+  <path class="thin" stroke-width="1.2" d="M12 120 L228 120"/>
+  <path class="thin" stroke-width="1.2" d="M26 28 L72 28 Q74 28 74 30 L74 70 Q74 72 72 72 L26 72 Q24 72 24 70 L24 30 Q24 28 26 28 Z M49 28 L49 72 M24 50 L74 50"/>
+  <path d="M188 30 L206 30 Q210 30 210 34 L210 44 Q210 48 206 48 L188 48 Q184 48 184 44 L184 34 Q184 30 188 30 Z"/>
+  <path class="thin" stroke-width="1.2" d="M190 36 L204 36 M190 40 L204 40"/>
+  <path class="accent solid" fill="#D88A13" stroke="none" d="M202.2 44 C202.2 43 203 42.2 204 42.2 C205 42.2 205.8 43 205.8 44 C205.8 45 205 45.8 204 45.8 C203 45.8 202.2 45 202.2 44 Z"/>
+  <path d="M96 92 C96 112 144 112 144 92 Z"/>
+  <path d="M96 92 C96 70 144 70 144 92"/>
+  <path class="thin" stroke-width="1.2" d="M114 84 L126 84 M112 100 L128 100 M117 70 L123 70 Q124 70 124 71 L124 73 Q124 74 123 74 L117 74 Q116 74 116 73 L116 71 Q116 70 117 70 Z"/>
+  <path d="M104 106 L96 140 M136 106 L144 140 M120 110 L120 140"/>
+  <path d="M92 140 C92 137.8 93.8 136 96 136 C98.2 136 100 137.8 100 140 C100 142.2 98.2 144 96 144 C93.8 144 92 142.2 92 140 Z M140 140 C140 137.8 141.8 136 144 136 C146.2 136 148 137.8 148 140 C148 142.2 146.2 144 144 144 C141.8 144 140 142.2 140 140 Z"/>
+  <path class="thin" stroke-width="1.2" d="M108 66 Q102 56 108 48 Q114 40 108 32 M124 66 Q118 56 124 48 Q130 40 124 32 M140 66 Q134 56 140 48 Q146 40 140 32"/>
+  <path class="accent" stroke="#D88A13" d="M62 88 C62 56 88 30 120 30 C152 30 178 56 178 88 C178 120 152 146 120 146 C88 146 62 120 62 88 Z"/>
+  <path class="accent" stroke="#D88A13" d="M79 47 L161 129"/>
+  <path d="M12 144 L228 144"/>
+  <path class="thin" stroke-width="1.2" d="M20 144 L10 160 M54 144 L44 160 M88 144 L78 160 M122 144 L112 160 M156 144 L146 160 M190 144 L180 160 M224 144 L214 160"/>
 </svg>
