@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Holdfast: offline maps and emergency plans</title>
+<meta name="description" content="Holdfast keeps offline maps, directions, first-aid cards and your family's emergency plan on your phone. It works with no signal. No account, no ads, no tracking.">
+<meta name="theme-color" content="#164622">
+<link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/brand/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="assets/brand/apple-touch-icon-180.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Holdfast: your emergency plan, even with no signal">
+<meta property="og:description" content="Offline maps, directions, first-aid cards and your family's plan on your phone. No account, no ads, no tracking.">
+<meta property="og:image" content="https://holdfast-8qu.pages.dev/assets/brand/share-card.png">
+<meta property="og:url" content="https://holdfast-8qu.pages.dev/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preload" href="assets/fonts/open-sans-bold.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+  @font-face { font-family: "Open Sans"; src: url("assets/fonts/open-sans-regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+  @font-face { font-family: "Open Sans"; src: url("assets/fonts/open-sans-semibold.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+  @font-face { font-family: "Open Sans"; src: url("assets/fonts/open-sans-bold.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+
+  :root {
+    --forest: #164622;
+    --deep: #0C2C16;
+    --amber: #D88A13;
+    --amber-dark: #9A5F06;
+    --ivory: #FCF3E6;
+    --charcoal: #20231F;
+    --muted: #5A635A;
+    --fog: #E7EBE5;
+    --line: #CBD3C8;
+    --wrap: 70rem;
+    color-scheme: light;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--fog); color: var(--charcoal);
+    font: 400 1.0625rem/1.6 "Open Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  img, svg { display: block; max-width: 100%; }
+  a { color: inherit; text-underline-offset: .18em; }
+  a:focus-visible { outline: 3px solid var(--amber); outline-offset: 3px; border-radius: 2px; }
+  .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 1rem; }
+  @media (min-width: 40rem) { .wrap { padding: 0 2rem; } }
+  h1, h2, h3 { line-height: 1.15; margin: 0; letter-spacing: -.015em; }
+  h2 { font-size: clamp(1.75rem, 3.6vw, 2.5rem); font-weight: 700; max-width: 22ch; text-wrap: balance; }
+  h3 { font-size: 1.3rem; font-weight: 700; }
+  p { margin: 0; }
+  .skip { position: absolute; left: -999px; top: .5rem; background: var(--amber); color: var(--deep); padding: .5rem 1rem; font-weight: 700; z-index: 2; }
+  .skip:focus { left: .5rem; }
+
+  /* Hero */
+  .hero {
+    background: var(--forest) url("assets/brand/pattern-dark.svg") center / cover no-repeat;
+    color: var(--ivory); overflow: hidden;
+  }
+  .top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: 1.25rem; }
+  .top img { height: 2rem; width: auto; }
+  .top nav { display: flex; gap: 1.25rem; font-weight: 600; font-size: .95rem; }
+  .top nav a { text-decoration: none; color: var(--ivory); opacity: .85; }
+  .top nav a:hover { opacity: 1; text-decoration: underline; }
+  .hero-grid { display: grid; gap: 2.5rem; padding-block: 2.5rem 0; align-items: end; }
+  @media (min-width: 56rem) { .hero-grid { grid-template-columns: 1.15fr .85fr; padding-top: 4rem; } }
+  .hero-copy { padding-bottom: 3rem; }
+  @media (min-width: 56rem) { .hero-copy { padding-bottom: 6rem; } }
+  .hero h1 { font-size: clamp(2.4rem, 6.2vw, 4.4rem); font-weight: 700; letter-spacing: -.03em; line-height: 1.02; max-width: 15ch; text-wrap: balance; }
+  .lede { margin-top: 1.5rem; font-size: 1.2rem; max-width: 34rem; color: #E9E3D6; }
+  .status {
+    margin-top: 2rem; display: inline-flex; flex-wrap: wrap; align-items: center; gap: .75rem 1rem;
+    border-left: 4px solid var(--amber); padding: .6rem 0 .6rem 1rem; max-width: 34rem;
+  }
+  .status strong { color: var(--amber); font-weight: 700; }
+  .phone {
+    width: min(19rem, 78vw); margin-inline: auto; border-radius: 2.4rem 2.4rem 0 0;
+    border: .55rem solid #0F120F; border-bottom: 0; background: #0F120F; overflow: hidden;
+    box-shadow: 0 -1.5rem 4rem rgba(0, 0, 0, .35);
+  }
+  .phone img { width: 100%; height: auto; aspect-ratio: 360 / 782; object-fit: cover; object-position: top; }
+  .hero .phone img { aspect-ratio: 360 / 640; }
+
+  /* Features */
+  .features { padding-block: 4.5rem 2rem; }
+  .features > .wrap > p { margin-top: 1rem; max-width: 38rem; color: var(--muted); font-size: 1.1rem; }
+  .feature { display: grid; gap: 2rem; align-items: center; padding-block: 3rem; border-top: 1px solid var(--line); }
+  .feature:first-of-type { margin-top: 2.5rem; }
+  @media (min-width: 48rem) {
+    .feature { grid-template-columns: 1fr 1fr; gap: 4rem; }
+    .feature:nth-of-type(even) .shot { order: -1; }
+  }
+  .feature p { margin-top: .75rem; max-width: 30rem; }
+  .shot .phone { border-radius: 2rem; border: .5rem solid #0F120F; width: min(16rem, 70vw); box-shadow: 0 1rem 2.5rem rgba(12, 44, 22, .18); }
+  .shot .phone img { aspect-ratio: 1440 / 2880; }
+
+  /* Skills: the drawings are the point */
+  .skills { background: var(--ivory); padding-block: 5rem; border-block: 1px solid #EBDDC6; }
+  .skills .intro { display: grid; gap: 1rem 4rem; }
+  @media (min-width: 56rem) { .skills .intro { grid-template-columns: 1fr 1fr; align-items: end; } }
+  .skills .intro p { color: #4D5249; max-width: 34rem; }
+  .plates { list-style: none; margin: 3rem 0 0; padding: 0; display: grid; gap: 2.5rem 2rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr)); }
+  .plates svg { width: 100%; height: auto; aspect-ratio: 3 / 2; background: #FFFBF4; border: 1px solid #E8D9C0; border-radius: .25rem; }
+  .plates h3 { font-size: 1.1rem; margin-top: 1rem; }
+  .plates p { margin-top: .3rem; color: #4D5249; font-size: .98rem; }
+  .cards { margin-top: 4rem; padding-top: 2rem; border-top: 2px solid var(--charcoal); display: grid; gap: 1rem 4rem; }
+  @media (min-width: 56rem) { .cards { grid-template-columns: 1fr 2fr; } }
+  .cards ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem; }
+  .cards li { background: #fff; border: 1px solid #E8D9C0; border-radius: 999px; padding: .3rem .85rem; font-size: .95rem; font-weight: 600; }
+  .cards li.red { background: #B3261E; border-color: #B3261E; color: #fff; }
+
+  /* Privacy */
+  .privacy { background: var(--deep); color: var(--ivory); padding-block: 5rem; }
+  .privacy h2 { font-size: clamp(2rem, 5vw, 3.4rem); max-width: 16ch; }
+  .privacy .cols { display: grid; gap: 1.5rem 4rem; margin-top: 2rem; }
+  @media (min-width: 48rem) { .privacy .cols { grid-template-columns: 1fr 1fr; } }
+  .privacy p { color: #DCD6C9; max-width: 34rem; }
+  .privacy a { color: var(--amber); font-weight: 600; }
+
+  /* Sources */
+  .sources { padding-block: 4.5rem; }
+  .sources .cols { display: grid; gap: 2rem 4rem; margin-top: 1.5rem; }
+  @media (min-width: 48rem) { .sources .cols { grid-template-columns: 1fr 1fr; } }
+  .notice { align-self: start; background: #fff; border-left: 4px solid var(--amber); padding: 1.25rem 1.5rem; }
+  .notice p + p { margin-top: .75rem; }
+  .links { list-style: none; margin: 0; padding: 0; }
+  .links li { border-bottom: 1px solid var(--line); }
+  .links a { display: flex; justify-content: space-between; gap: 1rem; padding: .7rem 0; text-decoration: none; }
+  .links a:hover span:first-child { text-decoration: underline; }
+  .links span:last-child { color: var(--muted); font-size: .9rem; }
+  .help { margin-top: 2.5rem; color: var(--muted); }
+  .help a { color: var(--forest); font-weight: 600; }
+
+  footer { background: var(--charcoal); color: #C9CCC5; padding-block: 2rem; font-size: .92rem; }
+  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; }
+  footer nav { display: flex; flex-wrap: wrap; gap: 1.25rem; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="hero">
+  <div class="wrap top">
+    <a href="./"><img src="assets/brand/logo-reverse.svg" alt="Holdfast" width="160" height="32"></a>
+    <nav aria-label="Main">
+      <a href="#skills">Skills</a>
+      <a href="https://evolvlabsai.github.io/holdfast-packs/privacy.html">Privacy</a>
+    </nav>
+  </div>
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <h1>Your emergency plan, even with no signal.</h1>
+      <p class="lede">Holdfast keeps offline maps, directions, first-aid cards and your family's plan
+        on your phone. Set it up once at home. After that, it works with no internet and no cell service.</p>
+      <p class="status"><strong>Coming soon</strong> Free on Google Play and the App Store. Maps cover the United States.</p>
+    </div>
+    <div class="phone">
+      <img src="assets/img/home-720.webp" srcset="assets/img/home-360.webp 360w, assets/img/home-720.webp 720w"
+           sizes="(min-width: 56rem) 19rem, 78vw" width="360" height="782"
+           alt="The Holdfast home screen: a search box, six quick cards such as Stop bleeding and CPR, and the family plan.">
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="features" aria-labelledby="what">
+    <div class="wrap">
+      <h2 id="what">Everything stays on your phone</h2>
+      <p>Pick your home state and the states where your family lives. Holdfast downloads them over Wi-Fi.
+        When the towers go down, nothing changes.</p>
+
+      <article class="feature">
+        <div>
+          <h3>Maps and directions with no signal</h3>
+          <p>Road and topo maps for all 50 states and DC. Driving and walking directions work offline,
+            even across state lines. Your meeting points are on the map.</p>
+        </div>
+        <div class="shot"><div class="phone"><img loading="lazy" src="assets/img/map-720.webp"
+          srcset="assets/img/map-360.webp 360w, assets/img/map-720.webp 720w" sizes="16rem" width="360" height="720"
+          alt="An offline topo map of the Virginia and Maryland area with rally points, water, medical and shelter filters."></div></div>
+      </article>
+
+      <article class="feature">
+        <div>
+          <h3>Answers from trusted guides</h3>
+          <p>Search guides from FEMA, the CDC, the EPA, the USDA and US Army field manuals.
+            The offline assistant answers from those guides and shows where each answer came from.
+            It runs on your phone, so your questions go nowhere.</p>
+        </div>
+        <div class="shot"><div class="phone"><img loading="lazy" src="assets/img/library-720.webp"
+          srcset="assets/img/library-360.webp 360w, assets/img/library-720.webp 720w" sizes="16rem" width="360" height="720"
+          alt="The Library answering how to make water safe to drink, with numbered steps and source markers."></div></div>
+      </article>
+
+      <article class="feature">
+        <div>
+          <h3>Your family's plan, encrypted</h3>
+          <p>Meeting points, contacts, household members and medicines, encrypted on your phone.
+            Share the plan with a nearby phone over Bluetooth or Wi-Fi, with no internet.</p>
+        </div>
+        <div class="shot"><div class="phone"><img loading="lazy" src="assets/img/plan-720.webp"
+          srcset="assets/img/plan-360.webp 360w, assets/img/plan-720.webp 720w" sizes="16rem" width="360" height="720"
+          alt="My plan, marked encrypted, with three meeting places: near home, outside the neighborhood and out of town."></div></div>
+      </article>
+
+      <article class="feature">
+        <div>
+          <h3>Supplies you can count on</h3>
+          <p>Checklists for a go-bag, a car kit and sheltering in place, sized for your household.
+            Scan a barcode to add an item. Get a reminder before food and medicine expire.</p>
+        </div>
+        <div class="shot"><div class="phone"><img loading="lazy" src="assets/img/inventory-720.webp"
+          srcset="assets/img/inventory-360.webp 360w, assets/img/inventory-720.webp 720w" sizes="16rem" width="360" height="720"
+          alt="Inventory checklists for a go-bag, shelter in place, car kit and medications, scaled for two people for 14 days."></div></div>
+      </article>
+    </div>
+  </section>
+
+  <section class="skills" id="skills" aria-labelledby="skills-title">
+    <div class="wrap">
+      <div class="intro">
+        <h2 id="skills-title">Skills you can do with what's in the house</h2>
+        <p>12 survival projects, each with step-by-step drawings, a list of what you need, and what to watch out for.
+          Here are six of them.</p>
+      </div>
+      <ul class="plates">
+        <li><svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" fill="none" stroke="#1C1F1A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <path class="accent tint" fill="#D88A13" fill-opacity="0.28" stroke="none" d="M58 90 C58 55.8 85.8 28 120 28 C154.2 28 182 55.8 182 90 C182 124.2 154.2 152 120 152 C85.8 152 58 124.2 58 90 Z"/>
+  <path class="accent tint" fill="#D88A13" fill-opacity="0.28" stroke="none" d="M86 70 Q94.5 67 103 70 Q111.5 73 120 70 Q128.5 67 137 70 Q145.5 73 154 70 L154 136 Q154 142 148 142 L92 142 Q86 142 86 136 Z"/>
+  <path d="M92 144 L148 144 Q156 144 156 136 L156 72 Q156 62 146 58 L132 52 L132 42 L108 42 L108 52 L94 58 Q84 62 84 72 L84 136 Q84 144 92 144 Z"/>
+  <path d="M146 58 C164 52 168 70 156 80"/>
+  <path class="thin" stroke-width="1.2" d="M100 86 L140 86 Q146 86 146 92 L146 124 Q146 130 140 130 L100 130 Q94 130 94 124 L94 92 Q94 86 100 86 Z M147 63 C157 61 159 69 155 74 M89 80 L89 132 M108 48 L132 48"/>
+  <path class="water" stroke="#2B7BB9" d="M86 70 Q94.5 67 103 70 Q111.5 73 120 70 Q128.5 67 137 70 Q145.5 73 154 70"/>
+  <path d="M107 32 L133 32 Q135 32 135 34 L135 40 Q135 42 133 42 L107 42 Q105 42 105 40 L105 34 Q105 32 107 32 Z"/>
+  <path class="thin" stroke-width="1.2" d="M109 34 L109 40 M113 34 L113 40 M117 34 L117 40 M121 34 L121 40 M125 34 L125 40 M129 34 L129 40"/>
+  <path d="M106 12 L134 12 Q140 12 140 18 L140 26 Q140 32 134 32 L106 32 Q100 32 100 26 L100 18 Q100 12 106 12 Z"/>
+  <path d="M100 20 C76 24 78 64 84 80 M140 20 C164 24 162 64 156 80 M84 80 Q120 94 156 80"/>
+  <path d="M115 83 L125 83 Q127 83 127 85 L127 90 Q127 92 125 92 L115 92 Q113 92 113 90 L113 85 Q113 83 115 83 Z"/>
+  <path class="thin" stroke-width="1.2" d="M88 84 L91.9 84.7 M95.9 85.4 L99.8 86.1 M103.8 86.7 L107.7 87.4 M129 88 L132.9 87.3 M136.9 86.6 L140.8 85.9 M144.8 85.3 L148.7 84.6"/>
+  <path class="accent" stroke="#D88A13" d="M114 22 C114 18.7 116.7 16 120 16 C123.3 16 126 18.7 126 22 C126 25.3 123.3 28 120 28 C116.7 28 114 25.3 114 22 Z"/>
+  <path class="accent thin" stroke="#D88A13" stroke-width="1.2" d="M117.5 22 C117.5 20.6 118.6 19.5 120 19.5 C121.4 19.5 122.5 20.6 122.5 22 C122.5 23.4 121.4 24.5 120 24.5 C118.6 24.5 117.5 23.4 117.5 22 Z"/>
+  <path class="solid" fill="#1C1F1A" stroke="none" d="M131.4 17 C131.4 16.1 132.1 15.4 133 15.4 C133.9 15.4 134.6 16.1 134.6 17 C134.6 17.9 133.9 18.6 133 18.6 C132.1 18.6 131.4 17.9 131.4 17 Z"/>
+  <path class="accent" stroke="#D88A13" d="M65.5 109.8 L54.2 113.9 M65.5 70.2 L54.2 66.1 M79 49 L70.5 40.5 M100.2 35.5 L96.1 24.2 M120 32 L120 20 M139.8 35.5 L143.9 24.2 M161 49 L169.5 40.5 M174.5 70.2 L185.8 66.1 M174.5 109.8 L185.8 113.9"/>
+  <path d="M31 120 L47 120 Q50 120 50 123 L50 141 Q50 144 47 144 L31 144 Q28 144 28 141 L28 123 Q28 120 31 120 Z M50 126 C58 126 58 138 50 138"/>
+  <path class="thin" stroke-width="1.2" d="M36 116 Q28 111.4 36 106.8 Q44 102 36 97.8 M44 114 Q36 110 44 106.1 Q52 102 44 98.4"/>
+  <path d="M170 144 L174 134 Q186 132 196 138 Q206 132 218 134 L222 144 M196 138 L196 144"/>
+  <path class="thin" stroke-width="1.2" d="M178 139 L192 141 M200 141 L216 139"/>
+  <path d="M16 144 L224 144"/>
+  <path d="M16 144 L16 150 L224 150 L224 144"/>
+  <path d="M26 150 L26 160 M214 150 L214 160"/>
+  <path class="thin" stroke-width="1.2" d="M22 147 Q38.3 146 54.7 147 Q71 148 87.3 147 Q103.7 146 120 147 Q136.3 148 152.7 147 Q169 146 185.3 147 Q201.7 148 218 147"/>
+</svg><h3>Water-jug lantern</h3><p>A headlamp and a jug of water light a whole room.</p></li>
+        <li><svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" fill="none" stroke="#1C1F1A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <path class="tint" fill="#1C1F1A" fill-opacity="0.14" stroke="none" d="M70 144 C70 141 92.4 138.5 120 138.5 C147.6 138.5 170 141 170 144 C170 147 147.6 149.5 120 149.5 C92.4 149.5 70 147 70 144 Z"/>
+  <path class="accent tint" fill="#D88A13" fill-opacity="0.28" stroke="none" d="M98 120 C98 107.8 107.8 98 120 98 C132.2 98 142 107.8 142 120 C142 132.2 132.2 142 120 142 C107.8 142 98 132.2 98 120 Z"/>
+  <path class="tint" fill="#1C1F1A" fill-opacity="0.14" stroke="none" d="M136.2 52 L156 44 L156 126 C156 131 148.8 134.6 136.2 134 Z"/>
+  <path d="M84 44 C84 39 100.1 35 120 35 C139.9 35 156 39 156 44 C156 49 139.9 53 120 53 C100.1 53 84 49 84 44 Z M84 44 L84 126 M156 44 L156 126 M84 126 C84 131 100.1 135 120 135 C139.9 135 156 131 156 126"/>
+  <path class="thin" stroke-width="1.2" d="M87 44 C87 40.2 101.8 37.2 120 37.2 C138.2 37.2 153 40.2 153 44 C153 47.8 138.2 50.8 120 50.8 C101.8 50.8 87 47.8 87 44 Z M84 58 C84 63 100.1 67 120 67 C139.9 67 156 63 156 58 M84 66 C84 71 100.1 75 120 75 C139.9 75 156 71 156 66 M84 104 C84 109 100.1 113 120 113 C139.9 113 156 109 156 104 M84 112 C84 117 100.1 121 120 121 C139.9 121 156 117 156 112 M142.3 51.2 L142.3 133.2"/>
+  <path d="M102 133.8 L102 104 L138 104 L138 133.8"/>
+  <path class="solid" fill="#1C1F1A" stroke="none" d="M88.8 49.7 L95.2 49.7 L92 54.9 Z M100.8 52.1 L107.2 52.1 L104 57.3 Z M112.8 52.9 L119.2 52.9 L116 58.1 Z M124.8 52.8 L131.2 52.8 L128 58 Z M136.8 51.5 L143.2 51.5 L140 56.7 Z"/>
+  <path class="accent" stroke="#D88A13" d="M111.6 117.6 C109.5 124.5 107.4 128.4 107.4 130.7 C107.4 132.7 109.5 133 111.6 133 C113.7 133 115.8 132.7 115.8 130.7 C115.8 128.4 113.7 124.5 111.6 117.6 Z M120 111 C117 120.9 114 126.4 114 129.7 C114 132.6 117 133 120 133 C123 133 126 132.6 126 129.7 C126 126.4 123 120.9 120 111 Z M128.4 116.5 C126.3 123.9 124.2 128.1 124.2 130.5 C124.2 132.7 126.3 133 128.4 133 C130.5 133 132.6 132.7 132.6 130.5 C132.6 128.1 130.5 123.9 128.4 116.5 Z"/>
+  <path class="accent thin" stroke="#D88A13" stroke-width="1.2" d="M120 121 C118.7 126 117.3 128.7 117.3 130.3 C117.3 131.8 118.7 132 120 132 C121.3 132 122.7 131.8 122.7 130.3 C122.7 128.7 121.3 126 120 121 Z"/>
+  <path class="accent solid" fill="#D88A13" stroke="none" d="M112.7 105 C112.7 104.3 113.3 103.7 114 103.7 C114.7 103.7 115.3 104.3 115.3 105 C115.3 105.7 114.7 106.3 114 106.3 C113.3 106.3 112.7 105.7 112.7 105 Z M127.7 109 C127.7 108.3 128.3 107.7 129 107.7 C129.7 107.7 130.3 108.3 130.3 109 C130.3 109.7 129.7 110.3 129 110.3 C128.3 110.3 127.7 109.7 127.7 109 Z M120.7 99 C120.7 98.3 121.3 97.7 122 97.7 C122.7 97.7 123.3 98.3 123.3 99 C123.3 99.7 122.7 100.3 122 100.3 C121.3 100.3 120.7 99.7 120.7 99 Z"/>
+  <path d="M80 140 L118 128 M160 141 L124 126"/>
+  <path class="thin" stroke-width="1.2" d="M77.5 140 C77.5 138.6 78.6 137.5 80 137.5 C81.4 137.5 82.5 138.6 82.5 140 C82.5 141.4 81.4 142.5 80 142.5 C78.6 142.5 77.5 141.4 77.5 140 Z M157.5 141 C157.5 139.6 158.6 138.5 160 138.5 C161.4 138.5 162.5 139.6 162.5 141 C162.5 142.4 161.4 143.5 160 143.5 C158.6 143.5 157.5 142.4 157.5 141 Z"/>
+  <path d="M178 138 L220 132 M180 142 L222 138 M176 134 L214 126"/>
+  <path class="tint" fill="#1C1F1A" fill-opacity="0.14" stroke="none" d="M132.8 16 L152 16 L152 30 Q152 36 146 36 L132.8 36 Z"/>
+  <path d="M88 14 L88 30 Q88 36 94 36 L146 36 Q152 36 152 30 L152 14 M82 14 L158 14 M88 22 L78 22 M152 22 L162 22"/>
+  <path class="thin" stroke-width="1.2" d="M88 19 L152 19 M93 26 L93 28 M74 19 L76 19 Q78 19 78 21 L78 23 Q78 25 76 25 L74 25 Q72 25 72 23 L72 21 Q72 19 74 19 Z M164 19 L166 19 Q168 19 168 21 L168 23 Q168 25 166 25 L164 25 Q162 25 162 23 L162 21 Q162 19 164 19 Z"/>
+  <path class="solid" fill="#1C1F1A" stroke="none" d="M90.6 22 C90.6 21.2 91.2 20.6 92 20.6 C92.8 20.6 93.4 21.2 93.4 22 C93.4 22.8 92.8 23.4 92 23.4 C91.2 23.4 90.6 22.8 90.6 22 Z M146.6 22 C146.6 21.2 147.2 20.6 148 20.6 C148.8 20.6 149.4 21.2 149.4 22 C149.4 22.8 148.8 23.4 148 23.4 C147.2 23.4 146.6 22.8 146.6 22 Z"/>
+  <path d="M86 12 Q120 2 154 12"/>
+  <path d="M117 3 L123 3 Q124 3 124 4 L124 6 Q124 7 123 7 L117 7 Q116 7 116 6 L116 4 Q116 3 117 3 Z"/>
+  <path class="thin" stroke-width="1.2" d="M80 56 Q70 48 76 40 Q82 32 74 24 M160 56 Q170 48 164 40 Q158 32 166 24"/>
+  <path class="tint" fill="#1C1F1A" fill-opacity="0.14" stroke="none" d="M62.3 133.2 C70.4 134.4 74 138 74 144 L61.4 144 Z"/>
+  <path d="M38 144 C38 133.2 50.6 132 57.8 132 C68.6 132 74 136.8 74 144 Z"/>
+  <path class="thin" stroke-width="1.2" d="M52.4 133.8 L53.6 138 L51.5 141.6"/>
+  <path class="tint" fill="#1C1F1A" fill-opacity="0.14" stroke="none" d="M200.9 135 C207.2 136 210 139 210 144 L200.2 144 Z"/>
+  <path d="M182 144 C182 135 191.8 134 197.4 134 C205.8 134 210 138 210 144 Z"/>
+  <path class="thin" stroke-width="1.2" d="M193.2 135.5 L197.1 139 L192.5 142"/>
+  <path d="M12 144 L36 144"/>
+  <path class="thin" stroke-width="1.2" d="M15 144 L13 139.8 M18 144 L18 138 M21 144 L23 140.4 M23 144 L21 139.8 M26 144 L26 138 M29 144 L31 140.4"/>
+  <path class="thin" stroke-width="1.2" d="M19.5 148 C19.5 147.2 20.6 146.5 22 146.5 C23.4 146.5 24.5 147.2 24.5 148 C24.5 148.8 23.4 149.5 22 149.5 C20.6 149.5 19.5 148.8 19.5 148 Z"/>
+</svg><h3>Tin-can wood stove</h3><p>A big metal can burns twigs and holds a pot.</p></li>
+        <li><svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" fill="none" stroke="#1C1F1A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <path class="tint" fill="#1C1F1A" fill-opacity="0.14" stroke="none" d="M40 52 L200 44 L170 94 L72 66 Z"/>
+  <path class="water tint" fill="#2B7BB9" fill-opacity="0.28" stroke="none" d="M146 146 C146 143.8 159.4 142 176 142 C192.6 142 206 143.8 206 146 C206 148.2 192.6 150 176 150 C159.4 150 146 148.2 146 146 Z"/>
+  <path class="thin" stroke-width="1.2" d="M40 22 C30 22 30 8 44 8 C48 -2 66 0 68 8 C80 2 94 10 88 20 C96 24 90 32 80 30 L46 30 C36 32 32 24 40 22 Z"/>
+  <path class="thin" stroke-width="1.2" d="M150 26 C140 26 140 12 154 12 C158 2 176 4 178 12 C190 6 204 14 198 24 C206 28 200 36 190 34 L156 34 C146 36 142 28 150 26 Z"/>
+  <path class="water thin" stroke="#2B7BB9" stroke-width="1.2" d="M26 44 L22 56 M40 40 L36 52 M54 36 L50 48 M68 44 L64 56 M82 40 L78 52 M96 36 L92 48 M110 44 L106 56 M124 40 L120 52 M138 36 L134 48 M152 44 L148 56 M166 40 L162 52 M180 36 L176 48 M194 44 L190 56 M208 40 L204 52"/>
+  <path d="M40 52 L40 144 M200 44 L200 144 M72 66 L72 144 M170 94 L170 144"/>
+  <path class="thin" stroke-width="1.2" d="M38 80 L38 100 M198 70 L198 90"/>
+  <path d="M40 52 L200 44 L170 94 L72 66 Z"/>
+  <path class="thin" stroke-width="1.2" d="M60 56 L120 82 M120 48 L150 86 M180 46 L164 90"/>
+  <path class="thin" stroke-width="1.2" d="M36 48 L44 56 M196 40 L204 48"/>
+  <path class="water thin" stroke="#2B7BB9" stroke-width="1.2" d="M110 62 Q140 76 166 90 M150 58 Q162 74 168 88"/>
+  <path class="water" stroke="#2B7BB9" d="M170 94 Q174 106 172 114"/>
+  <path class="tint" fill="#1C1F1A" fill-opacity="0.14" stroke="none" d="M181 120.5 L192 116 L188 144 L179.2 148 Z"/>
+  <path d="M152 116 C152 113.2 161 111 172 111 C183 111 192 113.2 192 116 C192 118.8 183 121 172 121 C161 121 152 118.8 152 116 Z M152 116 L156 144 M192 116 L188 144 M156 144 C156 146.2 163.2 148 172 148 C180.8 148 188 146.2 188 144"/>
+  <path class="thin" stroke-width="1.2" d="M153 123 C153 125.8 161.5 128 172 128 C182.5 128 191 125.8 191 123 M153.5 127 C153.5 129.8 161.8 132 172 132 C182.2 132 190.5 129.8 190.5 127 M155.2 130 C155.2 132.5 162.7 134.5 172 134.5 C181.3 134.5 188.8 132.5 188.8 130"/>
+  <path class="water tint" fill="#2B7BB9" fill-opacity="0.28" stroke="none" d="M155 117 C155 114.8 162.6 113 172 113 C181.4 113 189 114.8 189 117 C189 119.2 181.4 121 172 121 C162.6 121 155 119.2 155 117 Z"/>
+  <path d="M12 144 L150 144 M196 144 L228 144"/>
+  <path class="thin" stroke-width="1.2" d="M39 144 L37 139.8 M42 144 L42 138 M45 144 L47 140.4 M79 144 L77 139.8 M82 144 L82 138 M85 144 L87 140.4 M87 144 L85 139.8 M90 144 L90 138 M93 144 L95 140.4"/>
+  <path class="thin" stroke-width="1.2" d="M75.5 148 C75.5 147.2 76.6 146.5 78 146.5 C79.4 146.5 80.5 147.2 80.5 148 C80.5 148.8 79.4 149.5 78 149.5 C76.6 149.5 75.5 148.8 75.5 148 Z M82.5 151 C82.5 149.6 84.1 148.5 86 148.5 C87.9 148.5 89.5 149.6 89.5 151 C89.5 152.4 87.9 153.5 86 153.5 C84.1 153.5 82.5 152.4 82.5 151 Z M205.5 148 C205.5 147.2 207.5 146.5 210 146.5 C212.5 146.5 214.5 147.2 214.5 148 C214.5 148.8 212.5 149.5 210 149.5 C207.5 149.5 205.5 148.8 205.5 148 Z"/>
+</svg><h3>Rain catcher</h3><p>A tilted tarp fills a bucket fast in the rain.</p></li>
+        <li><svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" fill="none" stroke="#1C1F1A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <path class="tint" fill="#1C1F1A" fill-opacity="0.14" stroke="none" d="M88 12 L152 12 L152 20 L88 20 Z"/>
+  <path class="water tint" fill="#2B7BB9" fill-opacity="0.28" stroke="none" d="M86 132 L154 132 L154 142 L86 142 Z"/>
+  <path d="M154 12 Q154 8 150 8 L90 8 Q86 8 86 12 L86 94 C86 104 114 108 114 114 L114 116 L126 116 L126 114 C126 108 154 104 154 94 Z M126 124 L114 124 Q112 124 112 122 L112 118 Q112 116 114 116 L126 116 Q128 116 128 118 L128 122 Q128 124 126 124 Z"/>
+  <path class="thin" stroke-width="1.2" d="M128 112 L112 112 M125 122 L125 118 M122 122 L122 118 M119 122 L119 118 M116 122 L116 118 M152 86 L88 86 M152 81 L88 81 M151 15 Q137 21 120 15 Q103 21 89 15 M149 74 L149 24"/>
+  <path class="thin" stroke-width="1.2" d="M87 33 L153 33 M87 51 L153 51 M88 70 L152 70 M90 86 L150 86"/>
+  <path d="M86.9 26 C86.9 23.4 88.9 21.4 91.5 21.4 C94 21.4 96.1 23.4 96.1 26 C96.1 28.5 94 30.6 91.5 30.6 C88.9 30.6 86.9 28.5 86.9 26 Z M98.9 25.7 C98.9 23.2 100.9 21.1 103.5 21.1 C106 21.1 108.1 23.2 108.1 25.7 C108.1 28.3 106 30.3 103.5 30.3 C100.9 30.3 98.9 28.3 98.9 25.7 Z M109.5 26.6 C109.5 24.1 111.6 22 114.1 22 C116.6 22 118.7 24.1 118.7 26.6 C118.7 29.1 116.6 31.2 114.1 31.2 C111.6 31.2 109.5 29.1 109.5 26.6 Z M119.1 27 C119.1 24.5 121.1 22.4 123.7 22.4 C126.2 22.4 128.3 24.5 128.3 27 C128.3 29.6 126.2 31.6 123.7 31.6 C121.1 31.6 119.1 29.6 119.1 27 Z M130 26.8 C130 24.3 132.1 22.2 134.6 22.2 C137.2 22.2 139.2 24.3 139.2 26.8 C139.2 29.3 137.2 31.4 134.6 31.4 C132.1 31.4 130 29.3 130 26.8 Z M141.1 25.8 C141.1 23.2 143.2 21.2 145.7 21.2 C148.3 21.2 150.3 23.2 150.3 25.8 C150.3 28.3 148.3 30.4 145.7 30.4 C143.2 30.4 141.1 28.3 141.1 25.8 Z"/>
+  <path class="thin" stroke-width="1.2" d="M89 25 Q90 23 92.5 23 M101 24.7 Q102 22.7 104.5 22.7 M111.6 25.6 Q112.6 23.6 115.1 23.6 M121.2 26 Q122.2 24 124.7 24 M132.1 25.8 Q133.1 23.8 135.6 23.8 M143.2 24.8 Q144.2 22.8 146.7 22.8"/>
+  <path class="solid" fill="#1C1F1A" stroke="none" d="M113.8 46.9 C113.8 46 114.5 45.2 115.5 45.2 C116.4 45.2 117.2 46 117.2 46.9 C117.2 47.9 116.4 48.6 115.5 48.6 C114.5 48.6 113.8 47.9 113.8 46.9 Z M95.7 39.7 C95.7 38.7 96.5 38 97.4 38 C98.4 38 99.1 38.7 99.1 39.7 C99.1 40.6 98.4 41.4 97.4 41.4 C96.5 41.4 95.7 40.6 95.7 39.7 Z M125.9 48.4 C125.9 47.4 126.7 46.7 127.6 46.7 C128.6 46.7 129.3 47.4 129.3 48.4 C129.3 49.3 128.6 50.1 127.6 50.1 C126.7 50.1 125.9 49.3 125.9 48.4 Z M122.9 41.8 C122.9 40.8 123.7 40.1 124.6 40.1 C125.6 40.1 126.3 40.8 126.3 41.8 C126.3 42.7 125.6 43.5 124.6 43.5 C123.7 43.5 122.9 42.7 122.9 41.8 Z M146.9 37.6 C146.9 36.6 147.6 35.9 148.6 35.9 C149.5 35.9 150.3 36.6 150.3 37.6 C150.3 38.5 149.5 39.3 148.6 39.3 C147.6 39.3 146.9 38.5 146.9 37.6 Z M139.8 40.5 C139.8 39.5 140.6 38.8 141.5 38.8 C142.4 38.8 143.2 39.5 143.2 40.5 C143.2 41.4 142.4 42.2 141.5 42.2 C140.6 42.2 139.8 41.4 139.8 40.5 Z M97 38.4 C97 37.5 97.7 36.7 98.7 36.7 C99.6 36.7 100.4 37.5 100.4 38.4 C100.4 39.4 99.6 40.1 98.7 40.1 C97.7 40.1 97 39.4 97 38.4 Z M106.8 46.8 C106.8 45.9 107.6 45.1 108.5 45.1 C109.4 45.1 110.2 45.9 110.2 46.8 C110.2 47.7 109.4 48.5 108.5 48.5 C107.6 48.5 106.8 47.7 106.8 46.8 Z M99.1 44 C99.1 43 99.9 42.3 100.8 42.3 C101.8 42.3 102.5 43 102.5 44 C102.5 44.9 101.8 45.7 100.8 45.7 C99.9 45.7 99.1 44.9 99.1 44 Z M126.6 41.5 C126.6 40.5 127.4 39.8 128.3 39.8 C129.3 39.8 130 40.5 130 41.5 C130 42.4 129.3 43.2 128.3 43.2 C127.4 43.2 126.6 42.4 126.6 41.5 Z M121.2 37.8 C121.2 36.8 121.9 36.1 122.9 36.1 C123.8 36.1 124.6 36.8 124.6 37.8 C124.6 38.7 123.8 39.5 122.9 39.5 C121.9 39.5 121.2 38.7 121.2 37.8 Z M91.9 39.5 C91.9 38.5 92.6 37.8 93.6 37.8 C94.5 37.8 95.3 38.5 95.3 39.5 C95.3 40.4 94.5 41.2 93.6 41.2 C92.6 41.2 91.9 40.4 91.9 39.5 Z M129.1 42.1 C129.1 41.2 129.9 40.4 130.8 40.4 C131.8 40.4 132.5 41.2 132.5 42.1 C132.5 43.1 131.8 43.8 130.8 43.8 C129.9 43.8 129.1 43.1 129.1 42.1 Z M107.1 44 C107.1 43.1 107.9 42.3 108.8 42.3 C109.8 42.3 110.5 43.1 110.5 44 C110.5 45 109.8 45.7 108.8 45.7 C107.9 45.7 107.1 45 107.1 44 Z M115.5 40.6 C115.5 39.7 116.3 38.9 117.2 38.9 C118.1 38.9 118.9 39.7 118.9 40.6 C118.9 41.5 118.1 42.3 117.2 42.3 C116.3 42.3 115.5 41.5 115.5 40.6 Z M136 45.4 C136 44.4 136.7 43.7 137.7 43.7 C138.6 43.7 139.4 44.4 139.4 45.4 C139.4 46.3 138.6 47.1 137.7 47.1 C136.7 47.1 136 46.3 136 45.4 Z M102.9 43.9 C102.9 43 103.7 42.2 104.6 42.2 C105.6 42.2 106.3 43 106.3 43.9 C106.3 44.8 105.6 45.6 104.6 45.6 C103.7 45.6 102.9 44.8 102.9 43.9 Z M119.8 47.5 C119.8 46.6 120.6 45.8 121.5 45.8 C122.5 45.8 123.2 46.6 123.2 47.5 C123.2 48.4 122.5 49.2 121.5 49.2 C120.6 49.2 119.8 48.4 119.8 47.5 Z M132.1 40.5 C132.1 39.5 132.8 38.8 133.8 38.8 C134.7 38.8 135.5 39.5 135.5 40.5 C135.5 41.4 134.7 42.2 133.8 42.2 C132.8 42.2 132.1 41.4 132.1 40.5 Z M147.1 38.4 C147.1 37.5 147.9 36.7 148.8 36.7 C149.7 36.7 150.5 37.5 150.5 38.4 C150.5 39.4 149.7 40.1 148.8 40.1 C147.9 40.1 147.1 39.4 147.1 38.4 Z M113.4 46.1 C113.4 45.1 114.1 44.4 115.1 44.4 C116 44.4 116.8 45.1 116.8 46.1 C116.8 47 116 47.8 115.1 47.8 C114.1 47.8 113.4 47 113.4 46.1 Z M97.4 42.9 C97.4 41.9 98.2 41.2 99.1 41.2 C100.1 41.2 100.8 41.9 100.8 42.9 C100.8 43.8 100.1 44.6 99.1 44.6 C98.2 44.6 97.4 43.8 97.4 42.9 Z M90.7 45 C90.7 44.1 91.4 43.3 92.4 43.3 C93.3 43.3 94.1 44.1 94.1 45 C94.1 46 93.3 46.7 92.4 46.7 C91.4 46.7 90.7 46 90.7 45 Z M134.2 43.9 C134.2 42.9 134.9 42.2 135.9 42.2 C136.8 42.2 137.6 42.9 137.6 43.9 C137.6 44.8 136.8 45.6 135.9 45.6 C134.9 45.6 134.2 44.8 134.2 43.9 Z M140.8 40.8 C140.8 39.8 141.6 39.1 142.5 39.1 C143.5 39.1 144.2 39.8 144.2 40.8 C144.2 41.7 143.5 42.5 142.5 42.5 C141.6 42.5 140.8 41.7 140.8 40.8 Z M130 44.1 C130 43.2 130.8 42.4 131.7 42.4 C132.7 42.4 133.4 43.2 133.4 44.1 C133.4 45.1 132.7 45.8 131.7 45.8 C130.8 45.8 130 45.1 130 44.1 Z M123.1 42.5 C123.1 41.5 123.9 40.8 124.8 40.8 C125.7 40.8 126.5 41.5 126.5 42.5 C126.5 43.4 125.7 44.2 124.8 44.2 C123.9 44.2 123.1 43.4 123.1 42.5 Z M138.7 48.3 C138.7 47.4 139.5 46.6 140.4 46.6 C141.3 46.6 142.1 47.4 142.1 48.3 C142.1 49.3 141.3 50 140.4 50 C139.5 50 138.7 49.3 138.7 48.3 Z M116.7 45 C116.7 44 117.5 43.3 118.4 43.3 C119.4 43.3 120.1 44 120.1 45 C120.1 45.9 119.4 46.7 118.4 46.7 C117.5 46.7 116.7 45.9 116.7 45 Z M91.9 45.4 C91.9 44.5 92.7 43.7 93.6 43.7 C94.6 43.7 95.3 44.5 95.3 45.4 C95.3 46.4 94.6 47.1 93.6 47.1 C92.7 47.1 91.9 46.4 91.9 45.4 Z"/>
+  <path class="solid" fill="#1C1F1A" stroke="none" d="M127.6 65.9 C127.6 65.4 128 65 128.5 65 C129 65 129.4 65.4 129.4 65.9 C129.4 66.4 129 66.8 128.5 66.8 C128 66.8 127.6 66.4 127.6 65.9 Z M137.8 57.4 C137.8 56.9 138.2 56.5 138.7 56.5 C139.2 56.5 139.6 56.9 139.6 57.4 C139.6 57.9 139.2 58.3 138.7 58.3 C138.2 58.3 137.8 57.9 137.8 57.4 Z M112.5 62 C112.5 61.5 112.9 61.1 113.4 61.1 C113.9 61.1 114.3 61.5 114.3 62 C114.3 62.5 113.9 62.9 113.4 62.9 C112.9 62.9 112.5 62.5 112.5 62 Z M91.4 59.5 C91.4 59 91.8 58.6 92.3 58.6 C92.8 58.6 93.2 59 93.2 59.5 C93.2 60 92.8 60.4 92.3 60.4 C91.8 60.4 91.4 60 91.4 59.5 Z M99.8 55.4 C99.8 54.9 100.2 54.5 100.7 54.5 C101.2 54.5 101.6 54.9 101.6 55.4 C101.6 55.9 101.2 56.3 100.7 56.3 C100.2 56.3 99.8 55.9 99.8 55.4 Z M93.5 63.2 C93.5 62.7 93.9 62.3 94.4 62.3 C94.9 62.3 95.3 62.7 95.3 63.2 C95.3 63.7 94.9 64.1 94.4 64.1 C93.9 64.1 93.5 63.7 93.5 63.2 Z M97.6 57 C97.6 56.5 98 56.1 98.5 56.1 C99 56.1 99.4 56.5 99.4 57 C99.4 57.5 99 57.9 98.5 57.9 C98 57.9 97.6 57.5 97.6 57 Z M112.8 64.5 C112.8 64 113.2 63.6 113.7 63.6 C114.2 63.6 114.6 64 114.6 64.5 C114.6 65 114.2 65.4 113.7 65.4 C113.2 65.4 112.8 65 112.8 64.5 Z M94.8 59.4 C94.8 58.9 95.2 58.5 95.7 58.5 C96.2 58.5 96.6 58.9 96.6 59.4 C96.6 59.9 96.2 60.3 95.7 60.3 C95.2 60.3 94.8 59.9 94.8 59.4 Z M122 64.6 C122 64.1 122.4 63.7 122.9 63.7 C123.4 63.7 123.8 64.1 123.8 64.6 C123.8 65.1 123.4 65.5 122.9 65.5 C122.4 65.5 122 65.1 122 64.6 Z M137.6 64.4 C137.6 63.9 138 63.5 138.5 63.5 C139 63.5 139.4 63.9 139.4 64.4 C139.4 64.9 139 65.3 138.5 65.3 C138 65.3 137.6 64.9 137.6 64.4 Z M106.2 59 C106.2 58.5 106.7 58.1 107.1 58.1 C107.6 58.1 108 58.5 108 59 C108 59.5 107.6 59.9 107.1 59.9 C106.7 59.9 106.2 59.5 106.2 59 Z M110.9 64.6 C110.9 64.1 111.3 63.7 111.8 63.7 C112.3 63.7 112.7 64.1 112.7 64.6 C112.7 65.1 112.3 65.5 111.8 65.5 C111.3 65.5 110.9 65.1 110.9 64.6 Z M145.6 55.8 C145.6 55.3 146.1 54.9 146.5 54.9 C147 54.9 147.4 55.3 147.4 55.8 C147.4 56.3 147 56.7 146.5 56.7 C146.1 56.7 145.6 56.3 145.6 55.8 Z M100.3 56.8 C100.3 56.3 100.7 55.9 101.2 55.9 C101.7 55.9 102.1 56.3 102.1 56.8 C102.1 57.3 101.7 57.7 101.2 57.7 C100.7 57.7 100.3 57.3 100.3 56.8 Z M103.6 59.8 C103.6 59.3 104 58.9 104.5 58.9 C105 58.9 105.4 59.3 105.4 59.8 C105.4 60.3 105 60.7 104.5 60.7 C104 60.7 103.6 60.3 103.6 59.8 Z M124.3 57.2 C124.3 56.7 124.7 56.3 125.2 56.3 C125.7 56.3 126.1 56.7 126.1 57.2 C126.1 57.7 125.7 58.1 125.2 58.1 C124.7 58.1 124.3 57.7 124.3 57.2 Z M90.3 59 C90.3 58.5 90.7 58.1 91.2 58.1 C91.7 58.1 92.1 58.5 92.1 59 C92.1 59.5 91.7 59.9 91.2 59.9 C90.7 59.9 90.3 59.5 90.3 59 Z M111.5 60.8 C111.5 60.3 111.9 59.9 112.4 59.9 C112.9 59.9 113.3 60.3 113.3 60.8 C113.3 61.3 112.9 61.7 112.4 61.7 C111.9 61.7 111.5 61.3 111.5 60.8 Z M145.4 62.3 C145.4 61.8 145.8 61.4 146.3 61.4 C146.8 61.4 147.2 61.8 147.2 62.3 C147.2 62.8 146.8 63.2 146.3 63.2 C145.8 63.2 145.4 62.8 145.4 62.3 Z M120 61.4 C120 60.9 120.4 60.5 120.9 60.5 C121.4 60.5 121.8 60.9 121.8 61.4 C121.8 61.9 121.4 62.3 120.9 62.3 C120.4 62.3 120 61.9 120 61.4 Z M129.3 54.6 C129.3 54.2 129.7 53.7 130.2 53.7 C130.7 53.7 131.1 54.2 131.1 54.6 C131.1 55.1 130.7 55.5 130.2 55.5 C129.7 55.5 129.3 55.1 129.3 54.6 Z M142.3 63.4 C142.3 62.9 142.7 62.5 143.2 62.5 C143.7 62.5 144.1 62.9 144.1 63.4 C144.1 63.9 143.7 64.3 143.2 64.3 C142.7 64.3 142.3 63.9 142.3 63.4 Z M140.8 63.6 C140.8 63.1 141.2 62.7 141.7 62.7 C142.2 62.7 142.6 63.1 142.6 63.6 C142.6 64.1 142.2 64.5 141.7 64.5 C141.2 64.5 140.8 64.1 140.8 63.6 Z M112.9 58.8 C112.9 58.3 113.3 57.9 113.8 57.9 C114.3 57.9 114.7 58.3 114.7 58.8 C114.7 59.3 114.3 59.7 113.8 59.7 C113.3 59.7 112.9 59.3 112.9 58.8 Z M96.1 61.6 C96.1 61.1 96.5 60.7 97 60.7 C97.5 60.7 97.9 61.1 97.9 61.6 C97.9 62.1 97.5 62.5 97 62.5 C96.5 62.5 96.1 62.1 96.1 61.6 Z M93.7 54.8 C93.7 54.3 94.1 53.9 94.6 53.9 C95.1 53.9 95.5 54.3 95.5 54.8 C95.5 55.3 95.1 55.7 94.6 55.7 C94.1 55.7 93.7 55.3 93.7 54.8 Z M102.2 55.9 C102.2 55.5 102.6 55 103.1 55 C103.6 55 104 55.5 104 55.9 C104 56.4 103.6 56.8 103.1 56.8 C102.6 56.8 102.2 56.4 102.2 55.9 Z M109.8 54.6 C109.8 54.1 110.2 53.7 110.7 53.7 C111.2 53.7 111.6 54.1 111.6 54.6 C111.6 55.1 111.2 55.5 110.7 55.5 C110.2 55.5 109.8 55.1 109.8 54.6 Z M90.1 55.8 C90.1 55.3 90.5 54.9 91 54.9 C91.5 54.9 91.9 55.3 91.9 55.8 C91.9 56.3 91.5 56.7 91 56.7 C90.5 56.7 90.1 56.3 90.1 55.8 Z M96 58.4 C96 57.9 96.4 57.5 96.9 57.5 C97.4 57.5 97.8 57.9 97.8 58.4 C97.8 58.9 97.4 59.3 96.9 59.3 C96.4 59.3 96 58.9 96 58.4 Z M91.6 64.5 C91.6 64 92 63.6 92.5 63.6 C93 63.6 93.4 64 93.4 64.5 C93.4 65 93 65.4 92.5 65.4 C92 65.4 91.6 65 91.6 64.5 Z M125.7 55.8 C125.7 55.3 126.1 54.9 126.6 54.9 C127.1 54.9 127.5 55.3 127.5 55.8 C127.5 56.3 127.1 56.7 126.6 56.7 C126.1 56.7 125.7 56.3 125.7 55.8 Z M104.7 58.2 C104.7 57.7 105.1 57.3 105.6 57.3 C106.1 57.3 106.5 57.7 106.5 58.2 C106.5 58.7 106.1 59.1 105.6 59.1 C105.1 59.1 104.7 58.7 104.7 58.2 Z M111.2 55.5 C111.2 55 111.6 54.6 112.1 54.6 C112.6 54.6 113 55 113 55.5 C113 56 112.6 56.4 112.1 56.4 C111.6 56.4 111.2 56 111.2 55.5 Z M139.3 65.9 C139.3 65.4 139.7 65 140.2 65 C140.7 65 141.1 65.4 141.1 65.9 C141.1 66.4 140.7 66.8 140.2 66.8 C139.7 66.8 139.3 66.4 139.3 65.9 Z M117.1 59.8 C117.1 59.3 117.5 58.9 118 58.9 C118.5 58.9 118.9 59.3 118.9 59.8 C118.9 60.3 118.5 60.7 118 60.7 C117.5 60.7 117.1 60.3 117.1 59.8 Z M95.1 55.2 C95.1 54.7 95.5 54.3 96 54.3 C96.5 54.3 96.9 54.7 96.9 55.2 C96.9 55.7 96.5 56.1 96 56.1 C95.5 56.1 95.1 55.7 95.1 55.2 Z M110 57.2 C110 56.7 110.4 56.3 110.9 56.3 C111.4 56.3 111.8 56.7 111.8 57.2 C111.8 57.7 111.4 58.1 110.9 58.1 C110.4 58.1 110 57.7 110 57.2 Z M138.2 55.9 C138.2 55.4 138.6 55 139.1 55 C139.6 55 140 55.4 140 55.9 C140 56.4 139.6 56.8 139.1 56.8 C138.6 56.8 138.2 56.4 138.2 55.9 Z M91.4 65.4 C91.4 64.9 91.8 64.5 92.3 64.5 C92.8 64.5 93.2 64.9 93.2 65.4 C93.2 65.9 92.8 66.3 92.3 66.3 C91.8 66.3 91.4 65.9 91.4 65.4 Z M120.7 55.8 C120.7 55.3 121.1 54.9 121.6 54.9 C122.1 54.9 122.5 55.3 122.5 55.8 C122.5 56.3 122.1 56.7 121.6 56.7 C121.1 56.7 120.7 56.3 120.7 55.8 Z M121.6 54.3 C121.6 53.8 122 53.4 122.5 53.4 C123 53.4 123.4 53.8 123.4 54.3 C123.4 54.8 123 55.2 122.5 55.2 C122 55.2 121.6 54.8 121.6 54.3 Z M120.7 65.7 C120.7 65.2 121.1 64.8 121.6 64.8 C122.1 64.8 122.5 65.2 122.5 65.7 C122.5 66.2 122.1 66.6 121.6 66.6 C121.1 66.6 120.7 66.2 120.7 65.7 Z M140.2 62.4 C140.2 61.9 140.6 61.5 141.1 61.5 C141.6 61.5 142 61.9 142 62.4 C142 62.9 141.6 63.3 141.1 63.3 C140.6 63.3 140.2 62.9 140.2 62.4 Z M105.2 58.4 C105.2 57.9 105.6 57.5 106.1 57.5 C106.6 57.5 107 57.9 107 58.4 C107 58.9 106.6 59.3 106.1 59.3 C105.6 59.3 105.2 58.9 105.2 58.4 Z M99.8 63.3 C99.8 62.8 100.2 62.4 100.7 62.4 C101.2 62.4 101.6 62.8 101.6 63.3 C101.6 63.8 101.2 64.2 100.7 64.2 C100.2 64.2 99.8 63.8 99.8 63.3 Z M121 63.3 C121 62.9 121.4 62.4 121.9 62.4 C122.4 62.4 122.8 62.9 122.8 63.3 C122.8 63.8 122.4 64.2 121.9 64.2 C121.4 64.2 121 63.8 121 63.3 Z M109.2 56.7 C109.2 56.2 109.6 55.8 110.1 55.8 C110.6 55.8 111 56.2 111 56.7 C111 57.2 110.6 57.6 110.1 57.6 C109.6 57.6 109.2 57.2 109.2 56.7 Z M137.2 65.8 C137.2 65.3 137.6 64.9 138.1 64.9 C138.6 64.9 139 65.3 139 65.8 C139 66.3 138.6 66.7 138.1 66.7 C137.6 66.7 137.2 66.3 137.2 65.8 Z M139.6 63.7 C139.6 63.2 140 62.8 140.5 62.8 C140.9 62.8 141.4 63.2 141.4 63.7 C141.4 64.2 140.9 64.6 140.5 64.6 C140 64.6 139.6 64.2 139.6 63.7 Z M137.6 62.9 C137.6 62.4 138 62 138.5 62 C139 62 139.4 62.4 139.4 62.9 C139.4 63.4 139 63.8 138.5 63.8 C138 63.8 137.6 63.4 137.6 62.9 Z M103.3 60.2 C103.3 59.7 103.7 59.3 104.2 59.3 C104.6 59.3 105.1 59.7 105.1 60.2 C105.1 60.7 104.6 61.1 104.2 61.1 C103.7 61.1 103.3 60.7 103.3 60.2 Z M110.7 54.3 C110.7 53.9 111.1 53.4 111.6 53.4 C112.1 53.4 112.5 53.9 112.5 54.3 C112.5 54.8 112.1 55.2 111.6 55.2 C111.1 55.2 110.7 54.8 110.7 54.3 Z M91.7 57.4 C91.7 56.9 92.1 56.5 92.6 56.5 C93.1 56.5 93.5 56.9 93.5 57.4 C93.5 57.9 93.1 58.3 92.6 58.3 C92.1 58.3 91.7 57.9 91.7 57.4 Z M105.1 62.3 C105.1 61.8 105.5 61.4 106 61.4 C106.5 61.4 106.9 61.8 106.9 62.3 C106.9 62.8 106.5 63.2 106 63.2 C105.5 63.2 105.1 62.8 105.1 62.3 Z M145.6 59.4 C145.6 58.9 146 58.5 146.5 58.5 C147 58.5 147.4 58.9 147.4 59.4 C147.4 59.9 147 60.3 146.5 60.3 C146 60.3 145.6 59.9 145.6 59.4 Z M144.4 65.9 C144.4 65.4 144.9 65 145.3 65 C145.8 65 146.2 65.4 146.2 65.9 C146.2 66.4 145.8 66.8 145.3 66.8 C144.9 66.8 144.4 66.4 144.4 65.9 Z M145.5 58.4 C145.5 57.9 145.9 57.5 146.4 57.5 C146.9 57.5 147.3 57.9 147.3 58.4 C147.3 58.9 146.9 59.3 146.4 59.3 C145.9 59.3 145.5 58.9 145.5 58.4 Z M102.9 56.7 C102.9 56.2 103.3 55.8 103.8 55.8 C104.3 55.8 104.7 56.2 104.7 56.7 C104.7 57.2 104.3 57.6 103.8 57.6 C103.3 57.6 102.9 57.2 102.9 56.7 Z"/>
+  <path class="solid" fill="#1C1F1A" stroke="none" d="M93 75.8 L99 72.3 L101.5 78.3 L95 80.8 Z M102 75.8 L108 72.3 L110.5 78.3 L104 80.8 Z M111 77.5 L117 74 L119.5 80 L113 82.5 Z M120 78.6 L126 75.1 L128.5 81.1 L122 83.6 Z M129 78.4 L135 74.9 L137.5 80.9 L131 83.4 Z M138 76.9 L144 73.4 L146.5 79.4 L140 81.9 Z M147 77.6 L153 74.1 L155.5 80.1 L149 82.6 Z"/>
+  <path class="thin" stroke-width="1.2" d="M108 90 L110 102 M113 90 L115 102 M118 90 L120 102 M123 90 L125 102 M128 90 L130 102 M106 93 Q120 99 134 93 M108 99 Q120 104 132 99"/>
+  <path d="M84 120 L84 144 L156 144 L156 120 M80 120 L88 120 M152 120 L160 120"/>
+  <path class="water" stroke="#2B7BB9" d="M86 132 Q94.5 130.5 103 132 Q111.5 133.5 120 132 Q128.5 130.5 137 132 Q145.5 133.5 154 132"/>
+  <path class="water" stroke="#2B7BB9" d="M120 112.5 C118.7 115.7 117.3 117.4 117.3 118.5 C117.3 119.4 118.7 119.5 120 119.5 C121.3 119.5 122.7 119.4 122.7 118.5 C122.7 117.4 121.3 115.7 120 112.5 Z"/>
+  <path class="water thin" stroke="#2B7BB9" stroke-width="1.2" d="M70 0 Q86 2 100 12"/>
+  <path class="thin" stroke-width="1.2" d="M166 18 L166 86 M162 18 L170 18 M162 33 L170 33 M162 51 L170 51 M162 70 L170 70 M162 86 L170 86"/>
+  <path d="M16 144 L224 144"/>
+  <path d="M16 144 L16 150 L224 150 L224 144"/>
+  <path d="M26 150 L26 160 M214 150 L214 160"/>
+  <path class="thin" stroke-width="1.2" d="M22 147 Q38.3 146 54.7 147 Q71 148 87.3 147 Q103.7 146 120 147 Q136.3 148 152.7 147 Q169 146 185.3 147 Q201.7 148 218 147"/>
+</svg><h3>Sand and charcoal filter</h3><p>Layers turn muddy water clear. You still boil it after.</p></li>
+        <li><svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" fill="none" stroke="#1C1F1A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <path class="tint" fill="#1C1F1A" fill-opacity="0.14" stroke="none" d="M64 92 L44 134 L80 138 Z"/>
+  <path d="M33 144 L33 79.6 M39 144 L39 79.6"/>
+  <path d="M21 43.2 L36 4 L51 43.2 Z M13.5 64.2 L36 23.6 L58.5 64.2 Z M7.5 82.4 L36 43.2 L64.5 82.4 Z"/>
+  <path class="thin" stroke-width="1.2" d="M36 14 L28.5 41.2 M36 14 L43.5 41.2 M36 33.6 L24.8 62.2 M36 33.6 L47.2 62.2 M36 53.2 L21.8 80.4 M36 53.2 L50.2 80.4"/>
+  <path class="thin" stroke-width="1.2" d="M36 138 L36 128 M35 120 L35 114"/>
+  <path d="M201 144 L201 79.6 M207 144 L207 79.6"/>
+  <path d="M189 43.2 L204 4 L219 43.2 Z M181.5 64.2 L204 23.6 L226.5 64.2 Z M175.5 82.4 L204 43.2 L232.5 82.4 Z"/>
+  <path class="thin" stroke-width="1.2" d="M204 14 L196.5 41.2 M204 14 L211.5 41.2 M204 33.6 L192.8 62.2 M204 33.6 L215.2 62.2 M204 53.2 L189.8 80.4 M204 53.2 L218.2 80.4"/>
+  <path class="thin" stroke-width="1.2" d="M204 138 L204 128 M203 120 L203 114"/>
+  <path class="accent" stroke="#D88A13" d="M40 92 L200 92"/>
+  <path d="M64 92 L176 92 L192 138 L80 138 Z"/>
+  <path d="M64 92 L44 134 L80 138 Z"/>
+  <path class="thin" stroke-width="1.2" d="M92 92 L104 138 M120 92 L134 138 M148 92 L164 138"/>
+  <path class="thin" stroke-width="1.2" d="M77.5 138 C77.5 136.6 78.6 135.5 80 135.5 C81.4 135.5 82.5 136.6 82.5 138 C82.5 139.4 81.4 140.5 80 140.5 C78.6 140.5 77.5 139.4 77.5 138 Z M189.5 138 C189.5 136.6 190.6 135.5 192 135.5 C193.4 135.5 194.5 136.6 194.5 138 C194.5 139.4 193.4 140.5 192 140.5 C190.6 140.5 189.5 139.4 189.5 138 Z M41.5 134 C41.5 132.6 42.6 131.5 44 131.5 C45.4 131.5 46.5 132.6 46.5 134 C46.5 135.4 45.4 136.5 44 136.5 C42.6 136.5 41.5 135.4 41.5 134 Z"/>
+  <path class="thin" stroke-width="1.2" d="M80 138 L72 146 M192 138 L202 146 M44 134 L32 142"/>
+  <path d="M70 140 L74 150 M200 140 L204 150 M30 136 L34 146"/>
+  <path class="thin" stroke-width="1.2" d="M108.5 139.5 Q113.1 139.1 115.7 143 Q111.1 143.4 108.5 139.5 Z M109.2 139.9 L115 142.6 M109.8 140.7 Q114 138.6 117.7 141.4 Q113.5 143.4 109.8 140.7 Z M110.6 140.7 L116.9 141.3 M74.9 140.5 Q79.2 138.7 82.9 141.6 Q78.6 143.4 74.9 140.5 Z M75.7 140.6 L82.1 141.5 M150.4 140.2 Q153.8 137 158.2 138.6 Q154.8 141.7 150.4 140.2 Z M151.2 140 L157.5 138.7 M63.3 141.4 Q67.7 139.9 71.2 143 Q66.8 144.6 63.3 141.4 Z M64.1 141.6 L70.4 142.9 M57.7 141.1 Q62.3 140.8 64.7 144.8 Q60.1 145.1 57.7 141.1 Z M58.4 141.4 L64 144.4 M133.3 142.9 Q136.2 139.2 140.8 140.1 Q137.9 143.7 133.3 142.9 Z M134.1 142.6 L140.1 140.3 M54.3 142.9 Q56.8 139 61.4 139.3 Q58.9 143.3 54.3 142.9 Z M55 142.5 L60.7 139.7 M76.1 141.9 Q78.5 137.9 83.1 138.1 Q80.7 142.1 76.1 141.9 Z M76.8 141.5 L82.4 138.5 M109.8 139.4 Q114.4 138.5 117.3 142.2 Q112.7 143 109.8 139.4 Z M110.5 139.6 L116.5 141.9 M116.4 141.6 Q120.4 139.2 124.4 141.6 Q120.4 144 116.4 141.6 Z M117.2 141.6 L123.6 141.6 M134.3 141.8 Q137.6 138.5 142 139.9 Q138.7 143.2 134.3 141.8 Z M135 141.6 L141.3 140.1 M176 141.6 Q180.5 140.7 183.5 144.4 Q178.9 145.2 176 141.6 Z M176.7 141.9 L182.7 144.1 M139.9 141.4 Q143.1 138 147.6 139.1 Q144.4 142.6 139.9 141.4 Z M140.7 141.2 L146.8 139.4"/>
+  <path d="M12 144 L24 144 M212 144 L228 144"/>
+  <path class="thin" stroke-width="1.2" d="M219 144 L217 139.8 M222 144 L222 138 M225 144 L227 140.4"/>
+</svg><h3>Tarp shelter</h3><p>A tarp over a rope keeps off rain and wind.</p></li>
+        <li><svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" fill="none" stroke="#1C1F1A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <path class="thin" stroke-width="1.2" d="M12 46 L228 46"/>
+  <path class="thin" stroke-width="1.2" d="M14 46 L18 38 L22 46 Z M28 46 L32 36 L36 46 Z M42 46 L46 34 L50 46 Z M56 46 L60 38 L64 46 Z M70 46 L74 36 L78 46 Z M84 46 L88 34 L92 46 Z M98 46 L102 38 L106 46 Z M112 46 L116 36 L120 46 Z M126 46 L130 34 L134 46 Z M140 46 L144 38 L148 46 Z M154 46 L158 36 L162 46 Z M168 46 L172 34 L176 46 Z M182 46 L186 38 L190 46 Z M196 46 L200 36 L204 46 Z M210 46 L214 34 L218 46 Z"/>
+  <path class="tint" fill="#1C1F1A" fill-opacity="0.14" stroke="none" d="M22.7 67.2 C22.7 64.3 25.6 63.9 27.2 63.9 C29.7 63.9 31 65.3 31 67.2 Z M32.2 76.6 C32.2 73.4 35.3 73.1 37.1 73.1 C39.7 73.1 41 74.5 41 76.6 Z M41.8 85.9 C41.8 82.6 45 82.2 46.9 82.2 C49.7 82.2 51 83.7 51 85.9 Z M51.4 95.2 C51.4 91.7 54.8 91.3 56.7 91.3 C59.6 91.3 61.1 92.9 61.1 95.2 Z M60.9 104.5 C60.9 100.9 64.5 100.5 66.5 100.5 C69.6 100.5 71.1 102.1 71.1 104.5 Z M70.5 113.8 C70.5 110 74.2 109.6 76.3 109.6 C79.5 109.6 81.1 111.3 81.1 113.8 Z M80.1 123.2 C80.1 119.2 83.9 118.7 86.2 118.7 C89.5 118.7 91.1 120.5 91.1 123.2 Z M89.6 132.5 C89.6 128.3 93.7 127.9 96 127.9 C99.4 127.9 101.2 129.7 101.2 132.5 Z M99.2 141.8 C99.2 137.5 103.4 137 105.8 137 C109.4 137 111.2 138.9 111.2 141.8 Z"/>
+  <path d="M22.7 67.2 C22.7 64.3 25.6 63.9 27.2 63.9 C29.7 63.9 31 65.3 31 67.2 Z M32.2 76.6 C32.2 73.4 35.3 73.1 37.1 73.1 C39.7 73.1 41 74.5 41 76.6 Z M41.8 85.9 C41.8 82.6 45 82.2 46.9 82.2 C49.7 82.2 51 83.7 51 85.9 Z M51.4 95.2 C51.4 91.7 54.8 91.3 56.7 91.3 C59.6 91.3 61.1 92.9 61.1 95.2 Z M60.9 104.5 C60.9 100.9 64.5 100.5 66.5 100.5 C69.6 100.5 71.1 102.1 71.1 104.5 Z M70.5 113.8 C70.5 110 74.2 109.6 76.3 109.6 C79.5 109.6 81.1 111.3 81.1 113.8 Z M80.1 123.2 C80.1 119.2 83.9 118.7 86.2 118.7 C89.5 118.7 91.1 120.5 91.1 123.2 Z M89.6 132.5 C89.6 128.3 93.7 127.9 96 127.9 C99.4 127.9 101.2 129.7 101.2 132.5 Z M99.2 141.8 C99.2 137.5 103.4 137 105.8 137 C109.4 137 111.2 138.9 111.2 141.8 Z"/>
+  <path class="thin" stroke-width="1.2" d="M25.2 65.2 L25.4 66.4 M34.9 74.4 L37.3 75.7 M44.6 83.6 L46.8 85 M54.3 92.8 L55 94.2 M64 102 L65.5 103.5 M73.7 111.2 L75.1 112.8 M83.4 120.4 L85.5 122.1 M93.1 129.6 L95.6 131.3 M102.8 138.8 L103.3 140.6"/>
+  <path class="tint" fill="#1C1F1A" fill-opacity="0.14" stroke="none" d="M100.7 67.2 C100.7 64.3 103.6 63.9 105.2 63.9 C107.7 63.9 109 65.3 109 67.2 Z M90.7 76.6 C90.7 73.4 93.8 73.1 95.6 73.1 C98.2 73.1 99.5 74.5 99.5 76.6 Z M80.8 85.9 C80.8 82.6 84 82.2 85.9 82.2 C88.7 82.2 90 83.7 90 85.9 Z M70.9 95.2 C70.9 91.7 74.3 91.3 76.2 91.3 C79.1 91.3 80.6 92.9 80.6 95.2 Z M60.9 104.5 C60.9 100.9 64.5 100.5 66.5 100.5 C69.6 100.5 71.1 102.1 71.1 104.5 Z M51 113.8 C51 110 54.7 109.6 56.8 109.6 C60 109.6 61.6 111.3 61.6 113.8 Z M41.1 123.2 C41.1 119.2 44.9 118.7 47.2 118.7 C50.5 118.7 52.1 120.5 52.1 123.2 Z M31.1 132.5 C31.1 128.3 35.2 127.9 37.5 127.9 C40.9 127.9 42.7 129.7 42.7 132.5 Z M21.2 141.8 C21.2 137.5 25.4 137 27.8 137 C31.4 137 33.2 138.9 33.2 141.8 Z"/>
+  <path d="M100.7 67.2 C100.7 64.3 103.6 63.9 105.2 63.9 C107.7 63.9 109 65.3 109 67.2 Z M90.7 76.6 C90.7 73.4 93.8 73.1 95.6 73.1 C98.2 73.1 99.5 74.5 99.5 76.6 Z M80.8 85.9 C80.8 82.6 84 82.2 85.9 82.2 C88.7 82.2 90 83.7 90 85.9 Z M70.9 95.2 C70.9 91.7 74.3 91.3 76.2 91.3 C79.1 91.3 80.6 92.9 80.6 95.2 Z M60.9 104.5 C60.9 100.9 64.5 100.5 66.5 100.5 C69.6 100.5 71.1 102.1 71.1 104.5 Z M51 113.8 C51 110 54.7 109.6 56.8 109.6 C60 109.6 61.6 111.3 61.6 113.8 Z M41.1 123.2 C41.1 119.2 44.9 118.7 47.2 118.7 C50.5 118.7 52.1 120.5 52.1 123.2 Z M31.1 132.5 C31.1 128.3 35.2 127.9 37.5 127.9 C40.9 127.9 42.7 129.7 42.7 132.5 Z M21.2 141.8 C21.2 137.5 25.4 137 27.8 137 C31.4 137 33.2 138.9 33.2 141.8 Z"/>
+  <path class="thin" stroke-width="1.2" d="M103.2 65.2 L105.9 66.4 M93.4 74.4 L96.1 75.7 M83.6 83.6 L83.7 85 M73.8 92.8 L74 94.2 M64 102 L66.5 103.5 M54.2 111.2 L56.5 112.8 M44.4 120.4 L46.5 122.1 M34.6 129.6 L35.7 131.3 M24.8 138.8 L26.8 140.6"/>
+  <path class="tint" fill="#1C1F1A" fill-opacity="0.14" stroke="none" d="M128.7 67.2 C128.7 64.3 131.6 63.9 133.2 63.9 C135.7 63.9 137 65.3 137 67.2 Z M134.8 79.7 C134.8 76.5 137.9 76.1 139.7 76.1 C142.3 76.1 143.7 77.5 143.7 79.7 Z M140.9 92.1 C140.9 88.7 144.2 88.3 146.1 88.3 C149 88.3 150.4 89.8 150.4 92.1 Z M146.9 104.5 C146.9 100.9 150.5 100.5 152.5 100.5 C155.6 100.5 157.1 102.1 157.1 104.5 Z M153 116.9 C153 113.1 156.8 112.6 158.9 112.6 C162.2 112.6 163.8 114.4 163.8 116.9 Z M159.1 129.4 C159.1 125.3 163.1 124.8 165.4 124.8 C168.8 124.8 170.5 126.6 170.5 129.4 Z M165.2 141.8 C165.2 137.5 169.4 137 171.8 137 C175.4 137 177.2 138.9 177.2 141.8 Z"/>
+  <path d="M128.7 67.2 C128.7 64.3 131.6 63.9 133.2 63.9 C135.7 63.9 137 65.3 137 67.2 Z M134.8 79.7 C134.8 76.5 137.9 76.1 139.7 76.1 C142.3 76.1 143.7 77.5 143.7 79.7 Z M140.9 92.1 C140.9 88.7 144.2 88.3 146.1 88.3 C149 88.3 150.4 89.8 150.4 92.1 Z M146.9 104.5 C146.9 100.9 150.5 100.5 152.5 100.5 C155.6 100.5 157.1 102.1 157.1 104.5 Z M153 116.9 C153 113.1 156.8 112.6 158.9 112.6 C162.2 112.6 163.8 114.4 163.8 116.9 Z M159.1 129.4 C159.1 125.3 163.1 124.8 165.4 124.8 C168.8 124.8 170.5 126.6 170.5 129.4 Z M165.2 141.8 C165.2 137.5 169.4 137 171.8 137 C175.4 137 177.2 138.9 177.2 141.8 Z"/>
+  <path class="thin" stroke-width="1.2" d="M131.2 65.2 L131.7 66.4 M137.4 77.4 L139 78.8 M143.7 89.7 L144.8 91.1 M150 102 L151.8 103.5 M156.3 114.3 L158.2 115.9 M162.5 126.5 L162.9 128.2 M168.8 138.8 L169 140.6"/>
+  <path class="tint" fill="#1C1F1A" fill-opacity="0.14" stroke="none" d="M204.7 67.2 C204.7 64.3 207.6 63.9 209.2 63.9 C211.7 63.9 213 65.3 213 67.2 Z M198.1 79.7 C198.1 76.5 201.2 76.1 203 76.1 C205.7 76.1 207 77.5 207 79.7 Z M191.5 92.1 C191.5 88.7 194.9 88.3 196.8 88.3 C199.6 88.3 201.1 89.8 201.1 92.1 Z M184.9 104.5 C184.9 100.9 188.5 100.5 190.5 100.5 C193.6 100.5 195.1 102.1 195.1 104.5 Z M178.4 116.9 C178.4 113.1 182.1 112.6 184.3 112.6 C187.5 112.6 189.1 114.4 189.1 116.9 Z M171.8 129.4 C171.8 125.3 175.8 124.8 178 124.8 C181.5 124.8 183.2 126.6 183.2 129.4 Z M165.2 141.8 C165.2 137.5 169.4 137 171.8 137 C175.4 137 177.2 138.9 177.2 141.8 Z"/>
+  <path d="M204.7 67.2 C204.7 64.3 207.6 63.9 209.2 63.9 C211.7 63.9 213 65.3 213 67.2 Z M198.1 79.7 C198.1 76.5 201.2 76.1 203 76.1 C205.7 76.1 207 77.5 207 79.7 Z M191.5 92.1 C191.5 88.7 194.9 88.3 196.8 88.3 C199.6 88.3 201.1 89.8 201.1 92.1 Z M184.9 104.5 C184.9 100.9 188.5 100.5 190.5 100.5 C193.6 100.5 195.1 102.1 195.1 104.5 Z M178.4 116.9 C178.4 113.1 182.1 112.6 184.3 112.6 C187.5 112.6 189.1 114.4 189.1 116.9 Z M171.8 129.4 C171.8 125.3 175.8 124.8 178 124.8 C181.5 124.8 183.2 126.6 183.2 129.4 Z M165.2 141.8 C165.2 137.5 169.4 137 171.8 137 C175.4 137 177.2 138.9 177.2 141.8 Z"/>
+  <path class="thin" stroke-width="1.2" d="M207.2 65.2 L207.7 66.4 M200.8 77.4 L201 78.8 M194.4 89.7 L195.5 91.1 M188 102 L188.5 103.5 M181.6 114.3 L181.9 115.9 M175.2 126.5 L176.5 128.2 M168.8 138.8 L171.8 140.6"/>
+  <path d="M118.7 85.3 C118.7 83.5 120.2 82 122 82 C123.8 82 125.3 83.5 125.3 85.3 C125.3 87.1 123.8 88.6 122 88.6 C120.2 88.6 118.7 87.1 118.7 85.3 Z M122 88.6 L122 99.4 M116.6 112 L122 99.4 L127.4 112 M116 96.1 L122 91 L128 96.1"/>
+  <path class="thin" stroke-width="1.2" d="M37 150 L35 145.8 M40 150 L40 144 M43 150 L45 146.4 M89 150 L87 145.8 M92 150 L92 144 M95 150 L97 146.4 M147 150 L145 145.8 M150 150 L150 144 M153 150 L155 146.4 M197 150 L195 145.8 M200 150 L200 144 M203 150 L205 146.4 M57 100 L55 95.8 M60 100 L60 94 M63 100 L65 96.4 M187 100 L185 95.8 M190 100 L190 94 M193 100 L195 96.4"/>
+</svg><h3>Signals rescuers can see</h3><p>Big ground symbols, a mirror flash and three whistle blasts.</p></li>
+      </ul>
+
+      <div class="cards">
+        <h3>16 quick cards for the first minutes</h3>
+        <ul aria-label="Quick card topics">
+          <li class="red">Stop bleeding</li><li>CPR</li><li>Choking</li><li>Burns</li><li>Stroke</li>
+          <li>Seizures</li><li>Heat stroke</li><li>Hypothermia</li><li>Poison</li><li>Floods</li>
+          <li>Safe water</li><li>Signal for help</li><li>Shelter in place</li><li>and more</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="privacy" aria-labelledby="privacy-title">
+    <div class="wrap">
+      <h2 id="privacy-title">No account. No ads. No tracking.</h2>
+      <div class="cols">
+        <p>Holdfast doesn't collect your data. Your plan, contacts and supplies stay on your phone,
+          and the private parts are encrypted. We can't see them.</p>
+        <p>The app goes online only to check for content updates and to download the maps and guides you pick.
+          <a href="https://evolvlabsai.github.io/holdfast-packs/privacy.html">Read the privacy policy</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sources" aria-labelledby="sources-title">
+    <div class="wrap">
+      <h2 id="sources-title">Where the information comes from</h2>
+      <div class="cols">
+        <div class="notice">
+          <p><strong>Holdfast is not a government app.</strong> No government agency made it or endorses it.</p>
+          <p>The guides and quick cards are based on public information from these sources.
+            Map data comes from OpenStreetMap contributors.</p>
+          <p>Holdfast helps you prepare. In an emergency, call 911.</p>
+        </div>
+        <ul class="links">
+          <li><a href="https://www.ready.gov/"><span>Ready.gov (FEMA)</span><span>ready.gov</span></a></li>
+          <li><a href="https://www.cdc.gov/"><span>Centers for Disease Control and Prevention</span><span>cdc.gov</span></a></li>
+          <li><a href="https://www.epa.gov/"><span>Environmental Protection Agency</span><span>epa.gov</span></a></li>
+          <li><a href="https://www.usda.gov/"><span>Department of Agriculture</span><span>usda.gov</span></a></li>
+          <li><a href="https://www.weather.gov/"><span>National Weather Service</span><span>weather.gov</span></a></li>
+          <li><a href="https://armypubs.army.mil/"><span>US Army field manuals</span><span>armypubs.army.mil</span></a></li>
+          <li><a href="https://www.usgs.gov/3d-elevation-program"><span>USGS elevation data</span><span>usgs.gov</span></a></li>
+        </ul>
+      </div>
+      <p class="help">Know a skill that belongs here? <a href="https://github.com/Evolvlabsai/holdfast-packs/blob/main/CONTRIBUTING.md">Suggest a quick card or skill on GitHub</a>.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>&copy; 2026 EvolvLabs, LLC</p>
+    <nav aria-label="Footer">
+      <a href="https://evolvlabsai.github.io/holdfast-packs/privacy.html">Privacy policy</a>
+      <a href="https://evolvlabsai.github.io/holdfast-packs/">Content catalog</a>
+      <a href="https://github.com/Evolvlabsai/holdfast-packs/issues">Support</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>

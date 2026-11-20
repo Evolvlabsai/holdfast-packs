@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Holdfast: offline maps and emergency plans</title>
+<meta name="description" content="Holdfast keeps offline maps, directions, first-aid cards and your family's emergency plan on your phone. It works with no signal. No account, no ads, no tracking.">
+<meta name="theme-color" content="#164622">
+<link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/brand/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="assets/brand/apple-touch-icon-180.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Holdfast: your emergency plan, even with no signal">
+<meta property="og:description" content="Offline maps, directions, first-aid cards and your family's plan on your phone. No account, no ads, no tracking.">
+<meta property="og:image" content="https://holdfast-8qu.pages.dev/assets/brand/share-card.png">
+<meta property="og:url" content="https://holdfast-8qu.pages.dev/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preload" href="assets/fonts/open-sans-bold.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+  @font-face { font-family: "Open Sans"; src: url("assets/fonts/open-sans-regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+  @font-face { font-family: "Open Sans"; src: url("assets/fonts/open-sans-semibold.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+  @font-face { font-family: "Open Sans"; src: url("assets/fonts/open-sans-bold.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+
+  :root {
+    --forest: #164622;
+    --deep: #0C2C16;
+    --amber: #D88A13;
+    --amber-dark: #9A5F06;
+    --ivory: #FCF3E6;
+    --charcoal: #20231F;
+    --muted: #5A635A;
+    --fog: #E7EBE5;
+    --line: #CBD3C8;
+    --wrap: 70rem;
+    color-scheme: light;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--fog); color: var(--charcoal);
+    font: 400 1.0625rem/1.6 "Open Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  img, svg { display: block; max-width: 100%; }
+  a { color: inherit; text-underline-offset: .18em; }
+  a:focus-visible { outline: 3px solid var(--amber); outline-offset: 3px; border-radius: 2px; }
+  .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 1rem; }
+  @media (min-width: 40rem) { .wrap { padding: 0 2rem; } }
+  h1, h2, h3 { line-height: 1.15; margin: 0; letter-spacing: -.015em; }
+  h2 { font-size: clamp(1.75rem, 3.6vw, 2.5rem); font-weight: 700; max-width: 22ch; text-wrap: balance; }
+  h3 { font-size: 1.3rem; font-weight: 700; }
+  p { margin: 0; }
+  .skip { position: absolute; left: -999px; top: .5rem; background: var(--amber); color: var(--deep); padding: .5rem 1rem; font-weight: 700; z-index: 2; }
+  .skip:focus { left: .5rem; }
+
+  /* Hero */
+  .hero {
+    background: var(--forest) url("assets/brand/pattern-dark.svg") center / cover no-repeat;
+    color: var(--ivory); overflow: hidden;
+  }
+  .top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: 1.25rem; }
+  .top img { height: 2rem; width: auto; }
+  .top nav { display: flex; gap: 1.25rem; font-weight: 600; font-size: .95rem; }
+  .top nav a { text-decoration: none; color: var(--ivory); opacity: .85; }
+  .top nav a:hover { opacity: 1; text-decoration: underline; }
+  .hero-grid { display: grid; gap: 2.5rem; padding-block: 2.5rem 0; align-items: end; }
+  @media (min-width: 56rem) { .hero-grid { grid-template-columns: 1.15fr .85fr; padding-top: 4rem; } }
+  .hero-copy { padding-bottom: 3rem; }
+  @media (min-width: 56rem) { .hero-copy { padding-bottom: 6rem; } }
+  .hero h1 { font-size: clamp(2.4rem, 6.2vw, 4.4rem); font-weight: 700; letter-spacing: -.03em; line-height: 1.02; max-width: 15ch; text-wrap: balance; }
+  .lede { margin-top: 1.5rem; font-size: 1.2rem; max-width: 34rem; color: #E9E3D6; }
+  .status {
+    margin-top: 2rem; display: inline-flex; flex-wrap: wrap; align-items: center; gap: .75rem 1rem;
+    border-left: 4px solid var(--amber); padding: .6rem 0 .6rem 1rem; max-width: 34rem;
+  }
+  .status strong { color: var(--amber); font-weight: 700; }
+  .phone {
+    width: min(19rem, 78vw); margin-inline: auto; border-radius: 2.4rem 2.4rem 0 0;
+    border: .55rem solid #0F120F; border-bottom: 0; background: #0F120F; overflow: hidden;
+    box-shadow: 0 -1.5rem 4rem rgba(0, 0, 0, .35);
+  }
+  .phone img { width: 100%; height: auto; aspect-ratio: 360 / 782; object-fit: cover; object-position: top; }
+  .hero .phone img { aspect-ratio: 360 / 640; }
+
+  /* Features */
+  .features { padding-block: 4.5rem 2rem; }
+  .features > .wrap > p { margin-top: 1rem; max-width: 38rem; color: var(--muted); font-size: 1.1rem; }
+  .feature { display: grid; gap: 2rem; align-items: center; padding-block: 3rem; border-top: 1px solid var(--line); }
+  .feature:first-of-type { margin-top: 2.5rem; }
+  @media (min-width: 48rem) {
+    .feature { grid-template-columns: 1fr 1fr; gap: 4rem; }
+    .feature:nth-of-type(even) .shot { order: -1; }
+  }
+  .feature p { margin-top: .75rem; max-width: 30rem; }
+  .shot .phone { border-radius: 2rem; border: .5rem solid #0F120F; width: min(16rem, 70vw); box-shadow: 0 1rem 2.5rem rgba(12, 44, 22, .18); }
+  .shot .phone img { aspect-ratio: 1440 / 2880; }
+
+  /* Skills: the drawings are the point */
+  .skills { background: var(--ivory); padding-block: 5rem; border-block: 1px solid #EBDDC6; }
+  .skills .intro { display: grid; gap: 1rem 4rem; }
+  @media (min-width: 56rem) { .skills .intro { grid-template-columns: 1fr 1fr; align-items: end; } }
+  .skills .intro p { color: #4D5249; max-width: 34rem; }
+  .plates { list-style: none; margin: 3rem 0 0; padding: 0; display: grid; gap: 2.5rem 2rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr)); }
+  .plates svg { width: 100%; height: auto; aspect-ratio: 3 / 2; background: #FFFBF4; border: 1px solid #E8D9C0; border-radius: .25rem; }
+  .plates h3 { font-size: 1.1rem; margin-top: 1rem; }
+  .plates p { margin-top: .3rem; color: #4D5249; font-size: .98rem; }
+  .cards { margin-top: 4rem; padding-top: 2rem; border-top: 2px solid var(--charcoal); display: grid; gap: 1rem 4rem; }
+  @media (min-width: 56rem) { .cards { grid-template-columns: 1fr 2fr; } }
+  .cards ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem; }
+  .cards li { background: #fff; border: 1px solid #E8D9C0; border-radius: 999px; padding: .3rem .85rem; font-size: .95rem; font-weight: 600; }
+  .cards li.red { background: #B3261E; border-color: #B3261E; color: #fff; }
+
+  /* Privacy */
+  .privacy { background: var(--deep); color: var(--ivory); padding-block: 5rem; }
+  .privacy h2 { font-size: clamp(2rem, 5vw, 3.4rem); max-width: 16ch; }
+  .privacy .cols { display: grid; gap: 1.5rem 4rem; margin-top: 2rem; }
+  @media (min-width: 48rem) { .privacy .cols { grid-template-columns: 1fr 1fr; } }
+  .privacy p { color: #DCD6C9; max-width: 34rem; }
+  .privacy a { color: var(--amber); font-weight: 600; }
+
+  /* Sources */
+  .sources { padding-block: 4.5rem; }
+  .sources .cols { display: grid; gap: 2rem 4rem; margin-top: 1.5rem; }
+  @media (min-width: 48rem) { .sources .cols { grid-template-columns: 1fr 1fr; } }
+  .notice { align-self: start; background: #fff; border-left: 4px solid var(--amber); padding: 1.25rem 1.5rem; }
+  .notice p + p { margin-top: .75rem; }
+  .links { list-style: none; margin: 0; padding: 0; }
+  .links li { border-bottom: 1px solid var(--line); }
+  .links a { display: flex; justify-content: space-between; gap: 1rem; padding: .7rem 0; text-decoration: none; }
+  .links a:hover span:first-child { text-decoration: underline; }
+  .links span:last-child { color: var(--muted); font-size: .9rem; }
+  .help { margin-top: 2.5rem; color: var(--muted); }
+  .help a { color: var(--forest); font-weight: 600; }
+
+  footer { background: var(--charcoal); color: #C9CCC5; padding-block: 2rem; font-size: .92rem; }
+  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; }
+  footer nav { display: flex; flex-wrap: wrap; gap: 1.25rem; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="hero">
+  <div class="wrap top">
+    <a href="./"><img src="assets/brand/logo-reverse.svg" alt="Holdfast" width="160" height="32"></a>
+    <nav aria-label="Main">
+      <a href="#skills">Skills</a>
+      <a href="https://evolvlabsai.github.io/holdfast-packs/privacy.html">Privacy</a>
+    </nav>
+  </div>
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <h1>Your emergency plan, even with no signal.</h1>
+      <p class="lede">Holdfast keeps offline maps, directions, first-aid cards and your family's plan
+        on your phone. Set it up once at home. After that, it works with no internet and no cell service.</p>
+      <p class="status"><strong>Coming soon</strong> Free on Google Play and the App Store. Maps cover the United States.</p>
+    </div>
+    <div class="phone">
+      <img src="assets/img/home-720.webp" srcset="assets/img/home-360.webp 360w, assets/img/home-720.webp 720w"
+           sizes="(min-width: 56rem) 19rem, 78vw" width="360" height="782"
+           alt="The Holdfast home screen: a search box, six quick cards such as Stop bleeding and CPR, and the family plan.">
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="features" aria-labelledby="what">
+    <div class="wrap">
+      <h2 id="what">Everything stays on your phone</h2>
+      <p>Pick your home state and the states where your family lives. Holdfast downloads them over Wi-Fi.
+        When the towers go down, nothing changes.</p>
+
+      <article class="feature">
+        <div>
+          <h3>Maps and directions with no signal</h3>
+          <p>Road and topo maps for all 50 states and DC. Driving and walking directions work offline,
+            even across state lines. Your meeting points are on the map.</p>
+        </div>
+        <div class="shot"><div class="phone"><img loading="lazy" src="assets/img/map-720.webp"
+          srcset="assets/img/map-360.webp 360w, assets/img/map-720.webp 720w" sizes="16rem" width="360" height="720"
+          alt="An offline topo map of the Virginia and Maryland area with rally points, water, medical and shelter filters."></div></div>
+      </article>
+
+      <article class="feature">
+        <div>
+          <h3>Answers from trusted guides</h3>
+          <p>Search guides from FEMA, the CDC, the EPA, the USDA and US Army field manuals.
+            The offline assistant answers from those guides and shows where each answer came from.
+            It runs on your phone, so your questions go nowhere.</p>
+        </div>
+        <div class="shot"><div class="phone"><img loading="lazy" src="assets/img/library-720.webp"
+          srcset="assets/img/library-360.webp 360w, assets/img/library-720.webp 720w" sizes="16rem" width="360" height="720"
+          alt="The Library answering how to make water safe to drink, with numbered steps and source markers."></div></div>
+      </article>
+
+      <article class="feature">
+        <div>
+          <h3>Your family's plan, encrypted</h3>
+          <p>Meeting points, contacts, household members and medicines, encrypted on your phone.
+            Share the plan with a nearby phone over Bluetooth or Wi-Fi, with no internet.</p>
+        </div>
+        <div class="shot"><div class="phone"><img loading="lazy" src="assets/img/plan-720.webp"
+          srcset="assets/img/plan-360.webp 360w, assets/img/plan-720.webp 720w" sizes="16rem" width="360" height="720"
+          alt="My plan, marked encrypted, with three meeting places: near home, outside the neighborhood and out of town."></div></div>
+      </article>
+
+      <article class="feature">
+        <div>
+          <h3>Supplies you can count on</h3>
+          <p>Checklists for a go-bag, a car kit and sheltering in place, sized for your household.
+            Scan a barcode to add an item. Get a reminder before food and medicine expire.</p>
+        </div>
+        <div class="shot"><div class="phone"><img loading="lazy" src="assets/img/inventory-720.webp"
+          srcset="assets/img/inventory-360.webp 360w, assets/img/inventory-720.webp 720w" sizes="16rem" width="360" height="720"
+          alt="Inventory checklists for a go-bag, shelter in place, car kit and medications, scaled for two people for 14 days."></div></div>
+      </article>
+    </div>
+  </section>
+
+  <section class="skills" id="skills" aria-labelledby="skills-title">
+    <div class="wrap">
+      <div class="intro">
+        <h2 id="skills-title">Skills you can do with what's in the house</h2>
+        <p>12 survival projects, each with step-by-step drawings, a list of what you need, and what to watch out for.
+          Here are six of them.</p>
+      </div>
+      <ul class="plates">
+        <li>{{skill:jug-lantern/glow.svg}}<h3>Water-jug lantern</h3><p>A headlamp and a jug of water light a whole room.</p></li>
+        <li>{{skill:tin-can-stove/cooking.svg}}<h3>Tin-can wood stove</h3><p>A big metal can burns twigs and holds a pot.</p></li>
+        <li>{{skill:rain-catcher/setup.svg}}<h3>Rain catcher</h3><p>A tilted tarp fills a bucket fast in the rain.</p></li>
+        <li>{{skill:sand-filter/layers.svg}}<h3>Sand and charcoal filter</h3><p>Layers turn muddy water clear. You still boil it after.</p></li>
+        <li>{{skill:tarp-shelter/tarp.svg}}<h3>Tarp shelter</h3><p>A tarp over a rope keeps off rain and wind.</p></li>
+        <li>{{skill:signals/ground.svg}}<h3>Signals rescuers can see</h3><p>Big ground symbols, a mirror flash and three whistle blasts.</p></li>
+      </ul>
+
+      <div class="cards">
+        <h3>16 quick cards for the first minutes</h3>
+        <ul aria-label="Quick card topics">
+          <li class="red">Stop bleeding</li><li>CPR</li><li>Choking</li><li>Burns</li><li>Stroke</li>
+          <li>Seizures</li><li>Heat stroke</li><li>Hypothermia</li><li>Poison</li><li>Floods</li>
+          <li>Safe water</li><li>Signal for help</li><li>Shelter in place</li><li>and more</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="privacy" aria-labelledby="privacy-title">
+    <div class="wrap">
+      <h2 id="privacy-title">No account. No ads. No tracking.</h2>
+      <div class="cols">
+        <p>Holdfast doesn't collect your data. Your plan, contacts and supplies stay on your phone,
+          and the private parts are encrypted. We can't see them.</p>
+        <p>The app goes online only to check for content updates and to download the maps and guides you pick.
+          <a href="https://evolvlabsai.github.io/holdfast-packs/privacy.html">Read the privacy policy</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sources" aria-labelledby="sources-title">
+    <div class="wrap">
+      <h2 id="sources-title">Where the information comes from</h2>
+      <div class="cols">
+        <div class="notice">
+          <p><strong>Holdfast is not a government app.</strong> No government agency made it or endorses it.</p>
+          <p>The guides and quick cards are based on public information from these sources.
+            Map data comes from OpenStreetMap contributors.</p>
+          <p>Holdfast helps you prepare. In an emergency, call 911.</p>
+        </div>
+        <ul class="links">
+          <li><a href="https://www.ready.gov/"><span>Ready.gov (FEMA)</span><span>ready.gov</span></a></li>
+          <li><a href="https://www.cdc.gov/"><span>Centers for Disease Control and Prevention</span><span>cdc.gov</span></a></li>
+          <li><a href="https://www.epa.gov/"><span>Environmental Protection Agency</span><span>epa.gov</span></a></li>
+          <li><a href="https://www.usda.gov/"><span>Department of Agriculture</span><span>usda.gov</span></a></li>
+          <li><a href="https://www.weather.gov/"><span>National Weather Service</span><span>weather.gov</span></a></li>
+          <li><a href="https://armypubs.army.mil/"><span>US Army field manuals</span><span>armypubs.army.mil</span></a></li>
+          <li><a href="https://www.usgs.gov/3d-elevation-program"><span>USGS elevation data</span><span>usgs.gov</span></a></li>
+        </ul>
+      </div>
+      <p class="help">Know a skill that belongs here? <a href="https://github.com/Evolvlabsai/holdfast-packs/blob/main/CONTRIBUTING.md">Suggest a quick card or skill on GitHub</a>.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>&copy; 2026 EvolvLabs, LLC</p>
+    <nav aria-label="Footer">
+      <a href="https://evolvlabsai.github.io/holdfast-packs/privacy.html">Privacy policy</a>
+      <a href="https://evolvlabsai.github.io/holdfast-packs/">Content catalog</a>
+      <a href="https://github.com/Evolvlabsai/holdfast-packs/issues">Support</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>
